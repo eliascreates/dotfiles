@@ -1,0 +1,7 @@
+[user]
+	name = Elias Kekana
+	email = thapeloelias.kekana@gmail.com
+
+[http]
+	sslVerify = true
+	sslBackend = schannel

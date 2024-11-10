@@ -1,0 +1,90 @@
+{
+   "workbench.iconTheme": "material-icon-theme",
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "files.autoSave": "afterDelay",
+    "[csharp]": {
+        "editor.defaultFormatter": "csharpier.csharpier-vscode"
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+
+    "vim.easymotion": true,
+    "vim.incsearch": true,
+    "vim.useSystemClipboard": true,
+    "vim.useCtrlKeys": true,
+    "vim.hlsearch": true,
+    "vim.insertModeKeyBindings": [
+      {
+        "before": ["j", "j"],
+        "after": ["<Esc>"]
+      }
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [
+      {
+        "before": ["<leader>", "d"],
+        "after": ["d", "d"]
+      },
+      {
+        "before": ["<C-n>"],
+        "commands": [":nohl"]
+      },
+      {
+        "before": ["K"],
+        "commands": ["lineBreakInsert"],
+        "silent": true
+      }
+    ],
+    "vim.leader": "<space>",
+    "vim.handleKeys": {
+      "<C-a>": false,
+      "<C-f>": false
+    },
+  
+    //" To improve performance",
+    "extensions.experimental.affinity": {
+      "vscodevim.vim": 1
+    },
+    "vim.commandLineModeKeyBindingsNonRecursive": [
+      
+    ],
+    "workbench.colorTheme": "Material Theme Darker",
+    "[html]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.cursorStyle": "block",
+    "breadcrumbs.showFiles": false,
+    "explorer.compactFolders": false,
+    "dart.openDevTools": "flutter",
+    "[json]": {
+      "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "material-icon-theme.files.associations": {
+      "bloc": "controller",
+      "cubit": "controller",
+      "entities": "class",
+      "repository": "taskfile",
+      "repositories": "taskfile",
+      "domain": "middleware",
+    },
+    "flutterStylizer": {
+      "groupAndSortGetterMethods": false,
+      "groupAndSortVariableTypes": false,
+      "memberOrdering": [
+        "public-constructor",
+        "named-constructors",
+        "public-static-variables",
+        "public-instance-variables",
+        "public-override-variables",
+        "private-static-variables",
+        "private-instance-variables",
+        "public-override-methods",
+        "public-other-methods",
+        "private-other-methods",
+        "build-method",
+      ],
+      "processEnumsLikeClasses": false,
+      "sortClassesWithinFile": false,
+      "sortOtherMethods": false,
+    },
+    "material-icon-theme.hidesExplorerArrows": true
+ 
+ }

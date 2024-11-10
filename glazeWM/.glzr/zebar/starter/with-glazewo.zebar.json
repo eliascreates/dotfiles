@@ -1,0 +1,70 @@
+{
+  "window/bar": {
+    "providers": ["self"],
+    "width": "{{ self.args.MONITOR_WIDTH }}",
+    "height": "40",
+    "position_x": "{{ self.args.MONITOR_X }}",
+    "position_y": "{{ self.args.MONITOR_Y }}",
+    "z_order": "normal",
+    "shown_in_taskbar": false,
+    "resizable": false,
+    "global_styles": "@import \"https://www.nerdfonts.com/assets/css/webfont.css\";",
+    "styles": "display: grid;\ngrid-template-columns: 1fr 1fr 1fr;\nalign-items: center;\nheight: 100%;\ncolor: rgb(255 255 255 / 90%);\nfont-family: ui-monospace, monospace;\nfont-size: 12px;\npadding: 4px 24px;\nbackground: rgba(0, 0, 0, 15%);\n\ni {\n  color: rgb(255 255 255 / 90%);\n  margin-right: 7px;\n}",
+    "group/left": {
+      "styles": "display: flex;\nalign-items: center;",
+      "template/logo": {
+        "styles": "margin-right: 20px;",
+        "template": "<i class=\"nf nf-fa-windows\"></i>"
+      },
+      "template/glazewm_workspaces": {
+        "styles": "display: flex;\nalign-items: center;\n\n.workspace {\n  background: rgb(255 255 255 / 5%);\n  margin-right: 4px;\n  padding: 4px 8px;\n  color: rgb(255 255 255 / 90%);\n  border: none;\n  border-radius: 2px;\n  cursor: pointer;\n\n  &.displayed {\n    background: rgb(255 255 255 / 15%);\n  }\n\n  &.focused,\n  &:hover {\n    background: rgb(255 255 255 / 50%);\n  }\n}",
+        "providers": ["glazewm"],
+        "events": [
+          {
+            "type": "click",
+            "fn_path": "script.js#focusWorkspace",
+            "selector": ".workspace"
+          }
+        ],
+        "template": "@for (workspace of glazewm.currentWorkspaces) {\n  <button\n    class=\"workspace {{ workspace.hasFocus ? 'focused' : '' }} {{ workspace.isDisplayed ? 'displayed' : '' }}\"\n    id=\"{{ workspace.name }}\"\n  >\n    {{ workspace.displayName ?? workspace.name }}\n  </button>\n}"
+      }
+    },
+    "group/center": {
+      "styles": "justify-self: center;",
+      "template/clock": {
+        "providers": ["date"],
+        "template": "{{ date.toFormat(date.now, 'EEE d MMM t') }}"
+      }
+    },
+    "group/right": {
+      "styles": "justify-self: end;\ndisplay: flex;\n\n.template {\n  margin-left: 20px;\n}",
+      "template/glazewm_other": {
+        "providers": ["glazewm"],
+        "styles": ".binding-mode,\n.tiling-direction {\n  background: rgb(255 255 255 / 15%);\n  color: rgb(255 255 255 / 90%);\n  border-radius: 2px;\n  padding: 4px 6px;\n  margin: 0;\n}",
+        "template": "@for (bindingMode of glazewm.bindingModes) {\n  <span class=\"binding-mode\">\n    {{ bindingMode.displayName ?? bindingMode.name }}\n  </span>\n}\n\n@if (glazewm.tilingDirection === 'horizontal') {\n  <i class=\"tiling-direction nf nf-md-swap_horizontal\"></i>\n} @else {\n  <i class=\"tiling-direction nf nf-md-swap_vertical\"></i>\n}"
+      },
+      "template/network": {
+        "providers": ["network"],
+        "template": "@if (network.defaultInterface?.type === 'ethernet') {\n  <i class=\"nf nf-md-ethernet_cable\"></i>\n} @else if (network.defaultInterface?.type === 'wifi') {\n  @if (network.defaultGateway?.signalStrength >= 80) {<i class=\"nf nf-md-wifi_strength_4\"></i>}\n  @else if (network.defaultGateway?.signalStrength >= 65) {<i class=\"nf nf-md-wifi_strength_3\"></i>}\n  @else if (network.defaultGateway?.signalStrength >= 40) {<i class=\"nf nf-md-wifi_strength_2\"></i>}\n  @else if (network.defaultGateway?.signalStrength >= 25) {<i class=\"nf nf-md-wifi_strength_1\"></i>}\n  @else {<i class=\"nf nf-md-wifi_strength_outline\"></i>}\n  {{ network.defaultGateway?.ssid }}\n} @else {\n  <i class=\"nf nf-md-wifi_strength_off_outline\"></i>\n}"
+      },
+      "template/memory": {
+        "providers": ["memory"],
+        "template": "<i class=\"nf nf-fae-chip\"></i>\n{{ Math.round(memory.usage) }}%"
+      },
+      "template/cpu": {
+        "providers": ["cpu"],
+        "styles": ".high-usage {\n  color: #900029;\n}",
+        "template": "<i class=\"nf nf-oct-cpu\"></i>\n@if (cpu.usage > 85) {\n  <span class=\"high-usage\">{{ Math.round(cpu.usage) }}%</span>\n} @else {\n  <span>{{ Math.round(cpu.usage) }}%</span>\n}"
+      },
+      "template/battery": {
+        "providers": ["battery"],
+        "styles": "position: relative;\n\n.charging-icon {\n  position: absolute;\n  font-size: 11px;\n  left: 7px;\n  top: 2px;\n}",
+        "template": "@if (battery.isCharging) {<i class=\"nf nf-md-power_plug charging-icon\"></i>}\n@if (battery.chargePercent > 90) {<i class=\"nf nf-fa-battery_4\"></i>}\n@else if (battery.chargePercent > 70) {<i class=\"nf nf-fa-battery_3\"></i>}\n@else if (battery.chargePercent > 40) {<i class=\"nf nf-fa-battery_2\"></i>}\n@else if (battery.chargePercent > 20) {<i class=\"nf nf-fa-battery_1\"></i>}\n@else {<i class=\"nf nf-fa-battery_0\"></i>}\n{{ Math.round(battery.chargePercent) }}%"
+      },
+      "template/weather": {
+        "providers": ["weather"],
+        "template": "@switch (weather.status) {\n  @case ('clear_day') {<i class=\"nf nf-weather-day_sunny\"></i>}\n  @case ('clear_night') {<i class=\"nf nf-weather-night_clear\"></i>}\n  @case ('cloudy_day') {<i class=\"nf nf-weather-day_cloudy\"></i>}\n  @case ('cloudy_night') {<i class=\"nf nf-weather-night_alt_cloudy\"></i>}\n  @case ('light_rain_day') {<i class=\"nf nf-weather-day_sprinkle\"></i>}\n  @case ('light_rain_night') {<i class=\"nf nf-weather-night_alt_sprinkle\"></i>}\n  @case ('heavy_rain_day') {<i class=\"nf nf-weather-day_rain\"></i>}\n  @case ('heavy_rain_night') {<i class=\"nf nf-weather-night_alt_rain\"></i>}\n  @case ('snow_day') {<i class=\"nf nf-weather-day_snow\"></i>}\n  @case ('snow_night') {<i class=\"nf nf-weather-night_alt_snow\"></i>}\n  @case ('thunder_day') {<i class=\"nf nf-weather-day_lightning\"></i>}\n  @case ('thunder_night') {<i class=\"nf nf-weather-night_alt_lightning\"></i>}\n}\n{{ weather.celsiusTemp }}°"
+      }
+    }
+  }
+}

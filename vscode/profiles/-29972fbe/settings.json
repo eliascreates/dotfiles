@@ -1,0 +1,207 @@
+{
+  "terminal.integrated.sendKeybindingsToShell": true,
+  "terminal.external.windowsExec": "C:\\Program Files\\Git\\git-bash.exe",
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "security.workspace.trust.untrustedFiles": "open",
+  "workbench.colorTheme": "Visual Studio 2019 Dark",
+  "workbench.iconTheme": "vscode-icons",
+  "editor.fontFamily": "'JetBrainsMonoNL Nerd Font', 'JetBrains Mono', Consolas, 'Courier New', monospace",
+  "breadcrumbs.showFiles": false,
+  "explorer.compactFolders": false,
+  "material-icon-theme.hidesExplorerArrows": false,
+  "editor.minimap.enabled": false,
+  "editor.suggest.insertMode": "replace",
+  "editor.linkedEditing": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "window.zoomLevel": 0.5,
+  "launch": {},
+  "workbench.statusBar.visible": true,
+  "breadcrumbs.enabled": false,
+  "update.showReleaseNotes": false,
+  "zenMode.hideLineNumbers": false,
+  "editor.lineNumbers": "relative",
+  // Project Manager
+  "projectManager.git.baseFolders": ["c:\\Dev"],
+  "projectManager.sortList": "Recent",
+  // Flutter & Dart
+  "dart.openDevTools": "flutter",
+  "material-icon-theme.files.associations": {
+    "business_logic": "functions",
+    "presentation": "layout",
+    "features": "shader",
+    "feature": "shader",
+    "exceptions": "error",
+    "exception": "error",
+    "global_state": "global",
+    "ui": "layout",
+    "bloc": "controller",
+    "cubit": "controller",
+    "entities": "class",
+    "repository": "taskfile",
+    "repositories": "taskfile",
+    "domain": "middleware"
+  },
+  "flutterStylizer": {
+    "groupAndSortGetterMethods": false,
+    "groupAndSortVariableTypes": false,
+    "memberOrdering": [
+      "public-constructor",
+      "named-constructors",
+      "public-static-variables",
+      "public-instance-variables",
+      "public-override-variables",
+      "private-static-variables",
+      "private-instance-variables",
+      "public-override-methods",
+      "public-other-methods",
+      "private-other-methods",
+      "build-method"
+    ],
+    "processEnumsLikeClasses": false,
+    "sortClassesWithinFile": false,
+    "sortOtherMethods": false
+  },
+
+  // Vim
+  "vim.leader": "<Space>",
+  "vim.hlsearch": true,
+  "vim.useSystemClipboard": true,
+  "vim.surround": true,
+  "vim.matchpairs": "(:),{:},[:]",
+  "vim.highlightedyank.color": "rgba(208, 139, 0, 0.5)",
+  "vim.highlightedyank.enable": true,
+
+  // STATUS BAR COLORS FOR VIM MODES
+  "vim.statusBarColorControl": false,
+  "vim.statusBarColors.visual": ["#3b4261"],
+  "vim.statusBarColors.normal": ["#2d353b"],
+  "vim.statusBarColors.insert": ["#2d353b"],
+
+  // To improve performance,
+  "extensions.experimental.affinity": {
+    "vscodevim.vim": 1
+  },
+
+  // INSERT MODE KEYBINDINGS
+  "vim.insertModeKeyBindings": [
+    // {
+    //   "before": ["k", "j"],
+    //   "after": ["<Esc>"]
+    // }
+  ],
+  "vim.handleKeys": {
+    "<C-d>": true,
+    "<C-s>": false,
+    "<C-z>": false,
+    "<C-p>": true
+    // "<C-e>": false
+  },
+  // NORMAL MODE KEYBINDINGS
+  "vim.normalModeKeyBindingsNonRecursive": [
+    { "before": ["<Esc>"], "commands": [":nohlsearch"] },
+    // SEARCH
+    {
+      "before": ["<leader>", "/"],
+      "commands": ["actions.find"]
+    },
+    {
+      "before": ["<leader>", "s", "f"],
+      "commands": ["workbench.action.findInFiles"]
+    },
+    // switch b/w buffers
+    { "before": ["<S-h>"], "commands": [":bprevious"] },
+    { "before": ["<S-l>"], "commands": [":bnext"] },
+
+    // splits
+    { "before": ["<space>", "v"], "commands": [":vsplit"] },
+    { "before": ["<leader>", "s"], "commands": [":split"] },
+
+    // panes
+    // NICE TO HAVE
+    { "before": ["<leader>", "w"], "commands": [":w!"] },
+    { "before": ["<leader>", "q"], "commands": [":q!"] },
+    { "before": ["<leader>", "x"], "commands": [":x!"] },
+    { "before": ["<leader>", "n"], "commands": [":tabnew"] },
+    {
+      "before": ["[", "d"],
+      "commands": ["editor.action.marker.prev"]
+    },
+    {
+      "before": ["K"],
+      "commands": ["editor.action.showHover"]
+    },
+    {
+      "before": ["g", "r"],
+      "commands": ["editor.action.goToReferences"]
+    },
+    {
+      "before": ["]", "d"],
+      "commands": ["editor.action.marker.next"]
+    },
+    {
+      "before": ["<leader>", "c", "a"],
+      "commands": ["editor.action.quickFix"]
+    },
+    { "before": ["<leader>", "f"], "commands": ["workbench.action.quickOpen"] },
+    {
+      "before": ["<leader>", "p"],
+      "commands": ["editor.action.formatDocument"]
+    },
+    {
+      "before": ["g", "h"],
+      "commands": ["editor.action.showDefinitionPreviewHover"]
+    }
+  ],
+  // VISUAL MODE KEYBINDINGS
+  "vim.visualModeKeyBindings": [
+    // Stay in visual mode while indenting
+    { "before": ["<"], "commands": ["editor.action.outdentLines"] },
+    { "before": [">"], "commands": ["editor.action.indentLines"] },
+    // Move selected lines while staying in visual mode
+    { "before": ["J"], "commands": ["editor.action.moveLinesDownAction"] },
+    { "before": ["K"], "commands": ["editor.action.moveLinesUpAction"] },
+    // toggle comment selection
+    { "before": ["<leader>", "c"], "commands": ["editor.action.commentLine"] }
+  ],
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "go.toolsManagement.autoUpdate": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  //Formatters
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "macros.list": {
+    "renameAppend": [
+      "renameFile",
+      "editor.action.clipboardCopyAction",
+      "editor.action.clipboardPasteAction"
+    ]
+  },
+  "window.newWindowProfile": "Default",
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#2d353b",
+    "statusBar.noFolderBackground": "#2d353b",
+    "statusBar.debuggingBackground": "#2d353b",
+    "statusBar.foreground": "#ffffff",
+    "statusBar.debuggingForeground": "#ffffff"
+  },
+  "redhat.telemetry.enabled": false,
+  "c-cpp-compile-run.run-in-external-terminal": true,
+  "csharp.debug.console": "internalConsole",
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "modificationsIfAvailable",
+  "[csharp]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
+  },
+  "files.autoSave": "onFocusChange"
+}

@@ -1,24 +1,243 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "build",
-            "command": "dotnet",
-            "type": "shell",
-            "args": [
-                "build",
-                // Ask dotnet build to generate full paths for file names.
-                "/property:GenerateFullPaths=true",
-                // Do not generate summary otherwise it leads to duplicate errors in Problems panel
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "group": "build",
-            "presentation": {
-                "reveal": "silent"
-            },
-            "problemMatcher": "$msCompile"
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "build"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": "$msCompile",
+      "presentation": {
+        "echo": false,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true,
+        "close": false
+      },
+      "icon": {
+        "id": "gear",
+        "color": "terminal.ansiBlue"
+      },
+      "detail": "Build project",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "statusbar": {
+          "label": "",
+          "icon": { "id": "gear" },
+          "color": "#3794FF"
         }
-    ]
+      }
+    },
+    {
+      "label": "Run",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [ "run" ],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true,
+        "close": false,
+        "runInExternalTerminal": true
+      },
+      "icon": {
+        "id": "play",
+        "color": "terminal.ansiGreen"
+      },
+      "detail": "Run project",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "statusbar": {
+          "label": "",
+          "icon": { "id": "play" },
+          "color": "#3FBF3F"
+        }
+      }
+    },
+    {
+      "label": "Build & Run",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "run"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true,
+        "close": false
+      },
+      "dependsOn": ["🔨 Build"],
+      "dependsOrder": "sequence",
+      "icon": {
+        "id": "rocket",
+        "color": "terminal.ansiMagenta"
+      },
+      "detail": "Build and run project",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "statusbar": {
+          "label": "",
+          "icon": { "id": "rocket" },
+          "color": "#CF3FCF"
+        }
+      }
+    },
+    {
+      "label": "Clean",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "clean"
+      ],
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true,
+        "close": false
+      },
+      "icon": {
+        "id": "trash",
+        "color": "terminal.ansiRed"
+      },
+      "detail": "Clean build outputs",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "statusbar": {
+          "label": "",
+          "icon": { "id": "trash" },
+          "color": "#FF5252"
+        }
+      }
+    },
+    {
+      "label": "Run Tests",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "test"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true,
+        "close": false
+      },
+      "icon": {
+        "id": "beaker",
+        "color": "terminal.ansiYellow"
+      },
+      "detail": "Run unit tests",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "statusbar": {
+          "label": "",
+          "icon": { "id": "beaker" },
+          "color": "#FFCC00"
+        }
+      }
+    },
+    {
+      "label": "Watch",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "watch",
+        "run"
+      ],
+      "group": "none",
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true,
+        "close": false
+      },
+      "icon": {
+        "id": "refresh",
+        "color": "terminal.ansiCyan"
+      },
+      "detail": "Run with hot reload",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^.*$",
+          "file": 1,
+          "location": 2,
+          "message": 3
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^watch : Started$",
+          "endsPattern": "^watch : Exited$"
+        }
+      },
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "statusbar": {
+          "label": "",
+          "icon": { "id": "refresh" },
+          "color": "#56C8D8"
+        }
+      }
+    },
+    {
+      "label": "Restore",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "restore"
+      ],
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true,
+        "close": false
+      },
+      "icon": {
+        "id": "package",
+        "color": "terminal.ansiWhite"
+      },
+      "detail": "Restore NuGet packages",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "statusbar": {
+          "label": "",
+          "icon": { "id": "package" },
+          "color": "#CCCCCC"
+        }
+      }
+    }
+  ]
 }

@@ -1,29 +1,48 @@
 {
-  "c-cpp-compile-run.run-in-external-terminal": true,
+  //Defaults
+  "c-cpp-compile-run.run-in-external-terminal": false,
+  // Terminal
   "terminal.integrated.sendKeybindingsToShell": true,
   "terminal.external.windowsExec": "C:\\Program Files\\Git\\git-bash.exe",
-  //Defaults
-  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "source": "PowerShell",
+      "color": "terminal.ansiBlue",
+      "icon": "terminal-powershell",
+      "overrideName": true
+    },
+    "Git Bash": {
+      "source": "Git Bash",
+      "icon": "terminal-bash",
+      "overrideName": true
+    },
+    "Command Prompt": {
+      "path": [
+        "${env:windir}\\Sysnative\\cmd.exe",
+        "${env:windir}\\System32\\cmd.exe"
+      ],
+      "args": [],
+      "icon": "terminal-cmd"
+    }
+  },
   "security.workspace.trust.untrustedFiles": "open",
-  "files.autoSave": "onFocusChange",
-  "workbench.colorTheme": "Everforest Dark",
-  "workbench.iconTheme": "vscode-icons",
+  "files.autoSave": "afterDelay",
+  "workbench.colorTheme": "Vim Light Soft",
+  "workbench.iconTheme": "field-lights-monochrome",
   "editor.fontFamily": "'JetBrainsMonoNL Nerd Font', 'JetBrains Mono', Consolas, 'Courier New', monospace",
   "breadcrumbs.showFiles": false,
   "explorer.compactFolders": false,
   "material-icon-theme.hidesExplorerArrows": false,
   "editor.minimap.enabled": false,
-  "editor.formatOnSave": true,
   "editor.suggest.insertMode": "replace",
   "editor.linkedEditing": true,
   "javascript.updateImportsOnFileMove.enabled": "always",
-  "window.zoomLevel": 0.5,
+  "window.zoomLevel": 2,
   "launch": {},
   "workbench.statusBar.visible": true,
-  "breadcrumbs.enabled": false,
   "update.showReleaseNotes": false,
   "zenMode.hideLineNumbers": false,
-  "editor.lineNumbers": "relative",
   // Project Manager
   "projectManager.git.baseFolders": ["c:\\Dev"],
   "projectManager.sortList": "Recent",
@@ -65,125 +84,6 @@
     "sortClassesWithinFile": false,
     "sortOtherMethods": false
   },
-
-  // Vim
-  "vim.leader": "<Space>",
-  "vim.hlsearch": true,
-  "vim.useSystemClipboard": true,
-  "vim.surround": true,
-  "vim.matchpairs": "(:),{:},[:]",
-  "vim.highlightedyank.color": "rgba(208, 139, 0, 0.5)",
-  "vim.highlightedyank.enable": true,
-
-  // STATUS BAR COLORS FOR VIM MODES
-  "vim.statusBarColorControl": false,
-  "vim.statusBarColors.visual": ["#3b4261"],
-  "vim.statusBarColors.normal": ["#2d353b"],
-  "vim.statusBarColors.insert": ["#2d353b"],
-
-  // To improve performance,
-  "extensions.experimental.affinity": {
-    "vscodevim.vim": 1
-  },
-
-  // INSERT MODE KEYBINDINGS
-  "vim.insertModeKeyBindings": [
-    // {
-    //   "before": ["k", "j"],
-    //   "after": ["<Esc>"] // }
-  ],
-  "vim.handleKeys": {
-    "<C-d>": true,
-    "<C-s>": false,
-    "<C-z>": false,
-    "<C-p>": true
-    // "<C-e>": false
-  },
-  // NORMAL MODE KEYBINDINGS
-  "vim.normalModeKeyBindingsNonRecursive": [
-    { "before": ["<Esc>"], "commands": [":nohlsearch"] },
-    // SEARCH
-    {
-      "before": ["<leader>", "/"],
-      "commands": ["actions.find"]
-    },
-    {
-      "before": ["<leader>", "<leader>"],
-      "commands": ["workbench.action.findInFiles"]
-    },
-    {
-      "before": ["<leader>", "j"],
-      "command": "code-runner.run"
-    },
-    // switch b/w buffers
-    { "before": ["<S-h>"], "commands": [":bprevious"] },
-    { "before": ["<S-l>"], "commands": [":bnext"] },
-
-    // splits
-    { "before": ["<space>", "v"], "commands": [":vsplit"] },
-    { "before": ["<leader>", "s"], "commands": [":split"] },
-
-    // panes
-    // NICE TO HAVE
-    { "before": ["<leader>", "w"], "commands": [":w!"] },
-    { "before": ["<leader>", "q"], "commands": [":q!"] },
-    { "before": ["<leader>", "x"], "commands": [":x!"] },
-    { "before": ["<leader>", "n"], "commands": [":tabnew"] },
-    {
-      "before": ["<leader>", "b"],
-      "commands": ["editor.debug.action.toggleBreakpoint"]
-    },
-    // Project Leader Key
-    {
-      "before": ["<leader>", "p", "p"],
-      "commands": ["workbench.action.openRecent"]
-    },
-    {
-      "before": ["[", "d"],
-      "commands": ["editor.action.marker.prev"]
-    },
-    {
-      "before": ["K"],
-      "commands": ["editor.action.showHover"]
-    },
-    {
-      "before": ["g", "r"],
-      "commands": ["editor.action.goToReferences"]
-    },
-    {
-      "before": ["]", "d"],
-      "commands": ["editor.action.marker.next"]
-    },
-    {
-      "before": ["<leader>", "c", "a"],
-      "commands": ["editor.action.quickFix"]
-    },
-    { "before": ["<leader>", "f"], "commands": ["workbench.action.quickOpen"] },
-    {
-      "before": ["<leader>", "p"],
-      "commands": ["editor.action.formatDocument"]
-    },
-    {
-      "before": ["g", "h"],
-      "commands": ["editor.action.showDefinitionPreviewHover"]
-    },
-    //Which Key
-    {
-      "before": ["<space>"],
-      "commands": ["whichkey.show"]
-    }
-  ],
-  // VISUAL MODE KEYBINDINGS
-  "vim.visualModeKeyBindings": [
-    // Stay in visual mode while indenting
-    { "before": ["<"], "commands": ["editor.action.outdentLines"] },
-    { "before": [">"], "commands": ["editor.action.indentLines"] },
-    // Move selected lines while staying in visual mode
-    { "before": ["J"], "commands": ["editor.action.moveLinesDownAction"] },
-    { "before": ["K"], "commands": ["editor.action.moveLinesUpAction"] },
-    // toggle comment selection
-    { "before": ["<leader>", "c"], "commands": ["editor.action.commentLine"] }
-  ],
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -209,13 +109,128 @@
       "editor.action.clipboardPasteAction"
     ]
   },
-  "workbench.colorCustomizations": {
-    "statusBar.background": "#2d353b",
-    "statusBar.noFolderBackground": "#2d353b",
-    "statusBar.debuggingBackground": "#2d353b",
-    "statusBar.foreground": "#ffffff",
-    "statusBar.debuggingForeground": "#ffffff"
-  },
+  // "workbench.colorCustomizations": {
+  //   "statusBar.background": "#2d353b",
+  //   "statusBar.noFolderBackground": "#2d353b",
+  //   "statusBar.debuggingBackground": "#2d353b",
+  //   "statusBar.foreground": "#ffffff",
+  //   "statusBar.debuggingForeground": "#ffffff"
+  // },
   "redhat.telemetry.enabled": false,
-  "workbench.settings.applyToAllProfiles": ["editor.formatOnSave"]
+  "workbench.settings.applyToAllProfiles": ["editor.formatOnSave"],
+  "window.customTitleBarVisibility": "windowed",
+  "window.newWindowDimensions": "maximized",
+  "mssql.enableRichExperiencesDoNotShowPrompt": true,
+  "chat.commandCenter.enabled": false,
+  "window.newWindowProfile": "Default",
+  "workbench.productIconTheme": "material-product-icons",
+  "task.allowAutomaticTasks": "on",
+  "code-runner.runInTerminal": true,
+  "C_Cpp.intelliSenseEngine": "disabled",
+  "clangd.path": "c:\\Users\\USER\\AppData\\Roaming\\Code\\User\\globalStorage\\llvm-vs-code-extensions.vscode-clangd\\install\\19.1.2\\clangd_19.1.2\\bin\\clangd.exe",
+
+  // VIM
+  "vim.leader": "<Space>",
+  "vim.hlsearch": true,
+  "vim.useSystemClipboard": true,
+  "vim.surround": true,
+  "vim.matchpairs": "(:),{:},[:]",
+  "vim.highlightedyank.color": "rgba(208, 139, 0, 0.5)",
+  "vim.highlightedyank.enable": true,
+
+  // STATUS BAR COLORS FOR VIM MODES
+  "vim.statusBarColorControl": false,
+  "vim.statusBarColors.visual": ["#3b4261"],
+  "vim.statusBarColors.normal": ["#2d353b"],
+  "vim.statusBarColors.insert": ["#2d353b"],
+
+  // To improve performance,
+  "extensions.experimental.affinity": {
+    "vscodevim.vim": 1
+  },
+
+  // INSERT MODE KEYBINDINGS
+  "vim.insertModeKeyBindings": [
+    // {
+    //   "before": ["k", "j"],
+    //   "after": ["<Esc>"]
+    // }
+  ],
+  "vim.handleKeys": {
+    "<C-d>": true,
+    "<C-s>": false,
+    "<C-z>": false,
+    "<C-p>": true
+    // "<C-e>": false
+  },
+
+  // NORMAL MODE KEYBINDINGS
+  "vim.normalModeKeyBindingsNonRecursive": [
+    { "before": ["<Esc>"], "commands": [":nohlsearch"] },
+
+    // LEADER SHORTCUTS
+
+    // SPLITS
+    { "before": ["<leader>", "v"], "commands": [":vsplit"] },
+    { "before": ["<leader>", "h"], "commands": [":split"] },
+
+    // SEARCH
+    { "before": ["<leader>", "/"], "commands": ["actions.find"] },
+    { "before": ["<leader>", "j"], "command": ["code-runner.run"] },
+
+    // switch b/w buffers
+    { "before": ["<S-h>"], "commands": [":bprevious"] },
+    { "before": ["<S-l>"], "commands": [":bnext"] },
+
+    // panes
+    // NICE TO HAVE
+    { "before": ["<leader>", "w"], "commands": [":w!"] },
+    { "before": ["<leader>", "q"], "commands": [":q!"] },
+    { "before": ["<leader>", "x"], "commands": [":x!"] },
+    { "before": ["<leader>", "n"], "commands": [":tabnew"] },
+
+    {
+      "before": ["<leader>", "b"],
+      "commands": ["editor.debug.action.toggleBreakpoint"]
+    },
+
+    // AUTO TASKS WITH VIM
+    { "before": ["<leader>", "1"], "commands": [ { "command": "workbench.action.tasks.runTask", "args": "Build" } ] },
+    { "before": ["<leader>", "2"], "commands": [ { "command": "workbench.action.tasks.runTask", "args": "Run" } ] },
+    { "before": ["<leader>", "3"], "commands": [ { "command": "workbench.action.tasks.runTask", "args": "Build & Run" } ] },
+    { "before": ["<leader>", "4"], "commands": [ { "command": "workbench.action.tasks.runTask", "args": "Run Tests" } ] },
+    { "before": ["<leader>", "5"], "commands": [ { "command": "workbench.action.tasks.runTask", "args": "Watch" } ] },
+
+    // Project Leader Key
+    { "before": ["<leader>", "<leader>"], "commands": ["workbench.action.quickOpen"] },
+    { "before": ["<leader>", "o"], "commands": ["workbench.action.openRecent"] },
+    { "before": ["<leader>", "s"], "commands": ["workbench.action.findInFiles"] },
+    { "before": ["<leader>", "t"], "commands": ["workbench.action.quickOpenNavigatePreviousInFilePicker"] },
+
+    { "before": ["<leader>", "c"], "commands": ["editor.action.quickFix"] },
+    { "before": ["<leader>", "f"], "commands": ["editor.action.formatDocument"] },
+    { "before": ["<leader>", "r"], "commands": ["editor.action.rename"] },
+
+    { "before": ["[", "d"], "commands": ["editor.action.marker.prev"] },
+    { "before": ["K"], "commands": ["editor.action.showHover"] },
+    { "before": ["g", "r"], "commands": ["editor.action.goToReferences"] },
+    { "before": ["]", "d"], "commands": ["editor.action.marker.next"] },
+    { "before": ["g", "h"], "commands": ["editor.action.showDefinitionPreviewHover"] },
+
+    //Which Key
+    { "before": ["<leader>"], "commands": ["whichkey.show"] }
+  ],
+  // VISUAL MODE KEYBINDINGS
+  "vim.visualModeKeyBindings": [
+    // Stay in visual mode while indenting
+    { "before": ["<leader>", "f"], "commands": ["editor.action.formatSelection"] },
+
+    { "before": ["<"], "commands": ["editor.action.outdentLines"] },
+    { "before": [">"], "commands": ["editor.action.indentLines"] },
+    // Move selected lines while staying in visual mode
+    { "before": ["J"], "commands": ["editor.action.moveLinesDownAction"] },
+    { "before": ["K"], "commands": ["editor.action.moveLinesUpAction"] },
+    // toggle comment selection
+    { "before": ["<leader>", "c"], "commands": ["editor.action.commentLine"] }
+  ],
 }

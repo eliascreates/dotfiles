@@ -1,7 +1,12 @@
+[IncludeIf "gitdir:C:/dev/work/"]
+	path = ./.gitconfig-ec
+
+[IncludeIf "gitdir:C:/dev/personal/"]
+	path = ./.gitconfig-ek
+
+[http]
+	sslVerify = false
+	sslBackend = schannel
 [user]
 	name = Elias Kekana
 	email = thapeloelias.kekana@gmail.com
-
-[http]
-	sslVerify = true
-	sslBackend = schannel

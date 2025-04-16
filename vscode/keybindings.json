@@ -105,6 +105,7 @@
     "command": "workbench.action.toggleSidebarVisibility",
     "when": "!searchInputBoxFocus && !findWidgetVisible && !inQuickOpen && vim.mode != 'Insert'"
   },
+
   // TERMINAL SHORTCUTS
   // Navigation
   {
@@ -234,11 +235,6 @@
     "command": "-workbench.action.openRecent"
   },
   {
-    "key": "ctrl+shift+g g",
-    "command": "-workbench.view.scm",
-    "when": "workbench.scm.active && !gitlens:disabled && config.gitlens.keymap == 'chorded'"
-  },
-  {
     "key": "ctrl+shift+f",
     "command": "-workbench.action.findInFiles"
   },
@@ -259,9 +255,65 @@
     "command": "workbench.action.newWindow",
     "when": "!terminalFocus"
   },
+  //Resize Terminals
   {
-    "key": "ctrl+shift+k",
-    "command": "code-runner.run",
-    "when": "vim.mode != 'Insert'"
+    "key": "shift+alt+j",
+    "command": "workbench.action.terminal.resizePaneDown"
+  },
+  {
+    "key": "shift+alt+k",
+    "command": "workbench.action.terminal.resizePaneRight"
+  },
+  {
+    "key": "shift+alt+h",
+    "command": "workbench.action.terminal.resizePaneLeft"
+  },
+  {
+    "key": "shift+alt+l",
+    "command": "workbench.action.terminal.resizePaneRight"
+  },
+  //Select in explorer
+
+  //Movement
+  {
+    "key": "ctrl+y",
+    "command": "editor.action.scrollUpHover",
+    "when": "editorHoverFocused && vim.mode != 'Insert'"
+  },
+  {
+    "key": "ctrl+e",
+    "command": "editor.action.scrollDownHover",
+    "when": "editorHoverFocused && vim.mode != 'Insert'"
+  },
+  // Explorer / Tree
+  {
+    "key": "shift+j",
+    "command": "list.expandSelectionDown",
+    "when": "listFocus && listSupportsMultiselect && !inputFocus && !treestickyScrollFocused"
+  },
+  {
+    "key": "shift+k",
+    "command": "list.expandSelectionUp",
+    "when": "listFocus && listSupportsMultiselect && !inputFocus && !treestickyScrollFocused"
+  },
+  {
+    "key": "gg",
+    "command": "list.focusFirst",
+    "when": "listFocus && !inputFocus && !treestickyScrollFocused"
+  },
+  {
+    "key": "shift+g",
+    "command": "list.focusLast",
+    "when": "listFocus && !inputFocus && !treestickyScrollFocused"
+  },
+  {
+    "key": "/",
+    "command": "list.find",
+    "when": "listFocus && !inputFocus && listSupportsFind"
+  },
+  {
+    "key": "ctrl+h",
+    "command": "list.collapseAll",
+    "when": "listFocus && !inputFocus && !treestickyScrollFocused"
   }
 ]

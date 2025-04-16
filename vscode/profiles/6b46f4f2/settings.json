@@ -19,7 +19,7 @@
     "[typescript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "workbench.iconTheme": "icons",
+    "workbench.iconTheme": "Monokai Classic Icons",
     "workbench.colorTheme": "Monokai Classic",
     "terminal.integrated.defaultProfile.windows": "Git Bash"
 }

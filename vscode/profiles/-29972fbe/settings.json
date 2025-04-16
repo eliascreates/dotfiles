@@ -1,30 +1,63 @@
 {
-  "terminal.integrated.sendKeybindingsToShell": true,
-  "terminal.external.windowsExec": "C:\\Program Files\\Git\\git-bash.exe",
-  "terminal.integrated.defaultProfile.windows": "Git Bash",
-  "security.workspace.trust.untrustedFiles": "open",
-  "workbench.colorTheme": "Visual Studio 2019 Dark",
+  // GENERAL
+  "files.autoSave": "afterDelay",
   "workbench.iconTheme": "vscode-icons",
   "editor.fontFamily": "'JetBrainsMonoNL Nerd Font', 'JetBrains Mono', Consolas, 'Courier New', monospace",
   "breadcrumbs.showFiles": false,
-  "explorer.compactFolders": false,
-  "material-icon-theme.hidesExplorerArrows": false,
+  "material-icon-theme.hidesExplorerArrows": true,
+  "window.zoomLevel": 2,
+  "workbench.statusBar.visible": true,
+  "zenMode.hideLineNumbers": false,
   "editor.minimap.enabled": false,
   "editor.suggest.insertMode": "replace",
   "editor.linkedEditing": true,
+  "editor.formatOnSave": true,
+  "workbench.productIconTheme": "material-product-icons",
+  "debug.toolBarLocation": "commandCenter",
+  "explorer.compactFolders": false,
+  "vsicons.presets.hideExplorerArrows": true,
+  "debug.enableStatusBarColor": true,
+  "workbench.colorCustomizations": {
+    "statusBar.debuggingBackground": "#222011",
+    "statusBar.debuggingForeground": "#ffffff"
+  },
+
+  // INTEGRATED TERMINAL
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "terminal.integrated.sendKeybindingsToShell": true,
+  // "debug.console.closeOnEnd": true,
+  "csharp.debug.externalConsole": true,
+
+  "terminal.external.windowsExec": "C:\\Program Files\\Git\\git-bash.exe",
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "source": "PowerShell",
+      "color": "terminal.ansiBlue",
+      "icon": "terminal-powershell",
+      "overrideName": true
+    },
+    "Git Bash": {
+      "source": "Git Bash",
+      "icon": "terminal-bash",
+      "overrideName": true
+    },
+    "Command Prompt": {
+      "path": [
+        "${env:windir}\\Sysnative\\cmd.exe",
+        "${env:windir}\\System32\\cmd.exe"
+      ],
+      "args": [],
+      "icon": "terminal-cmd"
+    }
+  },
+
+  "security.workspace.trust.untrustedFiles": "open",
   "javascript.updateImportsOnFileMove.enabled": "always",
-  "window.zoomLevel": 0.5,
   "launch": {},
-  "workbench.statusBar.visible": true,
-  "breadcrumbs.enabled": false,
-  "update.showReleaseNotes": false,
-  "zenMode.hideLineNumbers": false,
-  "editor.lineNumbers": "relative",
   // Project Manager
   "projectManager.git.baseFolders": ["c:\\Dev"],
   "projectManager.sortList": "Recent",
-  // Flutter & Dart
-  "dart.openDevTools": "flutter",
+  // MATERIAL FOLDER ICONS
   "material-icon-theme.files.associations": {
     "business_logic": "functions",
     "presentation": "layout",
@@ -41,28 +74,35 @@
     "repositories": "taskfile",
     "domain": "middleware"
   },
-  "flutterStylizer": {
-    "groupAndSortGetterMethods": false,
-    "groupAndSortVariableTypes": false,
-    "memberOrdering": [
-      "public-constructor",
-      "named-constructors",
-      "public-static-variables",
-      "public-instance-variables",
-      "public-override-variables",
-      "private-static-variables",
-      "private-instance-variables",
-      "public-override-methods",
-      "public-other-methods",
-      "private-other-methods",
-      "build-method"
-    ],
-    "processEnumsLikeClasses": false,
-    "sortClassesWithinFile": false,
-    "sortOtherMethods": false
+  //FORMATTERS
+  "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[html]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[json]": { "editor.defaultFormatter": "vscode.json-language-features" },
+  "csharp.debug.console": "internalConsole",
+  "editor.formatOnSaveMode": "modificationsIfAvailable",
+  "[csharp]": {
+    "editor.defaultFormatter": "csharpier.csharpier-vscode"
   },
+  // Macros
+  "macros.list": {
+    "renameAppend": [
+      "renameFile",
+      "editor.action.clipboardCopyAction",
+      "editor.action.clipboardPasteAction"
+    ]
+  },
+  // STATUS BAR
+  // "workbench.colorCustomizations": {
+  //   "statusBar.background": "#2d353b",
+  //   "statusBar.noFolderBackground": "#2d353b",
+  //   "statusBar.debuggingBackground": "#2d353b",
+  //   "statusBar.foreground": "#ffffff",
+  //   "statusBar.debuggingForeground": "#ffffff"
+  // },
 
-  // Vim
+  // VIM
   "vim.leader": "<Space>",
   "vim.hlsearch": true,
   "vim.useSystemClipboard": true,
@@ -96,25 +136,24 @@
     "<C-p>": true
     // "<C-e>": false
   },
+
   // NORMAL MODE KEYBINDINGS
   "vim.normalModeKeyBindingsNonRecursive": [
     { "before": ["<Esc>"], "commands": [":nohlsearch"] },
+
+    // LEADER SHORTCUTS
+
+    // SPLITS
+    { "before": ["<leader>", "v"], "commands": [":vsplit"] },
+    { "before": ["<leader>", "h"], "commands": [":split"] },
+
     // SEARCH
-    {
-      "before": ["<leader>", "/"],
-      "commands": ["actions.find"]
-    },
-    {
-      "before": ["<leader>", "s", "f"],
-      "commands": ["workbench.action.findInFiles"]
-    },
+    { "before": ["<leader>", "/"], "commands": ["actions.find"] },
+    { "before": ["<leader>", "j"], "command": ["code-runner.run"] },
+
     // switch b/w buffers
     { "before": ["<S-h>"], "commands": [":bprevious"] },
     { "before": ["<S-l>"], "commands": [":bnext"] },
-
-    // splits
-    { "before": ["<space>", "v"], "commands": [":vsplit"] },
-    { "before": ["<leader>", "s"], "commands": [":split"] },
 
     // panes
     // NICE TO HAVE
@@ -122,39 +161,89 @@
     { "before": ["<leader>", "q"], "commands": [":q!"] },
     { "before": ["<leader>", "x"], "commands": [":x!"] },
     { "before": ["<leader>", "n"], "commands": [":tabnew"] },
+
     {
-      "before": ["[", "d"],
-      "commands": ["editor.action.marker.prev"]
+      "before": ["<leader>", "b"],
+      "commands": ["editor.debug.action.toggleBreakpoint"]
+    },
+
+    // AUTO TASKS WITH VIM
+    {
+      "before": ["<leader>", "1"],
+      "commands": [
+        { "command": "workbench.action.tasks.runTask", "args": "Build" }
+      ]
     },
     {
-      "before": ["K"],
-      "commands": ["editor.action.showHover"]
+      "before": ["<leader>", "2"],
+      "commands": [
+        { "command": "workbench.action.tasks.runTask", "args": "Run" }
+      ]
     },
     {
-      "before": ["g", "r"],
-      "commands": ["editor.action.goToReferences"]
+      "before": ["<leader>", "3"],
+      "commands": [
+        { "command": "workbench.action.tasks.runTask", "args": "Build & Run" }
+      ]
     },
     {
-      "before": ["]", "d"],
-      "commands": ["editor.action.marker.next"]
+      "before": ["<leader>", "4"],
+      "commands": [
+        { "command": "workbench.action.tasks.runTask", "args": "Run Tests" }
+      ]
     },
     {
-      "before": ["<leader>", "c", "a"],
-      "commands": ["editor.action.quickFix"]
+      "before": ["<leader>", "5"],
+      "commands": [
+        { "command": "workbench.action.tasks.runTask", "args": "Watch" }
+      ]
     },
-    { "before": ["<leader>", "f"], "commands": ["workbench.action.quickOpen"] },
+
+    // Project Leader Key
     {
-      "before": ["<leader>", "p"],
+      "before": ["<leader>", "<leader>"],
+      "commands": ["workbench.action.quickOpen"]
+    },
+    {
+      "before": ["<leader>", "o"],
+      "commands": ["workbench.action.openRecent"]
+    },
+    {
+      "before": ["<leader>", "s"],
+      "commands": ["workbench.action.findInFiles"]
+    },
+    {
+      "before": ["<leader>", "t"],
+      "commands": ["workbench.action.quickOpenNavigatePreviousInFilePicker"]
+    },
+
+    { "before": ["<leader>", "c"], "commands": ["editor.action.quickFix"] },
+    {
+      "before": ["<leader>", "f"],
       "commands": ["editor.action.formatDocument"]
     },
+    { "before": ["<leader>", "r"], "commands": ["editor.action.rename"] },
+
+    { "before": ["[", "d"], "commands": ["editor.action.marker.prev"] },
+    { "before": ["K"], "commands": ["editor.action.showHover"] },
+    { "before": ["g", "r"], "commands": ["editor.action.goToReferences"] },
+    { "before": ["]", "d"], "commands": ["editor.action.marker.next"] },
     {
       "before": ["g", "h"],
       "commands": ["editor.action.showDefinitionPreviewHover"]
-    }
+    },
+
+    //Which Key
+    { "before": ["<leader>"], "commands": ["whichkey.show"] }
   ],
   // VISUAL MODE KEYBINDINGS
   "vim.visualModeKeyBindings": [
     // Stay in visual mode while indenting
+    {
+      "before": ["<leader>", "f"],
+      "commands": ["editor.action.formatSelection"]
+    },
+
     { "before": ["<"], "commands": ["editor.action.outdentLines"] },
     { "before": [">"], "commands": ["editor.action.indentLines"] },
     // Move selected lines while staying in visual mode
@@ -163,45 +252,6 @@
     // toggle comment selection
     { "before": ["<leader>", "c"], "commands": ["editor.action.commentLine"] }
   ],
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "go.toolsManagement.autoUpdate": true,
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  //Formatters
-  "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[json]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
-  },
-  "macros.list": {
-    "renameAppend": [
-      "renameFile",
-      "editor.action.clipboardCopyAction",
-      "editor.action.clipboardPasteAction"
-    ]
-  },
-  "window.newWindowProfile": "Default",
-  "workbench.colorCustomizations": {
-    "statusBar.background": "#2d353b",
-    "statusBar.noFolderBackground": "#2d353b",
-    "statusBar.debuggingBackground": "#2d353b",
-    "statusBar.foreground": "#ffffff",
-    "statusBar.debuggingForeground": "#ffffff"
-  },
-  "redhat.telemetry.enabled": false,
-  "c-cpp-compile-run.run-in-external-terminal": true,
-  "csharp.debug.console": "internalConsole",
-  "editor.formatOnSave": true,
-  "editor.formatOnSaveMode": "modificationsIfAvailable",
-  "[csharp]": {
-    "editor.defaultFormatter": "ms-dotnettools.csharp"
-  },
-  "files.autoSave": "onFocusChange"
+  "chat.commandCenter.enabled": false,
+  "vsicons.dontShowNewVersionMessage": true
 }

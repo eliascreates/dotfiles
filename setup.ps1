@@ -48,6 +48,7 @@ function New-SymLink {
             cmd /c "mklink `"$Target`" `"$Source`""
         }
     } else {
+        # Linux/MacOS
         if (Test-Path $Target) {
             Write-Host "Target already exists: $Target"
             return
@@ -56,8 +57,8 @@ function New-SymLink {
     }
 }
 
-# Make directory if it doesn't exist
-function Ensure-Directory {
+# Initialize directory if it doesn't exist
+function Initialize-Directory {
     param(
         [string]$Path
     )
@@ -100,13 +101,18 @@ function Install-Applications {
             # Install Windows applications from the YAML list
             foreach ($app in $apps.windows) {
                 Write-Host "Installing $($app.name)..."
-                winget install --id $app.id -e
+                try {
+                    winget install --id $app.id -e --accept-source-agreements --accept-package-agreements
+                } catch {
+                    Write-Host "Failed to install $($app.name): $_" -ForegroundColor Yellow
+                    # Continue with next app instead of stopping the script
+                }
             }
         } elseif ($platform -eq "Linux") {
-            # Handle Linux installations
+            # Handle Linux installations here (if you use Linux in the future)
             Write-Host "Linux app installation not implemented yet."
         } elseif ($platform -eq "MacOS") {
-            # Handle MacOS installations here
+            # Handle MacOS installations here (if you use MacOS in the future)
             Write-Host "MacOS app installation not implemented yet."
         }
     } catch {
@@ -128,7 +134,7 @@ function Set-AppConfigurations {
         $nvimConfigDest = Join-Path $HOME ".config" "nvim"
     }
     
-    Ensure-Directory (Split-Path $nvimConfigDest -Parent)
+    Initialize-Directory (Split-Path $nvimConfigDest -Parent)
     New-SymLink -Source $nvimConfigSrc -Target $nvimConfigDest -IsDirectory $true
     
     # GlazeWM configuration
@@ -136,7 +142,7 @@ function Set-AppConfigurations {
         Write-Host "Setting up GlazeWM configuration..."
         $glazeConfigSrc = Join-Path $dotfilesRoot ".config" "glazewm"
         $glazeConfigDest = Join-Path $env:USERPROFILE ".glaze-wm"
-        Ensure-Directory (Split-Path $glazeConfigDest -Parent)
+        Initialize-Directory (Split-Path $glazeConfigDest -Parent)
         New-SymLink -Source $glazeConfigSrc -Target $glazeConfigDest -IsDirectory $true
     }
     
@@ -145,7 +151,7 @@ function Set-AppConfigurations {
         Write-Host "Setting up Komorebi configuration..."
         $komorebiSrc = Join-Path $dotfilesRoot "komorebi.json"
         $komorebiDest = Join-Path $env:USERPROFILE ".config" "komorebi" "komorebi.json"
-        Ensure-Directory (Split-Path $komorebiDest -Parent)
+        Initialize-Directory (Split-Path $komorebiDest -Parent)
         New-SymLink -Source $komorebiSrc -Target $komorebiDest
     }
     
@@ -159,7 +165,7 @@ function Set-AppConfigurations {
         $weztermDest = Join-Path $HOME ".config" "wezterm" "wezterm.lua"
     }
     
-    Ensure-Directory (Split-Path $weztermDest -Parent)
+    Initialize-Directory (Split-Path $weztermDest -Parent)
     New-SymLink -Source $weztermSrc -Target $weztermDest
     
     # Git configuration
@@ -173,7 +179,7 @@ function Set-AppConfigurations {
         Write-Host "Setting up PowerShell profile..."
         $psProfileSrc = Join-Path $dotfilesRoot "powershell" "Microsoft.PowerShell_profile.ps1"
         $psProfileDest = Join-Path $env:USERPROFILE "Documents" "PowerShell" "Microsoft.PowerShell_profile.ps1"
-        Ensure-Directory (Split-Path $psProfileDest -Parent)
+        Initialize-Directory (Split-Path $psProfileDest -Parent)
         New-SymLink -Source $psProfileSrc -Target $psProfileDest
     }
     
@@ -182,8 +188,26 @@ function Set-AppConfigurations {
         Write-Host "Setting up Windows Terminal settings..."
         $winTermSrc = Join-Path $dotfilesRoot "WindowsTerminal" "settings.json"
         $winTermDest = Join-Path $env:LOCALAPPDATA "Packages" "Microsoft.WindowsTerminal_8wekyb3d8bbwe" "LocalState" "settings.json"
-        Ensure-Directory (Split-Path $winTermDest -Parent)
+        Initialize-Directory (Split-Path $winTermDest -Parent)
         New-SymLink -Source $winTermSrc -Target $winTermDest
+    }
+    
+    # YASB configuration
+    if ($platform -eq "Windows") {
+        Write-Host "Setting up YASB configuration..."
+        $yasbSrc = Join-Path $dotfilesRoot "yasb"
+        $yasbDest = Join-Path $env:APPDATA "yasb"
+        Initialize-Directory (Split-Path $yasbDest -Parent)
+        New-SymLink -Source $yasbSrc -Target $yasbDest -IsDirectory $true
+    }
+    
+    # ZeBar configuration
+    if ($platform -eq "Windows") {
+        Write-Host "Setting up ZeBar configuration..."
+        $zebarSrc = Join-Path $dotfilesRoot "zebar"
+        $zebarDest = Join-Path $env:APPDATA "zebar"
+        Initialize-Directory (Split-Path $zebarDest -Parent)
+        New-SymLink -Source $zebarSrc -Target $zebarDest -IsDirectory $true
     }
 }
 

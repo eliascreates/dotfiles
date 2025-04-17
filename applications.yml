@@ -1,0 +1,78 @@
+# Applications to install
+# Format:
+#   windows:
+#     - name: Application Name
+#       id: Publisher.ApplicationName
+windows:
+  - name: Visual Studio Code
+    id: Microsoft.VisualStudioCode
+  - name: Windows Terminal
+    id: Microsoft.WindowsTerminal
+  - name: PowerShell 7
+    id: Microsoft.PowerShell
+  - name: Git
+    id: Git.Git
+  - name: Git Bash
+    id: Git.Git
+  - name: Neovim
+    id: Neovim.Neovim
+  - name: WezTerm
+    id: wez.wezterm
+  - name: NodeJS LTS
+    id: OpenJS.NodeJS
+  - name: GlazeWM
+    id: GlazeWM.GlazeWM
+  - name: ZeBar
+    id: ZeBar.ZeBar
+  - name: Komorebi
+    id: LazyDev.Komorebi
+  - name: YASB
+    id: YasbBar.Yasb
+  - name: Google Chrome
+    id: Google.Chrome
+  - name: Zen Browser
+    id: Zen-Team.Zen-Browser
+  - name: Notepad++
+    id: Notepad++.Notepad++
+  - name: neofetch-win
+    id: nepnep.neofetch-win
+  - name: fzf
+    id: junegunn.fzf
+  - name: ripgrep
+    id: BurntSushi.ripgrep
+  - name: fd
+    id: sharkdp.fd
+  - name: bat
+    id: sharkdp.bat
+  - name: zoxide
+    id: ajeetdsouza.zoxide
+  - name: Python
+    id: Python.Python.3.12
+  - name: Docker Desktop
+    id: Docker.DockerDesktop
+  - name: Postman
+    id: Postman.Postman
+  - name: Insomnia
+    id: Insomnia.Insomnia
+  - name: SQLite Browser
+    id: sqlitebrowser.sqlitebrowser
+  - name: 7zip
+    id: 7zip.7zip
+  - name: ShareX
+    id: ShareX.ShareX
+  - name: OBS Studio
+    id: OBSProject.OBSStudio
+  - name: Everything Search
+    id: voidtools.Everything
+  - name: Fastfetch
+    id: fastfetch-cli.fastfetch
+  # Add your other applications here
+  # You can find the correct IDs by running: winget search [AppName]
+
+# Linux applications (for future use)
+linux:
+  # To be added if needed
+
+# MacOS applications (for future use)
+macos:
+  # To be added if needed

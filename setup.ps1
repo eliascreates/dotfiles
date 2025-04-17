@@ -1,41 +1,251 @@
-# PowerShell script to create symlinks
-$sourcePath = "$HOME\dotfiles"
+# Dotfiles Setup Script
+# Author: eliascreates
+# Description: Sets up dotfiles, installs applications, and configures environment
 
-# Vim
-New-Item -ItemType SymbolicLink -Path "$HOME\_vimrc" -Target "$sourcePath\vim\.vimrc" -Force
+# Script configuration
+$ErrorActionPreference = "Stop"
+$dotfilesRoot = $PSScriptRoot
 
-# Neovim
-New-Item -ItemType SymbolicLink -Path "$HOME\AppData\Local\nvim\init.lua" -Target "$sourcePath\nvim\init.lua" -Force
-
-# VS Code Default Settings
-New-Item -ItemType SymbolicLink -Path "$HOME\AppData\Roaming\Code\User\settings.json" -Target "$sourcePath\vscode\settings.json" -Force
-New-Item -ItemType SymbolicLink -Path "$HOME\AppData\Roaming\Code\User\keybindings.json" -Target "$sourcePath\vscode\keybindings.json" -Force
-
-# VS Code Profiles
-$profilesPath = "$HOME\AppData\Roaming\Code\User\profiles"
-if (-Not (Test-Path $profilesPath)) {
-    New-Item -ItemType Directory -Path $profilesPath
-}
-$profileDirs = Get-ChildItem -Path "$sourcePath\vscode\profiles" -Directory
-foreach ($profileDir in $profileDirs) {
-    $profileName = $profileDir.Name
-    New-Item -ItemType SymbolicLink -Path "$profilesPath\$profileName\settings.json" -Target "$sourcePath\vscode\profiles\$profileName\settings.json" -Force
-    New-Item -ItemType SymbolicLink -Path "$profilesPath\$profileName\keybindings.json" -Target "$sourcePath\vscode\profiles\$profileName\keybindings.json" -Force
+# Check if running as administrator on Windows
+function Test-Administrator {
+    $currentUser = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    return $currentUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
-# Snippets
-New-Item -ItemType SymbolicLink -Path "$HOME\AppData\Roaming\Code\User\snippets" -Target "$sourcePath\vscode\snippets" -Force
+# Detect OS platform
+function Get-Platform {
+    if ($IsWindows -or $env:OS -match "Windows") {
+        return "Windows"
+    } elseif ($IsLinux) {
+        return "Linux"
+    } elseif ($IsMacOS) {
+        return "MacOS"
+    } else {
+        Write-Host "Unable to determine platform. Assuming Windows."
+        return "Windows"
+    }
+}
 
-# WezTerm
-New-Item -ItemType SymbolicLink -Path "$HOME\.wezterm.lua" -Target "$sourcePath\wezterm\.wezterm.lua" -Force
+# Create a symbolic link
+function New-SymLink {
+    param(
+        [string]$Source,
+        [string]$Target,
+        [bool]$IsDirectory = $false
+    )
 
-# Oh My Posh
-New-Item -ItemType SymbolicLink -Path "$HOME\.poshthemes\theme.omp.json" -Target "$sourcePath\oh-my-posh\theme.omp.json" -Force
-New-Item -ItemType SymbolicLink -Path "$HOME\Documents\PowerShell\profile.ps1" -Target "$sourcePath\oh-my-posh\profile.ps1" -Force
+    $platform = Get-Platform
 
-# Windows Terminal
-New-Item -ItemType SymbolicLink -Path "$HOME\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" -Target "$sourcePath\windows-terminal\settings.json" -Force
+    if ($platform -eq "Windows") {
+        if (Test-Path $Target) {
+            Write-Host "Target already exists: $Target"
+            return
+        }
 
-# Git
-New-Item -ItemType SymbolicLink -Path "$HOME\.gitconfig" -Target "$sourcePath\git\.gitconfig" -Force
-New-Item -ItemType SymbolicLink -Path "$HOME\.gitignore_global" -Target "$sourcePath\git\.gitignore_global" -Force
+        if ($IsDirectory) {
+            cmd /c "mklink /D `"$Target`" `"$Source`""
+        } else {
+            cmd /c "mklink `"$Target`" `"$Source`""
+        }
+    } else {
+        if (Test-Path $Target) {
+            Write-Host "Target already exists: $Target"
+            return
+        }
+        ln -s "$Source" "$Target"
+    }
+}
+
+# Make directory if it doesn't exist
+function Ensure-Directory {
+    param(
+        [string]$Path
+    )
+
+    if (-not (Test-Path $Path)) {
+        New-Item -ItemType Directory -Path $Path -Force | Out-Null
+        Write-Host "Created directory: $Path"
+    }
+}
+
+# Install applications
+function Install-Applications {
+    $platform = Get-Platform
+    $applicationsFile = Join-Path $dotfilesRoot "applications.yaml"
+
+    if (-not (Test-Path $applicationsFile)) {
+        Write-Host "Applications file not found: $applicationsFile"
+        return
+    }
+
+    try {
+        # Install required module for YAML parsing if not already installed
+        if (-not (Get-Module -ListAvailable -Name "powershell-yaml")) {
+            Write-Host "Installing PowerShell-YAML module..."
+            Install-Module -Name "powershell-yaml" -Scope CurrentUser -Force
+        }
+
+        Import-Module "powershell-yaml"
+        $yamlContent = Get-Content -Raw $applicationsFile
+        $apps = ConvertFrom-Yaml $yamlContent
+
+        if ($platform -eq "Windows") {
+            # Check if winget is available
+            $wingetPath = Get-Command winget -ErrorAction SilentlyContinue
+            if ($null -eq $wingetPath) {
+                Write-Host "Winget not found. Please install it from the Microsoft Store."
+                return
+            }
+
+            # Install Windows applications from the YAML list
+            foreach ($app in $apps.windows) {
+                Write-Host "Installing $($app.name)..."
+                winget install --id $app.id -e
+            }
+        } elseif ($platform -eq "Linux") {
+            # Handle Linux installations
+            Write-Host "Linux app installation not implemented yet."
+        } elseif ($platform -eq "MacOS") {
+            # Handle MacOS installations here
+            Write-Host "MacOS app installation not implemented yet."
+        }
+    } catch {
+        Write-Host "Error installing applications: $_"
+    }
+}
+
+# Configure applications
+function Set-AppConfigurations {
+    $platform = Get-Platform
+    
+    # Neovim configuration
+    Write-Host "Setting up Neovim configuration..."
+    $nvimConfigSrc = Join-Path $dotfilesRoot ".config" "nvim"
+    
+    if ($platform -eq "Windows") {
+        $nvimConfigDest = Join-Path $env:LOCALAPPDATA "nvim"
+    } else {
+        $nvimConfigDest = Join-Path $HOME ".config" "nvim"
+    }
+    
+    Ensure-Directory (Split-Path $nvimConfigDest -Parent)
+    New-SymLink -Source $nvimConfigSrc -Target $nvimConfigDest -IsDirectory $true
+    
+    # GlazeWM configuration
+    if ($platform -eq "Windows") {
+        Write-Host "Setting up GlazeWM configuration..."
+        $glazeConfigSrc = Join-Path $dotfilesRoot ".config" "glazewm"
+        $glazeConfigDest = Join-Path $env:USERPROFILE ".glaze-wm"
+        Ensure-Directory (Split-Path $glazeConfigDest -Parent)
+        New-SymLink -Source $glazeConfigSrc -Target $glazeConfigDest -IsDirectory $true
+    }
+    
+    # Komorebi configuration
+    if ($platform -eq "Windows") {
+        Write-Host "Setting up Komorebi configuration..."
+        $komorebiSrc = Join-Path $dotfilesRoot "komorebi.json"
+        $komorebiDest = Join-Path $env:USERPROFILE ".config" "komorebi" "komorebi.json"
+        Ensure-Directory (Split-Path $komorebiDest -Parent)
+        New-SymLink -Source $komorebiSrc -Target $komorebiDest
+    }
+    
+    # WezTerm configuration
+    Write-Host "Setting up WezTerm configuration..."
+    $weztermSrc = Join-Path $dotfilesRoot "wezterm" "wezterm.lua"
+    
+    if ($platform -eq "Windows") {
+        $weztermDest = Join-Path $env:USERPROFILE ".config" "wezterm" "wezterm.lua"
+    } else {
+        $weztermDest = Join-Path $HOME ".config" "wezterm" "wezterm.lua"
+    }
+    
+    Ensure-Directory (Split-Path $weztermDest -Parent)
+    New-SymLink -Source $weztermSrc -Target $weztermDest
+    
+    # Git configuration
+    Write-Host "Setting up Git configuration..."
+    $gitConfigSrc = Join-Path $dotfilesRoot ".gitconfig"
+    $gitConfigDest = Join-Path $HOME ".gitconfig"
+    New-SymLink -Source $gitConfigSrc -Target $gitConfigDest
+    
+    # PowerShell configuration
+    if ($platform -eq "Windows") {
+        Write-Host "Setting up PowerShell profile..."
+        $psProfileSrc = Join-Path $dotfilesRoot "powershell" "Microsoft.PowerShell_profile.ps1"
+        $psProfileDest = Join-Path $env:USERPROFILE "Documents" "PowerShell" "Microsoft.PowerShell_profile.ps1"
+        Ensure-Directory (Split-Path $psProfileDest -Parent)
+        New-SymLink -Source $psProfileSrc -Target $psProfileDest
+    }
+    
+    # Windows Terminal settings
+    if ($platform -eq "Windows") {
+        Write-Host "Setting up Windows Terminal settings..."
+        $winTermSrc = Join-Path $dotfilesRoot "WindowsTerminal" "settings.json"
+        $winTermDest = Join-Path $env:LOCALAPPDATA "Packages" "Microsoft.WindowsTerminal_8wekyb3d8bbwe" "LocalState" "settings.json"
+        Ensure-Directory (Split-Path $winTermDest -Parent)
+        New-SymLink -Source $winTermSrc -Target $winTermDest
+    }
+}
+
+# Set wallpaper (Windows only)
+function Set-Wallpaper {
+    param(
+        [string]$WallpaperPath
+    )
+
+    if ((Get-Platform) -eq "Windows") {
+        if (Test-Path $WallpaperPath) {
+            $code = @'
+            using System.Runtime.InteropServices;
+            
+            public class Wallpaper {
+                [DllImport("user32.dll", CharSet = CharSet.Auto)]
+                public static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
+                
+                public static void SetWallpaper(string path) {
+                    SystemParametersInfo(20, 0, path, 3);
+                }
+            }
+'@
+            Add-Type -TypeDefinition $code
+            [Wallpaper]::SetWallpaper($WallpaperPath)
+            Write-Host "Wallpaper set to: $WallpaperPath"
+        } else {
+            Write-Host "Wallpaper file not found: $WallpaperPath"
+        }
+    } else {
+        Write-Host "Setting wallpaper is only supported on Windows."
+    }
+}
+
+# Main setup function
+function Start-Setup {
+    $platform = Get-Platform
+    Write-Host "Detected platform: $platform"
+    
+    # Check for administrator rights on Windows
+    if ($platform -eq "Windows" -and -not (Test-Administrator)) {
+        Write-Host "This script requires administrator privileges. Please run as administrator." -ForegroundColor Red
+        return
+    }
+    
+    # Install applications
+    Write-Host "Installing applications..."
+    Install-Applications
+    
+    # Set app configurations
+    Write-Host "Setting up application configurations..."
+    Set-AppConfigurations
+    
+    # Set wallpaper if specified
+    $wallpaperPath = Join-Path $dotfilesRoot "wallpapers" "default.jpg"
+    if (Test-Path $wallpaperPath) {
+        Write-Host "Setting wallpaper..."
+        Set-Wallpaper -WallpaperPath $wallpaperPath
+    }
+    
+    Write-Host "Setup complete! You may need to restart some applications for changes to take effect." -ForegroundColor Green
+}
+
+# Run the setup
+Start-Setup

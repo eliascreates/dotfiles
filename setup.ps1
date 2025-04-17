@@ -262,7 +262,7 @@ function Start-Setup {
     Set-AppConfigurations
     
     # Set wallpaper if specified
-    $wallpaperPath = Join-Path $dotfilesRoot "wallpapers" "default.jpg"
+    $wallpaperPath = Join-Path $dotfilesRoot "wallpapers" "panam_1920x1080.png"
     if (Test-Path $wallpaperPath) {
         Write-Host "Setting wallpaper..."
         Set-Wallpaper -WallpaperPath $wallpaperPath

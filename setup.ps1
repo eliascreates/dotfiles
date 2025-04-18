@@ -108,7 +108,7 @@ function Initialize-Directory {
 # Copy wallpapers to Pictures/Wallpapers
 function Copy-Wallpapers {
     $platform = Get-Platform
-    $wallpapersSrc = Join-Path $dotfilesRoot "wallpapers"
+    $wallpapersSrc = Join-Path $dotfilesRoot "Pictures" "wallpapers"
     
     if (-not (Test-Path $wallpapersSrc)) {
         Write-Host "Wallpapers directory not found: $wallpapersSrc"
@@ -191,7 +191,7 @@ function Set-AppConfigurations {
     
     # Neovim configuration
     Write-Host "Setting up Neovim configuration..."
-    $nvimConfigSrc = Join-Path $dotfilesRoot ".config" "nvim"
+    $nvimConfigSrc = Join-Path $dotfilesRoot "AppData" "Local" "nvim"
     
     if ($platform -eq "Windows") {
         $nvimConfigDest = Join-Path $env:LOCALAPPDATA "nvim"
@@ -238,7 +238,7 @@ function Set-AppConfigurations {
     # Komorebi configuration
     if ($platform -eq "Windows") {
         Write-Host "Setting up Komorebi configuration..."
-        $komorebiSrc = Join-Path $dotfilesRoot "komorebi.json"
+        $komorebiSrc = Join-Path $dotfilesRoot ".config" "komorebi.json"
         $komorebiDest = Join-Path $env:USERPROFILE ".config" "komorebi" "komorebi.json"
         if (Test-Path $komorebiSrc) {
             Initialize-Directory (Split-Path $komorebiDest -Parent)

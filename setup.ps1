@@ -66,7 +66,7 @@ function Initialize-Dotfiles {
         Invoke-WebRequest -Uri $dotfilesUrl -OutFile $tempZipPath
         
         # Create extraction directory
-        $extractPath = Join-Path $env:TEMP "dotfiles-extract"
+        $extractPath = Join-Path $env:TEMP "dotfiles"
         if (Test-Path $extractPath) {
             Remove-Item -Path $extractPath -Recurse -Force
         }
@@ -319,7 +319,7 @@ function Set-AppConfigurations {
     # Komorebi configuration
     if ($configsToApply -contains "komorebi" -and $platform -eq "Windows") {
         Write-Log "Setting up Komorebi configuration..." -Level "INFO"
-        $komorebiSrc = Join-Path $dotfilesRoot ".config" "komorebi.json"
+        $komorebiSrc = Join-Path $dotfilesRoot ".config\komorebi.json"
         $komorebiDest = Join-Path $env:USERPROFILE ".config\komorebi\komorebi.json"
         if (Test-Path $komorebiSrc) {
             Initialize-Directory (Split-Path $komorebiDest -Parent)

@@ -462,6 +462,26 @@ function Start-Cleanup {
     }
 }
 
+# Installs the NuGet PackageProvider silently if it's missing.
+function Install-NugetProvider {
+    Write-Log "Ensuring NuGet PackageProvider is present..." -Level "INFO"
+
+    if (-not (Get-PackageProvider -Name NuGet -ErrorAction SilentlyContinue)) {
+        Write-Log "Installing NuGet provider silently..." -Level "INFO"
+        Install-PackageProvider `
+            -Name NuGet `
+            -MinimumVersion 2.8.5.201 `
+            -Force `
+            -Confirm: $false
+        
+        Import-PackageProvider -Name NuGet -Force
+        Write-Log "NuGet provider intalled." -Level "SUCCESS"
+    } else {
+        Write-Log "NuGet provider already present." -Level "INFO"
+    }
+
+}
+
 # Main setup function
 function Start-Setup {
     Write-Log "Starting dotfiles setup script" -Level "INFO"
@@ -473,25 +493,15 @@ function Start-Setup {
         Write-Log "This script requires administrator privileges. Please run as administrator." -Level "ERROR"
         return
     }
+
+    Install-NugetProvider
     
     # Initialize dotfiles
     $dotfilesRoot = Initialize-Dotfiles
     
     # Copy wallpapers to Pictures/Wallpapers
     $wallpapersDir = Copy-Wallpapers -DotfilesRoot $dotfilesRoot
-    
-    # Install applications if not skipped
-    if (-not $SkipApps) {
-        Write-Log "Installing applications..." -Level "INFO"
-        Install-Applications -DotfilesRoot $dotfilesRoot
-    } else {
-        Write-Log "Skipping application installation" -Level "INFO"
-    }
-    
-    # Set app configurations
-    Write-Log "Setting up application configurations..." -Level "INFO"
-    Set-AppConfigurations -ConfigSubset $ConfigSubset
-    
+
     # Set wallpaper if not skipped
     if (-not $SkipWallpaper) {
         $wallpaperName = "panam_1920x1080.png"
@@ -507,6 +517,18 @@ function Start-Setup {
     } else {
         Write-Log "Skipping wallpaper setup" -Level "INFO"
     }
+    
+    # Install applications if not skipped
+    if (-not $SkipApps) {
+        Write-Log "Installing applications..." -Level "INFO"
+        Install-Applications -DotfilesRoot $dotfilesRoot
+    } else {
+        Write-Log "Skipping application installation" -Level "INFO"
+    }
+    
+    # Set app configurations
+    Write-Log "Setting up application configurations..." -Level "INFO"
+    Set-AppConfigurations -ConfigSubset $ConfigSubset
     
     # Clean up temporary files
     Start-Cleanup

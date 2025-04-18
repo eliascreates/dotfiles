@@ -316,8 +316,8 @@ function Set-AppConfigurations {
     # GlazeWM configuration
     if ($configsToApply -contains "glazewm" -and $platform -eq "Windows") {
         Write-Log "Setting up GlazeWM configuration..." -Level "INFO"
-        $glazeConfigSrc = Join-Path $DotfilesRoot ".config\glazewm"
-        $glazeConfigDest = Join-Path $env:USERPROFILE ".glaze-wm"
+        $glazeConfigSrc = Join-Path $DotfilesRoot ".glzr\glazewm"
+        $glazeConfigDest = Join-Path $env:USERPROFILE ".glzr\glazewm"
         if (Test-Path $glazeConfigSrc) {
             Initialize-Directory (Split-Path $glazeConfigDest -Parent)
             New-SymLink -Source $glazeConfigSrc -Target $glazeConfigDest -IsDirectory $true
@@ -361,7 +361,7 @@ function Set-AppConfigurations {
     # Git configuration
     if ($configsToApply -contains "git") {
         Write-Log "Setting up Git configuration..." -Level "INFO"
-        $gitConfigSrc = Join-Path $DotfilesRoot ".gitconfig"
+        $gitConfigSrc = Join-Path $DotfilesRoot ".git"
         $gitConfigDest = Join-Path $HOME ".gitconfig"
         if (Test-Path $gitConfigSrc) {
             New-SymLink -Source $gitConfigSrc -Target $gitConfigDest
@@ -399,8 +399,8 @@ function Set-AppConfigurations {
     # YASB configuration
     if ($configsToApply -contains "yasb" -and $platform -eq "Windows") {
         Write-Log "Setting up YASB configuration..." -Level "INFO"
-        $yasbSrc = Join-Path $DotfilesRoot "yasb"
-        $yasbDest = Join-Path $env:APPDATA "yasb"
+        $yasbSrc = Join-Path $DotfilesRoot ".config\yasb"
+        $yasbDest = Join-Path $HOME ".config\yasb"
         if (Test-Path $yasbSrc) {
             Initialize-Directory (Split-Path $yasbDest -Parent)
             New-SymLink -Source $yasbSrc -Target $yasbDest -IsDirectory $true
@@ -412,8 +412,8 @@ function Set-AppConfigurations {
     # ZeBar configuration
     if ($configsToApply -contains "zebar" -and $platform -eq "Windows") {
         Write-Log "Setting up ZeBar configuration..." -Level "INFO"
-        $zebarSrc = Join-Path $DotfilesRoot "zebar"
-        $zebarDest = Join-Path $env:APPDATA "zebar"
+        $zebarSrc = Join-Path $DotfilesRoot ".glzr\zebar"
+        $zebarDest = Join-Path $HOME ".glzr\zebar"
         if (Test-Path $zebarSrc) {
             Initialize-Directory (Split-Path $zebarDest -Parent)
             New-SymLink -Source $zebarSrc -Target $zebarDest -IsDirectory $true

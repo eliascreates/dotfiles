@@ -19,7 +19,7 @@ locally
 
 Or directly with a one-liner paste in terminal (requires an admin PowerShell prompt):
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -Command '$t = New-TemporaryFile; Invoke-WebRequest -Uri "https://raw.githubusercontent.com/eliascreates/dotfiles/main/setup.ps1" -OutFile $t; Unblock-File $t; & $t; Remove-Item $t'
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/eliascreates/dotfiles/main/setup.ps1' -OutFile setup.ps1; Unblock-File setup.ps1; ./setup.ps1; Remove-Item setup.ps1"
 ```
 This approach downloads the script securely, removes the “downloaded from internet” block so it runs under a RemoteSigned policy, executes it, and then cleans up the temp file.
 

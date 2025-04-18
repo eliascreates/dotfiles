@@ -16,6 +16,8 @@ windows:
     id: Git.Git
   - name: Neovim
     id: Neovim.Neovim
+  - name: Vim
+    id: vim.vim
   - name: WezTerm
     id: wez.wezterm
   - name: Oh My Posh
@@ -56,10 +58,14 @@ windows:
     id: Insomnia.Insomnia
   - name: 7zip
     id: 7zip.7zip
+  - name: WinRAR
+    id: RARLab.WinRAR
   - name: OBS Studio
     id: OBSProject.OBSStudio
   - name: VLC
-  - id: VideoLAN.VLC
+    id: VideoLAN.VLC
+  - name: K-Lite Codec Pack Standard
+    id: CodecGuide.K-LiteCodecPack.Standard
   - name: AIMP
     id: AIMP.AIMP
   # Add your other applications here

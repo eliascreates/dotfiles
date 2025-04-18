@@ -136,7 +136,7 @@ function Initialize-Directory {
 # Copy wallpapers to Pictures/Wallpapers
 function Copy-Wallpapers {
     $platform = Get-Platform
-    $wallpapersSrc = Join-Path $dotfilesRoot "Pictures" "wallpapers"
+    $wallpapersSrc = Join-Path $dotfilesRoot "Pictures\Wallpapers"
     
     if (-not (Test-Path $wallpapersSrc)) {
         Write-Log "Wallpapers directory not found: $wallpapersSrc" -Level "WARNING"
@@ -144,9 +144,9 @@ function Copy-Wallpapers {
     }
     
     if ($platform -eq "Windows") {
-        $wallpapersDest = Join-Path $env:USERPROFILE "Pictures" "Wallpapers"
+        $wallpapersDest = Join-Path $env:USERPROFILE "Pictures\Wallpapers"
     } else {
-        $wallpapersDest = Join-Path $HOME "Pictures" "Wallpapers"
+        $wallpapersDest = Join-Path $HOME "Pictures/Wallpapers"
     }
     
     # Create the destination directory if it doesn't exist
@@ -248,12 +248,12 @@ function Set-AppConfigurations {
     # Neovim configuration
     if ($configsToApply -contains "neovim") {
         Write-Log "Setting up Neovim configuration..." -Level "INFO"
-        $nvimConfigSrc = Join-Path $dotfilesRoot "AppData" "Local" "nvim"
+        $nvimConfigSrc = Join-Path $dotfilesRoot "AppData\Local\nvim"
         
         if ($platform -eq "Windows") {
             $nvimConfigDest = Join-Path $env:LOCALAPPDATA "nvim"
         } else {
-            $nvimConfigDest = Join-Path $HOME ".config" "nvim"
+            $nvimConfigDest = Join-Path $HOME ".config/nvim"
         }
         
         if (Test-Path $nvimConfigSrc) {
@@ -272,7 +272,7 @@ function Set-AppConfigurations {
         if ($platform -eq "Windows") {
             $poshConfigDest = Join-Path $env:POSH_THEMES_PATH
         } else {
-            $poshConfigDest = Join-Path "$HOME" ".local" "bin"
+            $poshConfigDest = Join-Path "$HOME" ".local/bin"
         }
 
         if (Test-Path $poshConfigSrc) {
@@ -286,7 +286,7 @@ function Set-AppConfigurations {
     # GlazeWM configuration
     if ($configsToApply -contains "glazewm" -and $platform -eq "Windows") {
         Write-Log "Setting up GlazeWM configuration..." -Level "INFO"
-        $glazeConfigSrc = Join-Path $dotfilesRoot ".config" "glazewm"
+        $glazeConfigSrc = Join-Path $dotfilesRoot ".config\glazewm"
         $glazeConfigDest = Join-Path $env:USERPROFILE ".glaze-wm"
         if (Test-Path $glazeConfigSrc) {
             Initialize-Directory (Split-Path $glazeConfigDest -Parent)
@@ -300,7 +300,7 @@ function Set-AppConfigurations {
     if ($configsToApply -contains "komorebi" -and $platform -eq "Windows") {
         Write-Log "Setting up Komorebi configuration..." -Level "INFO"
         $komorebiSrc = Join-Path $dotfilesRoot ".config" "komorebi.json"
-        $komorebiDest = Join-Path $env:USERPROFILE ".config" "komorebi" "komorebi.json"
+        $komorebiDest = Join-Path $env:USERPROFILE ".config\komorebi\komorebi.json"
         if (Test-Path $komorebiSrc) {
             Initialize-Directory (Split-Path $komorebiDest -Parent)
             New-SymLink -Source $komorebiSrc -Target $komorebiDest
@@ -315,9 +315,9 @@ function Set-AppConfigurations {
         $weztermSrc = Join-Path $dotfilesRoot "wezterm" "wezterm.lua"
         
         if ($platform -eq "Windows") {
-            $weztermDest = Join-Path $env:USERPROFILE ".config" "wezterm" "wezterm.lua"
+            $weztermDest = Join-Path $env:USERPROFILE ".config\wezterm\wezterm.lua"
         } else {
-            $weztermDest = Join-Path $HOME ".config" "wezterm" "wezterm.lua"
+            $weztermDest = Join-Path $HOME ".config/wezterm/wezterm.lua"
         }
         
         if (Test-Path $weztermSrc) {
@@ -343,8 +343,8 @@ function Set-AppConfigurations {
     # PowerShell configuration
     if ($configsToApply -contains "powershell" -and $platform -eq "Windows") {
         Write-Log "Setting up PowerShell profile..." -Level "INFO"
-        $psProfileSrc = Join-Path $dotfilesRoot "powershell" "Microsoft.PowerShell_profile.ps1"
-        $psProfileDest = Join-Path $env:USERPROFILE "Documents" "PowerShell" "Microsoft.PowerShell_profile.ps1"
+        $psProfileSrc = Join-Path $dotfilesRoot "powershell\Microsoft.PowerShell_profile.ps1"
+        $psProfileDest = Join-Path $env:USERPROFILE "Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
         if (Test-Path $psProfileSrc) {
             Initialize-Directory (Split-Path $psProfileDest -Parent)
             New-SymLink -Source $psProfileSrc -Target $psProfileDest
@@ -356,8 +356,8 @@ function Set-AppConfigurations {
     # Windows Terminal settings
     if ($configsToApply -contains "windows-terminal" -and $platform -eq "Windows") {
         Write-Log "Setting up Windows Terminal settings..." -Level "INFO"
-        $winTermSrc = Join-Path $dotfilesRoot "WindowsTerminal" "settings.json"
-        $winTermDest = Join-Path $env:LOCALAPPDATA "Packages" "Microsoft.WindowsTerminal_8wekyb3d8bbwe" "LocalState" "settings.json"
+        $winTermSrc = Join-Path $dotfilesRoot "WindowsTerminal\settings.json"
+        $winTermDest = Join-Path $env:LOCALAPPDATA "Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
         if (Test-Path $winTermSrc) {
             Initialize-Directory (Split-Path $winTermDest -Parent)
             New-SymLink -Source $winTermSrc -Target $winTermDest
@@ -467,7 +467,7 @@ function Start-Setup {
         $wallpaperName = "panam_1920x1080.png"
         $wallpaperPath = Join-Path $wallpapersDir $wallpaperName
         if (-not (Test-Path $wallpaperPath)) {
-            $wallpaperPath = Join-Path $dotfilesRoot "Pictures" "Wallpapers" $wallpaperName
+            $wallpaperPath = Join-Path $dotfilesRoot "Pictures\Wallpapers\$wallpaperName" 
         }
         
         if (Test-Path $wallpaperPath) {

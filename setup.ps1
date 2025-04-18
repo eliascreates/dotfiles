@@ -528,7 +528,7 @@ function Start-Setup {
     
     # Set app configurations
     Write-Log "Setting up application configurations..." -Level "INFO"
-    Set-AppConfigurations -ConfigSubset $ConfigSubset
+    Set-AppConfigurations -ConfigSubset $ConfigSubset -DotfilesRoot $dotfilesRoot
     
     # Clean up temporary files
     Start-Cleanup

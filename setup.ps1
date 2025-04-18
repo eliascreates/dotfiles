@@ -63,14 +63,14 @@ function Initialize-Dotfiles {
     }
 
     Write-Log "Downloading dotfiles from GitHub..." -Level "INFO"
-    $tempZipPath = Join-Path $env:TEMP "dotfiles.zip"
+    $tempZipPath = Join-Path $env:USERPROFILE "dotfiles.zip"
     $dotfilesUrl = "https://github.com/eliascreates/dotfiles/archive/refs/heads/main.zip"
     
     # Download the zip file
     Invoke-WebRequest -Uri $dotfilesUrl -OutFile $tempZipPath
     
     # Create extraction directory
-    $extractPath = Join-Path $env:TEMP "dotfiles"
+    $extractPath = Join-Path $env:USERPROFILE "dotfiles"
     if (Test-Path $extractPath) {
         Remove-Item -Path $extractPath -Recurse -Force
     }
@@ -456,8 +456,8 @@ function Set-Wallpaper {
 
 # Function to clean up temporary files
 function Start-Cleanup {
-    if (Test-Path (Join-Path $env:TEMP "dotfiles-extract")) {
-        Remove-Item -Path (Join-Path $env:TEMP "dotfiles-extract") -Recurse -Force
+    if (Test-Path (Join-Path $env:USERPROFILE "dotfiles")) {
+        Remove-Item -Path (Join-Path $env:USERPROFILE "dotfiles") -Recurse -Force
         Write-Log "Cleaned up temporary files" -Level "INFO"
     }
 }
@@ -531,7 +531,7 @@ function Start-Setup {
     Set-AppConfigurations -ConfigSubset $ConfigSubset -DotfilesRoot $dotfilesRoot
     
     # Clean up temporary files
-    Start-Cleanup
+    # Start-Cleanup
     
     Write-Log "Setup complete! You may need to restart some applications for changes to take effect." -Level "SUCCESS"
 }

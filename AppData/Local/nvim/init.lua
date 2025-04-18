@@ -1,8 +1,5 @@
 require 'custom.plugins.options'
 
-if vim.g.vscode then
-  require 'custom.plugins.vscode'
-end
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -110,10 +107,7 @@ require('lazy').setup({
     'nvim-lualine/lualine.nvim',
     opts = {},
   },
-  require 'custom.plugins.flutter',
 
-  -- Dart-specific plugins
-  { 'dart-lang/dart-vim-plugin' },
   --
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
@@ -747,15 +741,11 @@ require('lazy').setup({
     opts = {
       ensure_installed = {
         'bash',
-        'c',
-        'cpp',
         'diff',
-        'dart',
         'python',
         'html',
         'lua',
         'typescript',
-        'scss',
         'luadoc',
         'markdown',
         'markdown_inline',
@@ -878,18 +868,6 @@ require('lazy').setup({
   },
 })
 
--- Flutter-specific keymaps
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'dart',
-  callback = function()
-    vim.keymap.set('n', '<leader>Fa', ':FlutterRun<CR>', { buffer = true, desc = 'Flutter Run' })
-    vim.keymap.set('n', '<leader>Fq', ':FlutterQuit<CR>', { buffer = true, desc = 'Flutter Quit' })
-    vim.keymap.set('n', '<leader>Fr', ':FlutterHotReload<CR>', { buffer = true, desc = 'Flutter Hot Reload' })
-    vim.keymap.set('n', '<leader>FR', ':FlutterRestart<CR>', { buffer = true, desc = 'Flutter Restart' })
-    vim.keymap.set('n', '<leader>Fd', ':FlutterDevices<CR>', { buffer = true, desc = 'Flutter Devices' })
-    vim.keymap.set('n', '<leader>Fe', ':FlutterEmulators<CR>', { buffer = true, desc = 'Flutter Emulators' })
-  end,
-})
 -- Optional: Set up autoformat on save for Dart files
 local format_sync_grp = vim.api.nvim_create_augroup('GoFormat', {})
 vim.api.nvim_create_autocmd('BufWritePre', {
@@ -899,8 +877,6 @@ vim.api.nvim_create_autocmd('BufWritePre', {
   end,
   group = format_sync_grp,
 })
-
--- Add Dart to the formatters list in conform.nvim
 
 --
 -- The line beneath this is called `modeline`. See `:help modeline`

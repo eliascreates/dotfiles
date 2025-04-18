@@ -23,9 +23,9 @@ windows:
   - name: NodeJS LTS
     id: OpenJS.NodeJS
   - name: GlazeWM
-    id: GlazeWM.GlazeWM
-  - name: ZeBar
-    id: ZeBar.ZeBar
+    id: glzr-io.glazewm
+  - name: Zebar
+    id: glzr-io.zebar
   - name: Komorebi
     id: LazyDev.Komorebi
   - name: YASB

@@ -258,6 +258,8 @@ function Set-AppConfigurations {
         "glazewm",
         "komorebi",
         "wezterm",
+        "vim",
+        "bash",
         "git",
         "powershell",
         "windows-terminal",
@@ -338,15 +340,42 @@ function Set-AppConfigurations {
             Write-Log "Komorebi config source not found: $komorebiSrc" -Level "WARNING"
         }
     }
+
+    # Bash configuration
+    if ($configsToApply -contains "bash") {
+        Write-Log "Setting up bash configuration..." -Level "INFO"
+        $bashSrc = Join-Path $DotfilesRoot "bash\.bashrc"
+        $bashDest = Join-Path $HOME ".bashrc"
+
+        if (Test-Path $bashSrc) {
+            Initialize-Directory (Split-Path $bashDest -Parent)
+            New-SymLink -Source $bashSrc -Target $bashDest
+        } else {
+            Write-Log "Bash config source not found: $bashSrc" -Level "WARNING"
+        }
+    }
+
+    # VIM configuration
+    if ($configsToApply -contains "vim") {
+        Write-Log "Setting up vim configuration..." -Level "INFO"
+        $vimSrc = Join-Path $DotfilesRoot "vim\.vimrc"
+        $vimDest = Join-Path $HOME ".vimrc"
+
+        if (Test-Path $vimSrc) {
+            Initialize-Directory (Split-Path $vimDest -Parent)
+            New-SymLink -Source $vimSrc -Target $vimDest
+        } else {
+            Write-Log "Vim config source not found: $vimSrc" -Level "WARNING"
+        }
+    }
     
     # WezTerm configuration
     if ($configsToApply -contains "wezterm") {
         Write-Log "Setting up WezTerm configuration..." -Level "INFO"
         $weztermSrc = Join-Path $DotfilesRoot "wezterm\.wezterm.lua"
+        $weztermDest = Join-Path $HOME ".wezterm.lua"
         
-        if ($platform -eq "Windows") {
-            $weztermDest = Join-Path $HOME ".wezterm.lua"
-        } else {
+        if (-not($platform -eq "Windows")) {
             $weztermDest = Join-Path $HOME ".config/.wezterm.lua"
         }
         

@@ -5,11 +5,14 @@ local act = wezterm.action
 -- Configuration object
 local config = wezterm.config_builder()
 
+config.automatically_reload_config = true
+
 -- Performance Settings
 config.front_end = "OpenGL"
 config.max_fps = 100
 config.animation_fps = 1
 config.prefer_egl = true
+config.window_close_confirmation = "NeverPrompt"
 
 -- Cursor Settings
 config.default_cursor_style = "BlinkingBlock"

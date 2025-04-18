@@ -342,12 +342,12 @@ function Set-AppConfigurations {
     # WezTerm configuration
     if ($configsToApply -contains "wezterm") {
         Write-Log "Setting up WezTerm configuration..." -Level "INFO"
-        $weztermSrc = Join-Path $DotfilesRoot "wezterm\wezterm.lua"
+        $weztermSrc = Join-Path $DotfilesRoot "wezterm\.wezterm.lua"
         
         if ($platform -eq "Windows") {
-            $weztermDest = Join-Path $env:USERPROFILE ".config\wezterm\wezterm.lua"
+            $weztermDest = Join-Path $HOME ".wezterm.lua"
         } else {
-            $weztermDest = Join-Path $HOME ".config/wezterm/wezterm.lua"
+            $weztermDest = Join-Path $HOME ".config/.wezterm.lua"
         }
         
         if (Test-Path $weztermSrc) {

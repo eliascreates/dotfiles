@@ -62,10 +62,14 @@ windows:
     id: ShareX.ShareX
   - name: OBS Studio
     id: OBSProject.OBSStudio
+  - name: VLC
+  - id: VideoLAN.VLC
   - name: Everything Search
     id: voidtools.Everything
   - name: Fastfetch
     id: fastfetch-cli.fastfetch
+  - name: AIMP
+    id: AIMP.AIMP
   # Add your other applications here
   # You can find the correct IDs by running: winget search [AppName]
 

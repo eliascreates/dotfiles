@@ -26,6 +26,42 @@ function Get-Platform {
     }
 }
 
+# Download and extract dotfiles if needed
+function Initialize-Dotfiles {
+    # If we're not already in a dotfiles repo (we might be running this script as a one-liner)
+    if (-not (Test-Path (Join-Path $PSScriptRoot "applications.yaml"))) {
+        Write-Host "Downloading dotfiles from GitHub..."
+        $tempZipPath = Join-Path $env:TEMP "dotfiles.zip"
+        $dotfilesUrl = "https://github.com/eliascreates/dotfiles/archive/refs/heads/main.zip"
+        
+        # Download the zip file
+        Invoke-WebRequest -Uri $dotfilesUrl -OutFile $tempZipPath
+        
+        # Create extraction directory
+        $extractPath = Join-Path $env:TEMP "dotfiles-extract"
+        if (Test-Path $extractPath) {
+            Remove-Item -Path $extractPath -Recurse -Force
+        }
+        New-Item -ItemType Directory -Path $extractPath -Force | Out-Null
+        
+        # Extract the zip file
+        Write-Host "Extracting dotfiles..."
+        Expand-Archive -Path $tempZipPath -DestinationPath $extractPath -Force
+        
+        # Find the extracted directory
+        $extractedDir = Get-ChildItem -Path $extractPath | Select-Object -First 1 -ExpandProperty FullName
+        
+        # Set the dotfiles root to the extracted directory
+        $global:dotfilesRoot = $extractedDir
+        Write-Host "Dotfiles extracted to: $global:dotfilesRoot"
+        
+        # Clean up the zip file
+        Remove-Item -Path $tempZipPath -Force
+    } else {
+        Write-Host "Using local dotfiles in: $dotfilesRoot"
+    }
+}
+
 # Create a symbolic link
 function New-SymLink {
     param(
@@ -67,6 +103,35 @@ function Initialize-Directory {
         New-Item -ItemType Directory -Path $Path -Force | Out-Null
         Write-Host "Created directory: $Path"
     }
+}
+
+# Copy wallpapers to Pictures/Wallpapers
+function Copy-Wallpapers {
+    $platform = Get-Platform
+    $wallpapersSrc = Join-Path $dotfilesRoot "wallpapers"
+    
+    if (-not (Test-Path $wallpapersSrc)) {
+        Write-Host "Wallpapers directory not found: $wallpapersSrc"
+        return
+    }
+    
+    if ($platform -eq "Windows") {
+        $wallpapersDest = Join-Path $env:USERPROFILE "Pictures" "Wallpapers"
+    } else {
+        $wallpapersDest = Join-Path $HOME "Pictures" "Wallpapers"
+    }
+    
+    # Create the destination directory if it doesn't exist
+    Initialize-Directory $wallpapersDest
+    
+    # Copy all wallpapers
+    Get-ChildItem -Path $wallpapersSrc -File | ForEach-Object {
+        $destFile = Join-Path $wallpapersDest $_.Name
+        Copy-Item -Path $_.FullName -Destination $destFile -Force
+        Write-Host "Copied wallpaper: $($_.Name) to Pictures/Wallpapers"
+    }
+    
+    return $wallpapersDest
 }
 
 # Install applications
@@ -134,16 +199,40 @@ function Set-AppConfigurations {
         $nvimConfigDest = Join-Path $HOME ".config" "nvim"
     }
     
-    Initialize-Directory (Split-Path $nvimConfigDest -Parent)
-    New-SymLink -Source $nvimConfigSrc -Target $nvimConfigDest -IsDirectory $true
-    
+    if (Test-Path $nvimConfigSrc) {
+        Initialize-Directory (Split-Path $nvimConfigDest -Parent)
+        New-SymLink -Source $nvimConfigSrc -Target $nvimConfigDest -IsDirectory $true
+    } else {
+        Write-Host "Neovim config source not found: $nvimConfigSrc" -ForegroundColor Yellow
+    }
+
+    Write-Host "Setting up Oh-My-Posh configuration..."
+    $poshConfigSrc = Join-Path $dotfilesRoot "oh-my-posh"
+
+    if ($platform -eq "Windows") {
+        $poshConfigDest = Join-Path $env:POSH_THEMES_PATH
+    } else {
+        $poshConfigDest = Join-Path "$HOME" ".local" "bin"
+    }
+
+    if (Test-Path $poshConfigSrc) {
+        Initialize-Directory(Split-Path $poshConfigDest -Parent)
+        New-SymLink -Source $poshConfigSrc -Target $poshConfigDest -IsDirectory $true
+    } else {
+        Write-Host "Oh My Posh config source not found: $poshConfigSrc" -ForegroundColor Yellow
+    }
+
     # GlazeWM configuration
     if ($platform -eq "Windows") {
         Write-Host "Setting up GlazeWM configuration..."
         $glazeConfigSrc = Join-Path $dotfilesRoot ".config" "glazewm"
         $glazeConfigDest = Join-Path $env:USERPROFILE ".glaze-wm"
-        Initialize-Directory (Split-Path $glazeConfigDest -Parent)
-        New-SymLink -Source $glazeConfigSrc -Target $glazeConfigDest -IsDirectory $true
+        if (Test-Path $glazeConfigSrc) {
+            Initialize-Directory (Split-Path $glazeConfigDest -Parent)
+            New-SymLink -Source $glazeConfigSrc -Target $glazeConfigDest -IsDirectory $true
+        } else {
+            Write-Host "GlazeWM config source not found: $glazeConfigSrc" -ForegroundColor Yellow
+        }
     }
     
     # Komorebi configuration
@@ -151,8 +240,12 @@ function Set-AppConfigurations {
         Write-Host "Setting up Komorebi configuration..."
         $komorebiSrc = Join-Path $dotfilesRoot "komorebi.json"
         $komorebiDest = Join-Path $env:USERPROFILE ".config" "komorebi" "komorebi.json"
-        Initialize-Directory (Split-Path $komorebiDest -Parent)
-        New-SymLink -Source $komorebiSrc -Target $komorebiDest
+        if (Test-Path $komorebiSrc) {
+            Initialize-Directory (Split-Path $komorebiDest -Parent)
+            New-SymLink -Source $komorebiSrc -Target $komorebiDest
+        } else {
+            Write-Host "Komorebi config source not found: $komorebiSrc" -ForegroundColor Yellow
+        }
     }
     
     # WezTerm configuration
@@ -165,22 +258,34 @@ function Set-AppConfigurations {
         $weztermDest = Join-Path $HOME ".config" "wezterm" "wezterm.lua"
     }
     
-    Initialize-Directory (Split-Path $weztermDest -Parent)
-    New-SymLink -Source $weztermSrc -Target $weztermDest
+    if (Test-Path $weztermSrc) {
+        Initialize-Directory (Split-Path $weztermDest -Parent)
+        New-SymLink -Source $weztermSrc -Target $weztermDest
+    } else {
+        Write-Host "WezTerm config source not found: $weztermSrc" -ForegroundColor Yellow
+    }
     
     # Git configuration
     Write-Host "Setting up Git configuration..."
     $gitConfigSrc = Join-Path $dotfilesRoot ".gitconfig"
     $gitConfigDest = Join-Path $HOME ".gitconfig"
-    New-SymLink -Source $gitConfigSrc -Target $gitConfigDest
+    if (Test-Path $gitConfigSrc) {
+        New-SymLink -Source $gitConfigSrc -Target $gitConfigDest
+    } else {
+        Write-Host "Git config source not found: $gitConfigSrc" -ForegroundColor Yellow
+    }
     
     # PowerShell configuration
     if ($platform -eq "Windows") {
         Write-Host "Setting up PowerShell profile..."
         $psProfileSrc = Join-Path $dotfilesRoot "powershell" "Microsoft.PowerShell_profile.ps1"
         $psProfileDest = Join-Path $env:USERPROFILE "Documents" "PowerShell" "Microsoft.PowerShell_profile.ps1"
-        Initialize-Directory (Split-Path $psProfileDest -Parent)
-        New-SymLink -Source $psProfileSrc -Target $psProfileDest
+        if (Test-Path $psProfileSrc) {
+            Initialize-Directory (Split-Path $psProfileDest -Parent)
+            New-SymLink -Source $psProfileSrc -Target $psProfileDest
+        } else {
+            Write-Host "PowerShell profile source not found: $psProfileSrc" -ForegroundColor Yellow
+        }
     }
     
     # Windows Terminal settings
@@ -188,8 +293,12 @@ function Set-AppConfigurations {
         Write-Host "Setting up Windows Terminal settings..."
         $winTermSrc = Join-Path $dotfilesRoot "WindowsTerminal" "settings.json"
         $winTermDest = Join-Path $env:LOCALAPPDATA "Packages" "Microsoft.WindowsTerminal_8wekyb3d8bbwe" "LocalState" "settings.json"
-        Initialize-Directory (Split-Path $winTermDest -Parent)
-        New-SymLink -Source $winTermSrc -Target $winTermDest
+        if (Test-Path $winTermSrc) {
+            Initialize-Directory (Split-Path $winTermDest -Parent)
+            New-SymLink -Source $winTermSrc -Target $winTermDest
+        } else {
+            Write-Host "Windows Terminal settings source not found: $winTermSrc" -ForegroundColor Yellow
+        }
     }
     
     # YASB configuration
@@ -197,8 +306,12 @@ function Set-AppConfigurations {
         Write-Host "Setting up YASB configuration..."
         $yasbSrc = Join-Path $dotfilesRoot "yasb"
         $yasbDest = Join-Path $env:APPDATA "yasb"
-        Initialize-Directory (Split-Path $yasbDest -Parent)
-        New-SymLink -Source $yasbSrc -Target $yasbDest -IsDirectory $true
+        if (Test-Path $yasbSrc) {
+            Initialize-Directory (Split-Path $yasbDest -Parent)
+            New-SymLink -Source $yasbSrc -Target $yasbDest -IsDirectory $true
+        } else {
+            Write-Host "YASB config source not found: $yasbSrc" -ForegroundColor Yellow
+        }
     }
     
     # ZeBar configuration
@@ -206,8 +319,12 @@ function Set-AppConfigurations {
         Write-Host "Setting up ZeBar configuration..."
         $zebarSrc = Join-Path $dotfilesRoot "zebar"
         $zebarDest = Join-Path $env:APPDATA "zebar"
-        Initialize-Directory (Split-Path $zebarDest -Parent)
-        New-SymLink -Source $zebarSrc -Target $zebarDest -IsDirectory $true
+        if (Test-Path $zebarSrc) {
+            Initialize-Directory (Split-Path $zebarDest -Parent)
+            New-SymLink -Source $zebarSrc -Target $zebarDest -IsDirectory $true
+        } else {
+            Write-Host "ZeBar config source not found: $zebarSrc" -ForegroundColor Yellow
+        }
     }
 }
 
@@ -253,6 +370,12 @@ function Start-Setup {
         return
     }
     
+    # Initialize dotfiles
+    Initialize-Dotfiles
+    
+    # Copy wallpapers to Pictures/Wallpapers
+    $wallpapersDir = Copy-Wallpapers
+    
     # Install applications
     Write-Host "Installing applications..."
     Install-Applications
@@ -262,7 +385,12 @@ function Start-Setup {
     Set-AppConfigurations
     
     # Set wallpaper if specified
-    $wallpaperPath = Join-Path $dotfilesRoot "wallpapers" "panam_1920x1080.png"
+    $wallpaperName = "panam_1920x1080.png"
+    $wallpaperPath = Join-Path $wallpapersDir $wallpaperName
+    if (-not (Test-Path $wallpaperPath)) {
+        $wallpaperPath = Join-Path $dotfilesRoot "Pictures" "Wallpapers" $wallpaperName
+    }
+    
     if (Test-Path $wallpaperPath) {
         Write-Host "Setting wallpaper..."
         Set-Wallpaper -WallpaperPath $wallpaperPath

@@ -23,7 +23,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri '
 ```
 This approach downloads the script securely, removes the “downloaded from internet” block so it runs under a RemoteSigned policy, executes it, and then cleans up the temp file.
 
-That reads `applications.yaml` and installs everything via `winget`.  
+That reads `applications.yml` and installs everything via `winget`.  
 If something’s already installed, `winget` skips it.
 
 ## 🧠 Git Config Logic Example (For More than 1 Account)
@@ -51,7 +51,7 @@ dotfiles/
 ├── WindowsTermina
 ├── vim, bash
 ├── setup.ps1
-└── applications.yaml
+└── applications.yml
 ```
 
 ---

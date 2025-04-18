@@ -57,7 +57,7 @@ function Get-Platform {
 # Download and extract dotfiles if needed
 function Initialize-Dotfiles {
     # If we're not already in a dotfiles repo (we might be running this script as a one-liner)
-    if (-not (Test-Path (Join-Path $PSScriptRoot "applications.yaml"))) {
+    if (-not (Test-Path (Join-Path $PSScriptRoot "applications.yml"))) {
         Write-Log "Downloading dotfiles from GitHub..." -Level "INFO"
         $tempZipPath = Join-Path $env:TEMP "dotfiles.zip"
         $dotfilesUrl = "https://github.com/eliascreates/dotfiles/archive/refs/heads/main.zip"
@@ -184,7 +184,7 @@ function Copy-Wallpapers {
 # Install applications
 function Install-Applications {
     $platform = Get-Platform
-    $applicationsFile = Join-Path $dotfilesRoot "applications.yaml"
+    $applicationsFile = Join-Path $dotfilesRoot "applications.yml"
 
     if (-not (Test-Path $applicationsFile)) {
         Write-Log "Applications file not found: $applicationsFile" -Level "WARNING"

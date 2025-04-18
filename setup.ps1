@@ -137,12 +137,20 @@ function Initialize-Directory {
 function Copy-Wallpapers {
     $platform = Get-Platform
     $wallpapersSrc = Join-Path $dotfilesRoot "Pictures\Wallpapers"
+
+    if(-not $dotfilesRoot) {
+        Write-Log "dotfilesRoot is not set" -Level "ERROR"
+        return
+    }
+
+    Write-Log "dotfilesRoot: $dotfilesRoot" -Level "INFO"
+    Write-Log "wallpapaersSrc: $wallpapersSrc" -Level "INFO"
     
     if (-not (Test-Path $wallpapersSrc)) {
         Write-Log "Wallpapers directory not found: $wallpapersSrc" -Level "WARNING"
         return
-    }
-    
+    }     
+
     if ($platform -eq "Windows") {
         $wallpapersDest = Join-Path $env:USERPROFILE "Pictures\Wallpapers"
     } else {
@@ -280,10 +288,11 @@ function Set-AppConfigurations {
         Write-Log "Setting up Oh-My-Posh configuration..." -Level "INFO"
         $poshConfigSrc = Join-Path $dotfilesRoot "oh-my-posh"
 
-        if ($platform -eq "Windows") {
-            $poshConfigDest = Join-Path $env:POSH_THEMES_PATH
+        if($env:POSH_THEMES_PATH) {
+            $poshConfigDest = $env:POSH_THEMES_PATH
         } else {
-            $poshConfigDest = Join-Path "$HOME" ".local/bin"
+            Write-Log "POSH_THEMES_PATH not set. Using default path." -Level "INFO"
+            $poshConfigDest = Join-Path $env:LOCALAPPDATA ".oh-my-posh\themes"
         }
 
         if (Test-Path $poshConfigSrc) {

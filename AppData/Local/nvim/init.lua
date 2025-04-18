@@ -35,6 +35,16 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
+-- write changes in‐place (don’t break symlinks)
+vim.opt.backupcopy = 'yes'
+
+-- skip backups in the config folder
+vim.opt.backupskip = { '/' }
+
+-- centralize swap/undo files (optional but recommended)
+vim.opt.directory = vim.fn.stdpath 'state' .. '/swap//'
+vim.opt.undodir = vim.fn.stdpath 'state' .. '/undo//'
+vim.opt.undofile = true
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode

@@ -82,6 +82,9 @@ set backup                   " Enable backup
 set backupdir=~/.vim/backup  " Backup directory
 set directory=~/.vim/swap    " Swap directory
 
+set backupcopy=yes    " write changes in‑place instead of replace
+set backupskip=/       " don’t put backups in the working folder
+
 " Create necessary directories
 silent !mkdir -p ~/.vim/{undodir,backup,swap}
 

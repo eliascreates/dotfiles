@@ -21,7 +21,7 @@
   "border_width": 0,
   "border_offset": 0,
   "border_colours": {
-    "single": "#89b4fa",
+    "single": "#89b4fa", //#89b4fa
     "stack": "#a6e3a1",
     "monocle": "#f38ba8",
     "unfocused": "#10151D"

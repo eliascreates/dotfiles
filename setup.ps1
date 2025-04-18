@@ -278,12 +278,12 @@ function Set-AppConfigurations {
     if ($configsToApply -contains "neovim") {
         Write-Log "Setting up Neovim configuration..." -Level "INFO"
         $nvimConfigSrc = Join-Path $DotfilesRoot "AppData\Local\nvim"
+        $nvimConfigDest = Join-Path $HOME "AppData\Local\nvim"
         
-        if ($platform -eq "Windows") {
-            $nvimConfigDest = Join-Path $env:LOCALAPPDATA "nvim"
-        } else {
+        if (-not ($platform -eq "Windows")) {
             $nvimConfigDest = Join-Path $HOME ".config/nvim"
         }
+        
         
         if (Test-Path $nvimConfigSrc) {
             Initialize-Directory (Split-Path $nvimConfigDest -Parent)

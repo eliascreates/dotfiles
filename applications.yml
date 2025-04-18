@@ -50,26 +50,16 @@ windows:
     id: ajeetdsouza.zoxide
   - name: Python
     id: Python.Python.3.12
-  - name: Docker Desktop
-    id: Docker.DockerDesktop
   - name: Postman
     id: Postman.Postman
   - name: Insomnia
     id: Insomnia.Insomnia
-  - name: SQLite Browser
-    id: sqlitebrowser.sqlitebrowser
   - name: 7zip
     id: 7zip.7zip
-  - name: ShareX
-    id: ShareX.ShareX
   - name: OBS Studio
     id: OBSProject.OBSStudio
   - name: VLC
   - id: VideoLAN.VLC
-  - name: Everything Search
-    id: voidtools.Everything
-  - name: Fastfetch
-    id: fastfetch-cli.fastfetch
   - name: AIMP
     id: AIMP.AIMP
   # Add your other applications here

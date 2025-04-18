@@ -155,8 +155,7 @@ function Copy-Wallpapers {
     # Copy all wallpapers
     Get-ChildItem -Path $wallpapersSrc -File | ForEach-Object {
         $destFile = Join-Path $wallpapersDest $_.Name
-        $sourceFile = Copy-Item -Path $_.FullName
-
+        $sourceFile = $_.FullName
 
         if(Test-Path $destFile) {
             $sourceHash = (Get-FileHash -Path $sourceFile -Algorithm SHA256).Hash

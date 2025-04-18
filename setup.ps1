@@ -10,7 +10,6 @@ param(
 
 # Script configuration
 $ErrorActionPreference = "Stop"
-$dotfilesRoot = $PSScriptRoot
 
 # Add a proper logging function
 function Write-Log {
@@ -56,38 +55,42 @@ function Get-Platform {
 
 # Download and extract dotfiles if needed
 function Initialize-Dotfiles {
+    $dotfilesRoot = $PSScriptRoot
     # If we're not already in a dotfiles repo (we might be running this script as a one-liner)
-    if (-not (Test-Path (Join-Path $PSScriptRoot "applications.yml"))) {
-        Write-Log "Downloading dotfiles from GitHub..." -Level "INFO"
-        $tempZipPath = Join-Path $env:TEMP "dotfiles.zip"
-        $dotfilesUrl = "https://github.com/eliascreates/dotfiles/archive/refs/heads/main.zip"
-        
-        # Download the zip file
-        Invoke-WebRequest -Uri $dotfilesUrl -OutFile $tempZipPath
-        
-        # Create extraction directory
-        $extractPath = Join-Path $env:TEMP "dotfiles"
-        if (Test-Path $extractPath) {
-            Remove-Item -Path $extractPath -Recurse -Force
-        }
-        New-Item -ItemType Directory -Path $extractPath -Force | Out-Null
-        
-        # Extract the zip file
-        Write-Log "Extracting dotfiles..." -Level "INFO"
-        Expand-Archive -Path $tempZipPath -DestinationPath $extractPath -Force
-        
-        # Find the extracted directory
-        $extractedDir = Get-ChildItem -Path $extractPath | Select-Object -First 1 -ExpandProperty FullName
-        
-        # Set the dotfiles root to the extracted directory
-        $global:dotfilesRoot = $extractedDir
-        Write-Log "Dotfiles extracted to: $global:dotfilesRoot" -Level "SUCCESS"
-        
-        # Clean up the zip file
-        Remove-Item -Path $tempZipPath -Force
-    } else {
+    if (Test-Path (Join-Path $dotfilesRoot "applications.yml")) {
         Write-Log "Using local dotfiles in: $dotfilesRoot" -Level "INFO"
+        return $dotfilesRoot
     }
+
+    Write-Log "Downloading dotfiles from GitHub..." -Level "INFO"
+    $tempZipPath = Join-Path $env:TEMP "dotfiles.zip"
+    $dotfilesUrl = "https://github.com/eliascreates/dotfiles/archive/refs/heads/main.zip"
+    
+    # Download the zip file
+    Invoke-WebRequest -Uri $dotfilesUrl -OutFile $tempZipPath
+    
+    # Create extraction directory
+    $extractPath = Join-Path $env:TEMP "dotfiles"
+    if (Test-Path $extractPath) {
+        Remove-Item -Path $extractPath -Recurse -Force
+    }
+    New-Item -ItemType Directory -Path $extractPath -Force | Out-Null
+    
+    # Extract the zip file
+    Write-Log "Extracting dotfiles..." -Level "INFO"
+    Expand-Archive -Path $tempZipPath -DestinationPath $extractPath -Force
+    
+    # Find the extracted directory
+    $extractedDir = Get-ChildItem -Path $extractPath | Select-Object -First 1 -ExpandProperty FullName
+    
+    # Set the dotfiles root to the extracted directory
+    $dotfilesRoot = $extractedDir
+    Write-Log "Dotfiles extracted to: $dotfilesRoot" -Level "SUCCESS"
+    
+    # Clean up the zip file
+    Remove-Item -Path $tempZipPath -Force
+
+    return $dotfilesRoot
 }
 
 # Create a symbolic link
@@ -135,15 +138,18 @@ function Initialize-Directory {
 
 # Copy wallpapers to Pictures/Wallpapers
 function Copy-Wallpapers {
+    param(
+        [string]$DotfilesRoot
+    )
     $platform = Get-Platform
-    $wallpapersSrc = Join-Path $dotfilesRoot "Pictures\Wallpapers"
+    $wallpapersSrc = Join-Path $DotfilesRoot "Pictures\Wallpapers"
 
-    if(-not $dotfilesRoot) {
+    if(-not $DotfilesRoot) {
         Write-Log "dotfilesRoot is not set" -Level "ERROR"
         return
     }
 
-    Write-Log "dotfilesRoot: $dotfilesRoot" -Level "INFO"
+    Write-Log "dotfilesRoot: $DotfilesRoot" -Level "INFO"
     Write-Log "wallpapaersSrc: $wallpapersSrc" -Level "INFO"
     
     if (-not (Test-Path $wallpapersSrc)) {
@@ -183,8 +189,11 @@ function Copy-Wallpapers {
 
 # Install applications
 function Install-Applications {
+    param(
+        [string]$DotfilesRoot
+    )
     $platform = Get-Platform
-    $applicationsFile = Join-Path $dotfilesRoot "applications.yml"
+    $applicationsFile = Join-Path $DotfilesRoot "applications.yml"
 
     if (-not (Test-Path $applicationsFile)) {
         Write-Log "Applications file not found: $applicationsFile" -Level "WARNING"
@@ -235,7 +244,8 @@ function Install-Applications {
 # Configure applications
 function Set-AppConfigurations {
     param(
-        [string]$ConfigSubset = "all"
+        [string]$ConfigSubset = "all",
+        [string]$DotfilesRoot
     )
     
     $platform = Get-Platform
@@ -267,7 +277,7 @@ function Set-AppConfigurations {
     # Neovim configuration
     if ($configsToApply -contains "neovim") {
         Write-Log "Setting up Neovim configuration..." -Level "INFO"
-        $nvimConfigSrc = Join-Path $dotfilesRoot "AppData\Local\nvim"
+        $nvimConfigSrc = Join-Path $DotfilesRoot "AppData\Local\nvim"
         
         if ($platform -eq "Windows") {
             $nvimConfigDest = Join-Path $env:LOCALAPPDATA "nvim"
@@ -286,7 +296,7 @@ function Set-AppConfigurations {
     # Oh-My-Posh configuration
     if ($configsToApply -contains "oh-my-posh") {
         Write-Log "Setting up Oh-My-Posh configuration..." -Level "INFO"
-        $poshConfigSrc = Join-Path $dotfilesRoot "oh-my-posh"
+        $poshConfigSrc = Join-Path $DotfilesRoot "oh-my-posh"
 
         if($env:POSH_THEMES_PATH) {
             $poshConfigDest = $env:POSH_THEMES_PATH
@@ -306,7 +316,7 @@ function Set-AppConfigurations {
     # GlazeWM configuration
     if ($configsToApply -contains "glazewm" -and $platform -eq "Windows") {
         Write-Log "Setting up GlazeWM configuration..." -Level "INFO"
-        $glazeConfigSrc = Join-Path $dotfilesRoot ".config\glazewm"
+        $glazeConfigSrc = Join-Path $DotfilesRoot ".config\glazewm"
         $glazeConfigDest = Join-Path $env:USERPROFILE ".glaze-wm"
         if (Test-Path $glazeConfigSrc) {
             Initialize-Directory (Split-Path $glazeConfigDest -Parent)
@@ -319,7 +329,7 @@ function Set-AppConfigurations {
     # Komorebi configuration
     if ($configsToApply -contains "komorebi" -and $platform -eq "Windows") {
         Write-Log "Setting up Komorebi configuration..." -Level "INFO"
-        $komorebiSrc = Join-Path $dotfilesRoot ".config\komorebi.json"
+        $komorebiSrc = Join-Path $DotfilesRoot ".config\komorebi.json"
         $komorebiDest = Join-Path $env:USERPROFILE ".config\komorebi\komorebi.json"
         if (Test-Path $komorebiSrc) {
             Initialize-Directory (Split-Path $komorebiDest -Parent)
@@ -332,7 +342,7 @@ function Set-AppConfigurations {
     # WezTerm configuration
     if ($configsToApply -contains "wezterm") {
         Write-Log "Setting up WezTerm configuration..." -Level "INFO"
-        $weztermSrc = Join-Path $dotfilesRoot "wezterm" "wezterm.lua"
+        $weztermSrc = Join-Path $DotfilesRoot "wezterm" "wezterm.lua"
         
         if ($platform -eq "Windows") {
             $weztermDest = Join-Path $env:USERPROFILE ".config\wezterm\wezterm.lua"
@@ -351,7 +361,7 @@ function Set-AppConfigurations {
     # Git configuration
     if ($configsToApply -contains "git") {
         Write-Log "Setting up Git configuration..." -Level "INFO"
-        $gitConfigSrc = Join-Path $dotfilesRoot ".gitconfig"
+        $gitConfigSrc = Join-Path $DotfilesRoot ".gitconfig"
         $gitConfigDest = Join-Path $HOME ".gitconfig"
         if (Test-Path $gitConfigSrc) {
             New-SymLink -Source $gitConfigSrc -Target $gitConfigDest
@@ -363,7 +373,7 @@ function Set-AppConfigurations {
     # PowerShell configuration
     if ($configsToApply -contains "powershell" -and $platform -eq "Windows") {
         Write-Log "Setting up PowerShell profile..." -Level "INFO"
-        $psProfileSrc = Join-Path $dotfilesRoot "powershell\Microsoft.PowerShell_profile.ps1"
+        $psProfileSrc = Join-Path $DotfilesRoot "powershell\Microsoft.PowerShell_profile.ps1"
         $psProfileDest = Join-Path $env:USERPROFILE "Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
         if (Test-Path $psProfileSrc) {
             Initialize-Directory (Split-Path $psProfileDest -Parent)
@@ -376,7 +386,7 @@ function Set-AppConfigurations {
     # Windows Terminal settings
     if ($configsToApply -contains "windows-terminal" -and $platform -eq "Windows") {
         Write-Log "Setting up Windows Terminal settings..." -Level "INFO"
-        $winTermSrc = Join-Path $dotfilesRoot "WindowsTerminal\settings.json"
+        $winTermSrc = Join-Path $DotfilesRoot "WindowsTerminal\settings.json"
         $winTermDest = Join-Path $env:LOCALAPPDATA "Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
         if (Test-Path $winTermSrc) {
             Initialize-Directory (Split-Path $winTermDest -Parent)
@@ -389,7 +399,7 @@ function Set-AppConfigurations {
     # YASB configuration
     if ($configsToApply -contains "yasb" -and $platform -eq "Windows") {
         Write-Log "Setting up YASB configuration..." -Level "INFO"
-        $yasbSrc = Join-Path $dotfilesRoot "yasb"
+        $yasbSrc = Join-Path $DotfilesRoot "yasb"
         $yasbDest = Join-Path $env:APPDATA "yasb"
         if (Test-Path $yasbSrc) {
             Initialize-Directory (Split-Path $yasbDest -Parent)
@@ -402,7 +412,7 @@ function Set-AppConfigurations {
     # ZeBar configuration
     if ($configsToApply -contains "zebar" -and $platform -eq "Windows") {
         Write-Log "Setting up ZeBar configuration..." -Level "INFO"
-        $zebarSrc = Join-Path $dotfilesRoot "zebar"
+        $zebarSrc = Join-Path $DotfilesRoot "zebar"
         $zebarDest = Join-Path $env:APPDATA "zebar"
         if (Test-Path $zebarSrc) {
             Initialize-Directory (Split-Path $zebarDest -Parent)
@@ -465,15 +475,15 @@ function Start-Setup {
     }
     
     # Initialize dotfiles
-    Initialize-Dotfiles
+    $dotfilesRoot = Initialize-Dotfiles
     
     # Copy wallpapers to Pictures/Wallpapers
-    $wallpapersDir = Copy-Wallpapers
+    $wallpapersDir = Copy-Wallpapers -DotfilesRoot $dotfilesRoot
     
     # Install applications if not skipped
     if (-not $SkipApps) {
         Write-Log "Installing applications..." -Level "INFO"
-        Install-Applications
+        Install-Applications -DotfilesRoot $dotfilesRoot
     } else {
         Write-Log "Skipping application installation" -Level "INFO"
     }

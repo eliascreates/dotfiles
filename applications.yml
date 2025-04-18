@@ -18,6 +18,8 @@ windows:
     id: Neovim.Neovim
   - name: WezTerm
     id: wez.wezterm
+  - name: Oh My Posh
+    id: JanDeDobbeleer.OhMyPosh
   - name: NodeJS LTS
     id: OpenJS.NodeJS
   - name: GlazeWM

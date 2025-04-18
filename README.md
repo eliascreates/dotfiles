@@ -12,7 +12,7 @@ These are my personal dotfiles. I set them up to get a dev-ready machine going q
 ## ⚙️ Setup
 
 ```powershell
-.\install.ps1
+.\setup.ps1
 ```
 
 That reads `applications.yaml` and installs everything via `winget`.  
@@ -34,12 +34,16 @@ Default is personal config (`.gitconfig-personal`), unless I’m inside `C:/dev/
 
 ```
 dotfiles/
-├── .gitconfig
-├── .gitconfig-personal
-├── .gitconfig-work
-├── install.ps1
-├── applications.yaml
-└── README.md
+├── .config (nvim, komorebi, yasp, neofetch, etc)
+├── .glzr (glazewm, zebar)
+├── git
+├── powershell
+├── wezterm
+├── oh-my-posh
+├── WindowsTermina
+├── vim, bash
+├── setup.ps1
+└── applications.yaml
 ```
 
 ---

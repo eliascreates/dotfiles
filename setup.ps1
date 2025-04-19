@@ -557,7 +557,6 @@ function Start-Setup {
         Write-Log "This script requires administrator privileges. Please run as administrator." -Level "ERROR"
         return
     }
-
     Install-NugetProvider
     
     # Initialize dotfiles
@@ -568,18 +567,34 @@ function Start-Setup {
 
     # Set wallpaper if not skipped
     if (-not $SkipWallpaper) {
-        $wallpaperName = "panam_1920x1080.png"
-        $wallpaperPath = Join-Path $wallpapersDir $wallpaperName
-        if (-not (Test-Path $wallpaperPath)) {
-            $wallpaperPath = Join-Path $dotfilesRoot "Pictures\Wallpapers\$wallpaperName" 
+        # Desktop wallpaper
+        $desktopWallpaperName = "panam_1920x1080.png"
+        $desktopWallpaperPath = Join-Path $wallpapersDir $desktopWallpaperName
+        if (-not (Test-Path $desktopWallpaperPath)) {
+            $desktopWallpaperPath = Join-Path $dotfilesRoot "Pictures\Wallpapers\$desktopWallpaperName" 
         }
         
-        if (Test-Path $wallpaperPath) {
+        # Lock screen wallpaper
+        $lockscreenWallpaperName = "berk.png"
+        $lockscreenWallpaperPath = Join-Path $wallpapersDir $lockscreenWallpaperName
+        if (-not (Test-Path $lockscreenWallpaperPath)) {
+            $lockscreenWallpaperPath = Join-Path $dotfilesRoot "Pictures\Wallpapers\$lockscreenWallpaperName" 
+        }
+        
+        # Set desktop wallpaper
+        if (Test-Path $desktopWallpaperPath) {
             Write-Log "Setting desktop wallpaper..." -Level "INFO"
-            Set-Wallpaper -WallpaperPath $wallpaperPath
-            
+            Set-Wallpaper -WallpaperPath $desktopWallpaperPath
+        } else {
+            Write-Log "Desktop wallpaper not found: $desktopWallpaperPath" -Level "WARNING"
+        }
+        
+        # Set lock screen wallpaper
+        if (Test-Path $lockscreenWallpaperPath) {
             Write-Log "Setting lock screen wallpaper..." -Level "INFO"
-            Set-LockScreenWallpaper -WallpaperPath $wallpaperPath
+            Set-LockScreenWallpaper -WallpaperPath $lockscreenWallpaperPath
+        } else {
+            Write-Log "Lock screen wallpaper not found: $lockscreenWallpaperPath" -Level "WARNING"
         }
     } else {
         Write-Log "Skipping wallpaper setup" -Level "INFO"
@@ -599,7 +614,6 @@ function Start-Setup {
     
     # Clean up temporary files
     # Start-Cleanup
-
     Write-Log "Setup complete! You may need to restart some applications for changes to take effect." -Level "SUCCESS"
 }
 

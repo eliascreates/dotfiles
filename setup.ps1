@@ -399,7 +399,7 @@ function Set-AppConfigurations {
         }
     }
     
-    # PowerShell profile configuration
+    # PowerShell configuration
     if ($configsToApply -contains "powershell" -and $platform -eq "Windows") {
         Write-Log "Setting up PowerShell profile..." -Level "INFO"
 
@@ -454,7 +454,7 @@ function Set-AppConfigurations {
     }
 }
 
-# Set wallpaper (Windows only)
+# Set desktop wallpaper (Windows only)
 function Set-Wallpaper {
     param(
         [string]$WallpaperPath
@@ -485,48 +485,42 @@ function Set-Wallpaper {
     }
 }
 
-function Set-LockScreen {
+# Set lockscreen wallpaper (Windows 10+ only)
+function Set-LockScreenWallpaper {
     param(
-        [string]$ImagePath
+        [string]$WallpaperPath
     )
 
-    if ((Get-Platform) -ne "Windows") {
-        Write-Log "Lock screen setting is only supported on Windows." -Level "INFO"
-        return
+    if ((Get-Platform) -eq "Windows") {
+        if (Test-Path $WallpaperPath) {
+            try {
+                # Check if we're on Windows 10 or higher by detecting registry key
+                $key = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP"
+                
+                # Create the key if it doesn't exist
+                if (-not (Test-Path $key)) {
+                    New-Item -Path $key -Force | Out-Null
+                }
+                
+                # Convert to absolute path and ensure proper formatting
+                $absolutePath = [System.IO.Path]::GetFullPath($WallpaperPath)
+                
+                # Set the properties for lockscreen wallpaper
+                New-ItemProperty -Path $key -Name "LockScreenImagePath" -Value $absolutePath -PropertyType String -Force | Out-Null
+                New-ItemProperty -Path $key -Name "LockScreenImageUrl" -Value $absolutePath -PropertyType String -Force | Out-Null
+                New-ItemProperty -Path $key -Name "LockScreenImageStatus" -Value 1 -PropertyType DWORD -Force | Out-Null
+                
+                Write-Log "Lock screen wallpaper set to: $WallpaperPath" -Level "SUCCESS"
+            } catch {
+                Write-Log "Failed to set lock screen wallpaper: $_" -Level "ERROR"
+                Write-Log "You may need to set the lock screen wallpaper manually through Windows Settings." -Level "INFO"
+            }
+        } else {
+            Write-Log "Lock screen wallpaper file not found: $WallpaperPath" -Level "WARNING"
+        }
+    } else {
+        Write-Log "Setting lock screen wallpaper is only supported on Windows." -Level "INFO"
     }
-
-    if (-not (Test-Path $ImagePath)) {
-        Write-Log "Lock screen image not found: $ImagePath" -Level "WARNING"
-        return
-    }
-
-    try {
-        # load WinRT types
-        Add-Type -AssemblyName System.Runtime.WindowsRuntime
-
-        # get a StorageFile for the image path
-        $storageFile = [Windows.Storage.StorageFile]::GetFileFromPathAsync($ImagePath).GetAwaiter().GetResult()
-
-        # set lock screen
-        [Windows.System.UserProfile.LockScreen]::SetImageFileAsync($storageFile).GetAwaiter().GetResult()
-
-        Write-Log "Lock screen set to: $ImagePath" -Level "SUCCESS"
-    }
-    catch {
-        Write-Log "Failed to set lock screen: $_" -Level "ERROR"
-    }
-}
-
-# helper to find a wallpaper by name in either folder
-function Get-WallpaperFullPath {
-    param($Name, $WallpapersDir, $DotfilesRoot)
-    $path1 = Join-Path $WallpapersDir $Name
-    if (Test-Path $path1) { return $path1 }
-
-    $path2 = Join-Path $DotfilesRoot "Pictures\Wallpapers\$Name"
-    if (Test-Path $path2) { return $path2 }
-
-    return $null
 }
 
 # Function to clean up temporary files
@@ -543,18 +537,13 @@ function Install-NugetProvider {
 
     if (-not (Get-PackageProvider -Name NuGet -ErrorAction SilentlyContinue)) {
         Write-Log "Installing NuGet provider silently..." -Level "INFO"
-        Install-PackageProvider `
-            -Name NuGet `
-            -MinimumVersion 2.8.5.201 `
-            -Force `
-            -Confirm: $false
+        Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Confirm:$false
         
         Import-PackageProvider -Name NuGet -Force
-        Write-Log "NuGet provider intalled." -Level "SUCCESS"
+        Write-Log "NuGet provider installed." -Level "SUCCESS"
     } else {
         Write-Log "NuGet provider already present." -Level "INFO"
     }
-
 }
 
 # Main setup function
@@ -577,52 +566,26 @@ function Start-Setup {
     # Copy wallpapers to Pictures/Wallpapers
     $wallpapersDir = Copy-Wallpapers -DotfilesRoot $dotfilesRoot
 
-    #
-    # ─── DESKTOP + LOCK SCREEN WALLPAPERS ────────────────────────────────────────────
-    #
+    # Set wallpaper if not skipped
     if (-not $SkipWallpaper) {
-        # names of the two distinct images
-        $desktopName    = "panam_1920x1080.png"
-        $lockScreenName = "berk.png"
-
-        # resolve full paths
-        $desktopPath    = Get-WallpaperFullPath -Name $desktopName    -WallpapersDir $wallpapersDir -DotfilesRoot $dotfilesRoot
-        $lockScreenPath = Get-WallpaperFullPath -Name $lockScreenName -WallpapersDir $wallpapersDir -DotfilesRoot $dotfilesRoot
-
-        if ($desktopPath) {
-            Write-Log "Setting desktop wallpaper…" -Level "INFO"
-            Set-Wallpaper -WallpaperPath $desktopPath
-        } else {
-            Write-Log "Desktop wallpaper not found: $desktopName" -Level "WARNING"
+        $wallpaperName = "panam_1920x1080.png"
+        $wallpaperPath = Join-Path $wallpapersDir $wallpaperName
+        if (-not (Test-Path $wallpaperPath)) {
+            $wallpaperPath = Join-Path $dotfilesRoot "Pictures\Wallpapers\$wallpaperName" 
         }
-
-        if ($lockScreenPath) {
-            Write-Log "Setting lock screen wallpaper…" -Level "INFO"
-
-            if (-not (Test-Administrator)) {
-                # in a standard user context the UWP API will apply
-                Set-LockScreen -ImagePath $lockScreenPath
-            } else {
-                # elevated context: spawn a LIMITED task under your normal user token
-                $taskName = "Dotfiles_SetLockScreen"
-                schtasks /Create /TN $taskName `
-                    /TR "powershell -WindowStyle Hidden -Command `"Set-LockScreen -ImagePath `"$lockScreenPath`"`"" `
-                    /SC ONCE /ST 00:00 /RL LIMITED /F | Out-Null
-
-                schtasks /Run    /TN $taskName | Out-Null
-                schtasks /Delete /TN $taskName /F      | Out-Null
-            }
-        } else {
-            Write-Log "Lock screen wallpaper not found: $lockScreenName" -Level "WARNING"
+        
+        if (Test-Path $wallpaperPath) {
+            Write-Log "Setting desktop wallpaper..." -Level "INFO"
+            Set-Wallpaper -WallpaperPath $wallpaperPath
+            
+            Write-Log "Setting lock screen wallpaper..." -Level "INFO"
+            Set-LockScreenWallpaper -WallpaperPath $wallpaperPath
         }
-    }
-    else {
+    } else {
         Write-Log "Skipping wallpaper setup" -Level "INFO"
     }
-
-    #
-    # ─── APPLICATION INSTALLATION ────────────────────────────────────────────────────
-    #
+    
+    # Install applications if not skipped
     if (-not $SkipApps) {
         Write-Log "Installing applications..." -Level "INFO"
         Install-Applications -DotfilesRoot $dotfilesRoot
@@ -630,12 +593,13 @@ function Start-Setup {
         Write-Log "Skipping application installation" -Level "INFO"
     }
     
-    #
-    # ─── APP CONFIGURATIONS ──────────────────────────────────────────────────────────
-    #
+    # Set app configurations
     Write-Log "Setting up application configurations..." -Level "INFO"
     Set-AppConfigurations -ConfigSubset $ConfigSubset -DotfilesRoot $dotfilesRoot
     
+    # Clean up temporary files
+    # Start-Cleanup
+
     Write-Log "Setup complete! You may need to restart some applications for changes to take effect." -Level "SUCCESS"
 }
 

@@ -1,45 +1,31 @@
-# Applications to install
+# Applications to install using winget
 # Format:
 #   windows:
 #     - name: Application Name
 #       id: Publisher.ApplicationName
+
 windows:
-  - name: Visual Studio Code
-    id: Microsoft.VisualStudioCode
+  # ─── PACKAGE MANAGERS ──────────────────────────────────────────────────────────
+  - name: Chocolatey
+    id: Chocolatey.Chocolatey
+  - name: Scoop
+    id: ScoopInstaller.Scoop
+
+  # ─── TERMINALS & SHELLS ─────────────────────────────────────────────────────────
   - name: Windows Terminal
     id: Microsoft.WindowsTerminal
   - name: PowerShell 7
     id: Microsoft.PowerShell
-  - name: Git
-    id: Git.Git
-  - name: Git Bash
-    id: Git.Git
-  - name: Neovim
-    id: Neovim.Neovim
-  - name: Vim
-    id: vim.vim
   - name: WezTerm
     id: wez.wezterm
+  - name: Git Bash
+    id: Git.Git
   - name: Oh My Posh
     id: JanDeDobbeleer.OhMyPosh
-  - name: LSDeluxe
-    id: lsd-rs.lsd
-  - name: NodeJS LTS
-    id: OpenJS.NodeJS
-  - name: GlazeWM
-    id: glzr-io.glazewm
-  - name: Zebar
-    id: glzr-io.zebar
-  - name: Komorebi
-    id: LazyDev.Komorebi
-  - name: YASB
-    id: YasbBar.Yasb
-  - name: Google Chrome
-    id: Google.Chrome
-  - name: Zen Browser
-    id: Zen-Team.Zen-Browser
-  - name: Notepad++
-    id: Notepad++.Notepad++
+
+  # ─── CLI TOOLS & UTILITIES ──────────────────────────────────────────────────────
+  - name: Git
+    id: Git.Git
   - name: neofetch-win
     id: nepnep.neofetch-win
   - name: fzf
@@ -52,16 +38,52 @@ windows:
     id: sharkdp.bat
   - name: zoxide
     id: ajeetdsouza.zoxide
+  - name: LSDeluxe
+    id: lsd-rs.lsd
+
+  # ─── TEXT EDITORS & IDEs ─────────────────────────────────────────────────────────
+  - name: Visual Studio Code
+    id: Microsoft.VisualStudioCode
+  - name: Neovim
+    id: Neovim.Neovim
+  - name: Vim
+    id: vim.vim
+  - name: Notepad++
+    id: Notepad++.Notepad++
+
+  # ─── WINDOW MANAGERS & BARS ───────────────────────────────────────────────────────
+  - name: GlazeWM 
+    id: glzr-io.glazewm
+  - name: Zebar
+    id: glzr-io.zebar
+  - name: Komorebi
+    id: LazyDev.Komorebi
+  - name: YASB
+    id: YasbBar.Yasb
+
+  # ─── DEVELOPMENT & PROGRAMMING ────────────────────────────────────────────────────
+  - name: NodeJS LTS
+    id: OpenJS.NodeJS
   - name: Python
     id: Python.Python.3.12
   - name: Postman
     id: Postman.Postman
   - name: Insomnia
     id: Insomnia.Insomnia
+
+  # ─── WEB BROWSERS ───────────────────────────────────────────────────────────────
+  - name: Google Chrome
+    id: Google.Chrome
+  - name: Zen Browser
+    id: Zen-Team.Zen-Browser
+
+  # ─── ARCHIVE TOOLS ──────────────────────────────────────────────────────────────
   - name: 7zip
     id: 7zip.7zip
   - name: WinRAR
     id: RARLab.WinRAR
+
+  # ─── MULTIMEDIA & ENTERTAINMENT ────────────────────────────────────────────────
   - name: OBS Studio
     id: OBSProject.OBSStudio
   - name: VLC
@@ -70,8 +92,6 @@ windows:
     id: CodecGuide.K-LiteCodecPack.Standard
   - name: AIMP
     id: AIMP.AIMP
-  # Add your other applications here
-  # You can find the correct IDs by running: winget search [AppName]
 
 # Linux applications (for future use)
 linux:

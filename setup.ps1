@@ -399,11 +399,13 @@ function Set-AppConfigurations {
         }
     }
     
-    # PowerShell configuration
+    # PowerShell profile configuration
     if ($configsToApply -contains "powershell" -and $platform -eq "Windows") {
         Write-Log "Setting up PowerShell profile..." -Level "INFO"
-        $psProfileSrc = Join-Path $DotfilesRoot "powershell\Microsoft.PowerShell_profile.ps1"
-        $psProfileDest = Join-Path $env:USERPROFILE "Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
+
+        $psProfileSrc  = Join-Path $DotfilesRoot "PowerShell\Microsoft.PowerShell_profile.ps1"
+        $psProfileDest = $PROFILE
+
         if (Test-Path $psProfileSrc) {
             Initialize-Directory (Split-Path $psProfileDest -Parent)
             New-SymLink -Source $psProfileSrc -Target $psProfileDest

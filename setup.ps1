@@ -483,6 +483,50 @@ function Set-Wallpaper {
     }
 }
 
+function Set-LockScreen {
+    param(
+        [string]$ImagePath
+    )
+
+    if ((Get-Platform) -ne "Windows") {
+        Write-Log "Lock screen setting is only supported on Windows." -Level "INFO"
+        return
+    }
+
+    if (-not (Test-Path $ImagePath)) {
+        Write-Log "Lock screen image not found: $ImagePath" -Level "WARNING"
+        return
+    }
+
+    try {
+        # load WinRT types
+        Add-Type -AssemblyName System.Runtime.WindowsRuntime
+
+        # get a StorageFile for the image path
+        $storageFile = [Windows.Storage.StorageFile]::GetFileFromPathAsync($ImagePath).GetAwaiter().GetResult()
+
+        # set lock screen
+        [Windows.System.UserProfile.LockScreen]::SetImageFileAsync($storageFile).GetAwaiter().GetResult()
+
+        Write-Log "Lock screen set to: $ImagePath" -Level "SUCCESS"
+    }
+    catch {
+        Write-Log "Failed to set lock screen: $_" -Level "ERROR"
+    }
+}
+
+# helper to find a wallpaper by name in either folder
+function Get-WallpaperFullPath {
+    param($Name, $WallpapersDir, $DotfilesRoot)
+    $path1 = Join-Path $WallpapersDir $Name
+    if (Test-Path $path1) { return $path1 }
+
+    $path2 = Join-Path $DotfilesRoot "Pictures\Wallpapers\$Name"
+    if (Test-Path $path2) { return $path2 }
+
+    return $null
+}
+
 # Function to clean up temporary files
 function Start-Cleanup {
     if (Test-Path (Join-Path $env:USERPROFILE "dotfiles")) {
@@ -531,23 +575,52 @@ function Start-Setup {
     # Copy wallpapers to Pictures/Wallpapers
     $wallpapersDir = Copy-Wallpapers -DotfilesRoot $dotfilesRoot
 
-    # Set wallpaper if not skipped
+    #
+    # ─── DESKTOP + LOCK SCREEN WALLPAPERS ────────────────────────────────────────────
+    #
     if (-not $SkipWallpaper) {
-        $wallpaperName = "panam_1920x1080.png"
-        $wallpaperPath = Join-Path $wallpapersDir $wallpaperName
-        if (-not (Test-Path $wallpaperPath)) {
-            $wallpaperPath = Join-Path $dotfilesRoot "Pictures\Wallpapers\$wallpaperName" 
+        # names of the two distinct images
+        $desktopName    = "panam_1920x1080.png"
+        $lockScreenName = "berk.png"
+
+        # resolve full paths
+        $desktopPath    = Get-WallpaperFullPath -Name $desktopName    -WallpapersDir $wallpapersDir -DotfilesRoot $dotfilesRoot
+        $lockScreenPath = Get-WallpaperFullPath -Name $lockScreenName -WallpapersDir $wallpapersDir -DotfilesRoot $dotfilesRoot
+
+        if ($desktopPath) {
+            Write-Log "Setting desktop wallpaper…" -Level "INFO"
+            Set-Wallpaper -WallpaperPath $desktopPath
+        } else {
+            Write-Log "Desktop wallpaper not found: $desktopName" -Level "WARNING"
         }
-        
-        if (Test-Path $wallpaperPath) {
-            Write-Log "Setting wallpaper..." -Level "INFO"
-            Set-Wallpaper -WallpaperPath $wallpaperPath
+
+        if ($lockScreenPath) {
+            Write-Log "Setting lock screen wallpaper…" -Level "INFO"
+
+            if (-not (Test-Administrator)) {
+                # in a standard user context the UWP API will apply
+                Set-LockScreen -ImagePath $lockScreenPath
+            } else {
+                # elevated context: spawn a LIMITED task under your normal user token
+                $taskName = "Dotfiles_SetLockScreen"
+                schtasks /Create /TN $taskName `
+                    /TR "powershell -WindowStyle Hidden -Command `"Set-LockScreen -ImagePath `"$lockScreenPath`"`"" `
+                    /SC ONCE /ST 00:00 /RL LIMITED /F | Out-Null
+
+                schtasks /Run    /TN $taskName | Out-Null
+                schtasks /Delete /TN $taskName /F      | Out-Null
+            }
+        } else {
+            Write-Log "Lock screen wallpaper not found: $lockScreenName" -Level "WARNING"
         }
-    } else {
+    }
+    else {
         Write-Log "Skipping wallpaper setup" -Level "INFO"
     }
-    
-    # Install applications if not skipped
+
+    #
+    # ─── APPLICATION INSTALLATION ────────────────────────────────────────────────────
+    #
     if (-not $SkipApps) {
         Write-Log "Installing applications..." -Level "INFO"
         Install-Applications -DotfilesRoot $dotfilesRoot
@@ -555,12 +628,11 @@ function Start-Setup {
         Write-Log "Skipping application installation" -Level "INFO"
     }
     
-    # Set app configurations
+    #
+    # ─── APP CONFIGURATIONS ──────────────────────────────────────────────────────────
+    #
     Write-Log "Setting up application configurations..." -Level "INFO"
     Set-AppConfigurations -ConfigSubset $ConfigSubset -DotfilesRoot $dotfilesRoot
-    
-    # Clean up temporary files
-    # Start-Cleanup
     
     Write-Log "Setup complete! You may need to restart some applications for changes to take effect." -Level "SUCCESS"
 }

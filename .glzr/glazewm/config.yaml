@@ -2,24 +2,23 @@
 # Commands to run on WM start (e.g., to launch Zebar):
 # startup_commands: ["shell-exec %userprofile%/.glzr/zebar/start.bat"]
 
-# ── General ─────────────────────────────────────────────────────────────────
+# ─── GENERAL SETTINGS ───────────────────────────────────────────────────────────
 general:
-  focus_follows_cursor: false            # auto–focus under cursor?
-  toggle_workspace_on_refocus: false     # toggle back to last workspace?
+  focus_follows_cursor: false
+  toggle_workspace_on_refocus: false
   cursor_jump:
     enabled: false
-    trigger: "window_focus"              # or 'monitor_focus'
+    trigger: "window_focus"
 
-# ── Gaps ────────────────────────────────────────────────────────────────────
+# ─── APPEARANCE ──────────────────────────────────────────────────────────────────
 gaps:
   inner_gap: "5px"
   outer_gap:
-    top:    "30px"
-    right:  "10px"
+    top: "30px"
+    right: "10px"
     bottom: "10px"
-    left:   "10px"
+    left: "10px"
 
-# ── Window Effects ──────────────────────────────────────────────────────────
 window_effects:
   focused_window:
     border:
@@ -30,18 +29,18 @@ window_effects:
       enabled: true
       color: "#a1a1a1"
 
-# ── Window Behavior ─────────────────────────────────────────────────────────
+# ─── WINDOW BEHAVIOR ─────────────────────────────────────────────────────────────
 window_behavior:
-  initial_state: "tiling"                # 'tiling' or 'floating'
+  initial_state: "tiling"
   state_defaults:
     floating:
-      centered:    true
+      centered: true
       shown_on_top: false
     fullscreen:
-      maximized:   false
+      maximized: false
       shown_on_top: false
 
-# ── Workspaces ─────────────────────────────────────────────────────────────
+# ─── WORKSPACES ──────────────────────────────────────────────────────────────────
 workspaces:
   - name: "1"
   - name: "2"
@@ -53,7 +52,7 @@ workspaces:
   - name: "8"
   - name: "9"
 
-# ── Window Rules ────────────────────────────────────────────────────────────
+# ─── WINDOW RULES ─────────────────────────────────────────────────────────────────
 window_rules:
   - commands: ["set-floating"]
     match:
@@ -77,16 +76,15 @@ window_rules:
       - window_process: { equals: "Cyberpunk2077" }
       - window_process: { equals: "re2" }
       - window_process: { equals: "re3" }
-      - window_title:   { regex: "[Pp]icture.in.[Pp]icture" }
-      - window_class:   { regex: "Chrome_WidgetWin_1|MozillaDialogClass" }
+      - window_title: { regex: "[Pp]icture.in.[Pp]icture" }
+        window_class: { regex: "Chrome_WidgetWin_1|MozillaDialogClass" }
       - window_process: { equals: "PowerToys.PowerAccent" }
       - window_process: { equals: "Lively" }
         window_class: { regex: "HwndWrapper*" }
 
-# ── Binding Modes ───────────────────────────────────────────────────────────
+# ─── BINDING MODES ────────────────────────────────────────────────────────────────
 binding_modes:
   - name: "resize"
-    # resize via H/J/K/L, exit with Esc/Enter
     keybindings:
       - commands: ["resize --width -1%"]
         bindings: ["h"]
@@ -100,239 +98,138 @@ binding_modes:
         bindings: ["escape", "enter"]
 
   - name: "pause"
-    # disables all keys until alt+shift+p
     keybindings:
       - commands: ["wm-disable-binding-mode --name pause"]
         bindings: ["alt+shift+p"]
 
-# ── Keybindings ─────────────────────────────────────────────────────────────
+# ─── KEYBINDINGS ─────────────────────────────────────────────────────────────────
 keybindings:
-  # Focus
-  - commands:
-      - "focus --direction left"
-    bindings:
-      - "alt+h"
-  - commands:
-      - "focus --direction right"
-    bindings:
-      - "alt+l"
-  - commands:
-      - "focus --direction up"
-    bindings:
-      - "alt+k"
-  - commands:
-      - "focus --direction down"
-    bindings:
-      - "alt+j"
+  # Focus controls
+  - commands: ["focus --direction left"]
+    bindings: ["alt+h"]
+  - commands: ["focus --direction right"]
+    bindings: ["alt+l"]
+  - commands: ["focus --direction up"]
+    bindings: ["alt+k"]
+  - commands: ["focus --direction down"]
+    bindings: ["alt+j"]
 
-  # Move
-  - commands:
-      - "move --direction left"
-    bindings:
-      - "alt+shift+h"
-  - commands:
-      - "move --direction right"
-    bindings:
-      - "alt+shift+l"
-  - commands:
-      - "move --direction up"
-    bindings:
-      - "alt+shift+k"
-  - commands:
-      - "move --direction down"
-    bindings:
-      - "alt+shift+j"
+  # Window movement
+  - commands: ["move --direction left"]
+    bindings: ["alt+shift+h"]
+  - commands: ["move --direction right"]
+    bindings: ["alt+shift+l"]
+  - commands: ["move --direction up"]
+    bindings: ["alt+shift+k"]
+  - commands: ["move --direction down"]
+    bindings: ["alt+shift+j"]
 
-  # Resize
-  - commands:
-      - "resize --width -1%"
-    bindings:
-      - "alt+u"
-  - commands:
-      - "resize --width +1%"
-    bindings:
-      - "alt+p"
-  - commands:
-      - "resize --height +1%"
-    bindings:
-      - "alt+o"
-  - commands:
-      - "resize --height -1%"
-    bindings:
-      - "alt+i"
+  # Window resizing
+  - commands: ["resize --width -1%"]
+    bindings: ["alt+u"]
+  - commands: ["resize --width +1%"]
+    bindings: ["alt+p"]
+  - commands: ["resize --height +1%"]
+    bindings: ["alt+o"]
+  - commands: ["resize --height -1%"]
+    bindings: ["alt+i"]
+  - commands: ["wm-enable-binding-mode --name resize"]
+    bindings: ["alt+r"]
 
-  # Modes
-  - commands:
-      - "wm-enable-binding-mode --name resize"
-    bindings:
-      - "alt+r"
-  - commands:
-      - "wm-enable-binding-mode --name pause"
-    bindings:
-      - "alt+shift+p"
+  # Mode controls
+  - commands: ["wm-enable-binding-mode --name pause"]
+    bindings: ["alt+shift+p"]
+  - commands: ["toggle-tiling-direction"]
+    bindings: ["alt+v"]
+  - commands: ["toggle-floating --centered"]
+    bindings: ["alt+shift+space"]
+  - commands: ["toggle-tiling"]
+    bindings: ["alt+t"]
+  - commands: ["toggle-fullscreen"]
+    bindings: ["alt+f"]
+  - commands: ["toggle-minimized"]
+    bindings: ["alt+m"]
 
-  # Tiling & Floating
-  - commands:
-      - "toggle-tiling-direction"
-    bindings:
-      - "alt+v"
-  - commands:
-      - "toggle-floating --centered"
-    bindings:
-      - "alt+shift+space"
-  - commands:
-      - "toggle-tiling"
-    bindings:
-      - "alt+t"
-  - commands:
-      - "toggle-fullscreen"
-    bindings:
-      - "alt+f"
-  - commands:
-      - "toggle-minimized"
-    bindings:
-      - "alt+m"
-  - commands:
-      - "close"
-    bindings:
-      - "alt+shift+q"
-  - commands:
-      - "wm-exit"
-    bindings:
-      - "alt+shift+e"
-  - commands:
-      - "wm-reload-config"
-    bindings:
-      - "alt+shift+r"
-  - commands:
-      - "wm-redraw"
-    bindings:
-      - "alt+shift+w"
+  # Window management
+  - commands: ["close"]
+    bindings: ["alt+shift+q"]
 
-  # Launch terminals/IDE
-  - commands:
-      - "shell-exec %ProgramFiles%/Microsoft VS Code/Code.exe"
-      - "shell-exec %ProgramFiles%/WezTerm/wezterm-gui.exe"
-    bindings:
-      - "ctrl_shift+7"
-  - commands:
-      - "shell-exec %ProgramFiles%/Microsoft VS Code/Code.exe"
-    bindings:
-      - "ctrl+shift+9"
-  - commands:
-      - "shell-exec %ProgramFiles%/WezTerm/wezterm-gui.exe"
-    bindings:
-      - "ctrl+shift+0"
+  # WM controls
+  - commands: ["wm-exit"]
+    bindings: ["alt+shift+e"]
+  - commands: ["wm-reload-config"]
+    bindings: ["alt+shift+r"]
+  - commands: ["wm-redraw"]
+    bindings: ["alt+shift+w"]
+
+  # Application launchers
+  - commands: ["shell-exec %ProgramFiles%/Microsoft VS Code/Code.exe", "shell-exec %ProgramFiles%/WezTerm/wezterm-gui.exe"]
+    bindings: ["ctrl_shift+7"]
+  - commands: ["shell-exec %ProgramFiles%/Microsoft VS Code/Code.exe"]
+    bindings: ["ctrl+shift+9"]
+  - commands: ["shell-exec %ProgramFiles%/WezTerm/wezterm-gui.exe"]
+    bindings: ["ctrl+shift+0"]
 
   # Workspace navigation
-  - commands:
-      - "focus --next-workspace"
-    bindings:
-      - "alt+s"
-  - commands:
-      - "focus --prev-workspace"
-    bindings:
-      - "alt+a"
-  - commands:
-      - "focus --recent-workspace"
-    bindings:
-      - "alt+d"
-  - commands:
-      - "focus --workspace 1"
-    bindings:
-      - "alt+1"
-  - commands:
-      - "focus --workspace 2"
-    bindings:
-      - "alt+2"
-  - commands:
-      - "focus --workspace 3"
-    bindings:
-      - "alt+3"
-  - commands:
-      - "focus --workspace 4"
-    bindings:
-      - "alt+4"
-  - commands:
-      - "focus --workspace 5"
-    bindings:
-      - "alt+5"
-  - commands:
-      - "focus --workspace 6"
-    bindings:
-      - "alt+6"
-  - commands:
-      - "focus --workspace 7"
-    bindings:
-      - "alt+7"
-  - commands:
-      - "focus --workspace 8"
-    bindings:
-      - "alt+8"
-  - commands:
-      - "focus --workspace 9"
-    bindings:
-      - "alt+9"
-  - commands:
-      - "move --workspace 1"
-      - "focus --workspace 1"
-    bindings:
-      - "alt+shift+1"
-  - commands:
-      - "move --workspace 2"
-      - "focus --workspace 2"
-    bindings:
-      - "alt+shift+2"
-  - commands:
-      - "move --workspace 3"
-      - "focus --workspace 3"
-    bindings:
-      - "alt+shift+3"
-  - commands:
-      - "move --workspace 4"
-      - "focus --workspace 4"
-    bindings:
-      - "alt+shift+4"
-  - commands:
-      - "move --workspace 5"
-      - "focus --workspace 5"
-    bindings:
-      - "alt+shift+5"
-  - commands:
-      - "move --workspace 6"
-      - "focus --workspace 6"
-    bindings:
-      - "alt+shift+6"
-  - commands:
-      - "move --workspace 7"
-      - "focus --workspace 7"
-    bindings:
-      - "alt+shift+7"
-  - commands:
-      - "move --workspace 8"
-      - "focus --workspace 8"
-    bindings:
-      - "alt+shift+8"
-  - commands:
-      - "move --workspace 9"
-      - "focus --workspace 9"
-    bindings:
-      - "alt+shift+9"
+  - commands: ["focus --next-workspace"]
+    bindings: ["alt+s"]
+  - commands: ["focus --prev-workspace"]
+    bindings: ["alt+a"]
+  - commands: ["focus --recent-workspace"]
+    bindings: ["alt+d"]
 
-# ── Custom Bar Window ──────────────────────────────────────────────────────
+  # Focus specific workspaces
+  - commands: ["focus --workspace 1"]
+    bindings: ["alt+1"]
+  - commands: ["focus --workspace 2"]
+    bindings: ["alt+2"]
+  - commands: ["focus --workspace 3"]
+    bindings: ["alt+3"]
+  - commands: ["focus --workspace 4"]
+    bindings: ["alt+4"]
+  - commands: ["focus --workspace 5"]
+    bindings: ["alt+5"]
+  - commands: ["focus --workspace 6"]
+    bindings: ["alt+6"]
+  - commands: ["focus --workspace 7"]
+    bindings: ["alt+7"]
+  - commands: ["focus --workspace 8"]
+    bindings: ["alt+8"]
+  - commands: ["focus --workspace 9"]
+    bindings: ["alt+9"]
+
+  # Move window to workspace
+  - commands: ["move --workspace 1", "focus --workspace 1"]
+    bindings: ["alt+shift+1"]
+  - commands: ["move --workspace 2", "focus --workspace 2"]
+    bindings: ["alt+shift+2"]
+  - commands: ["move --workspace 3", "focus --workspace 3"]
+    bindings: ["alt+shift+3"]
+  - commands: ["move --workspace 4", "focus --workspace 4"]
+    bindings: ["alt+shift+4"]
+  - commands: ["move --workspace 5", "focus --workspace 5"]
+    bindings: ["alt+shift+5"]
+  - commands: ["move --workspace 6", "focus --workspace 6"]
+    bindings: ["alt+shift+6"]
+  - commands: ["move --workspace 7", "focus --workspace 7"]
+    bindings: ["alt+shift+7"]
+  - commands: ["move --workspace 8", "focus --workspace 8"]
+    bindings: ["alt+shift+8"]
+  - commands: ["move --workspace 9", "focus --workspace 9"]
+    bindings: ["alt+shift+9"]
+
+# ─── ZEBAR CONFIGURATION ────────────────────────────────────────────────────────
 window/bar:
   providers: ["self"]
-  width:       "{{ self.args.MONITOR_WIDTH }}"
-  height:      "40"
-  position_x:  "{{ self.args.MONITOR_X }}"
-  position_y:  "{{ self.args.MONITOR_Y }}"
-  z_order:     "normal"
+  width: "{{ self.args.MONITOR_WIDTH }}"
+  height: "40"
+  position_x: "{{ self.args.MONITOR_X }}"
+  position_y: "{{ self.args.MONITOR_Y }}"
+  z_order: "normal"
   shown_in_taskbar: false
-  resizable:   true
-
+  resizable: true
   global_styles: |
     @import "https://www.nerdfonts.com/assets/css/webfont.css";
-
   styles: |
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -342,24 +239,31 @@ window/bar:
     font-family: ui-monospace, monospace;
     font-size: 12px;
     padding: 4px 24px;
+    # border-bottom: 1px solid rgb(255 255 255 / 5%);;
+    # background: linear-gradient(rgb(0 0 0 / 90%), rgb(5 2 20 / 85%));
     background: rgba(0, 0, 0, 15%);
 
+    i {
+      # color: rgb(115 130 175 / 95%);
+      color: rgb(255 255 255 / 90%);
+      margin-right: 7px;
+    }
+    
+  # Left group (logo and workspaces)
   group/left:
     styles: |
       display: flex;
       align-items: center;
-
     template/logo:
       styles: |
         margin-right: 20px;
       template: |
         <i class="nf nf-fa-windows"></i>
-
     template/glazewm_workspaces:
-      providers: ["glazewm"]
       styles: |
         display: flex;
         align-items: center;
+
         .workspace {
           background: rgb(255 255 255 / 5%);
           margin-right: 4px;
@@ -368,10 +272,18 @@ window/bar:
           border: none;
           border-radius: 2px;
           cursor: pointer;
+
+          &.displayed {
+            background: rgb(255 255 255 / 15%);
+          }
+
+          &.focused,
+          &:hover {
+            # background: rgb(75 115 255 / 50%);
+            background: rgb(255 255 255 / 50%);
+          }
         }
-        .workspace.displayed { background: rgb(255 255 255 / 15%); }
-        .workspace.focused,
-        .workspace:hover { background: rgb(255 255 255 / 50%); }
+      providers: ["glazewm"]
       events:
         - type: "click"
           fn_path: "script.js#focusWorkspace"
@@ -379,27 +291,31 @@ window/bar:
       template: |
         @for (workspace of glazewm.currentWorkspaces) {
           <button
-            class="workspace {{ workspace.hasFocus ? 'focused' : '' }}
-                           {{ workspace.isDisplayed ? 'displayed' : '' }}"
+            class="workspace {{ workspace.hasFocus ? 'focused' : '' }} {{ workspace.isDisplayed ? 'displayed' : '' }}"
             id="{{ workspace.name }}"
           >
             {{ workspace.displayName ?? workspace.name }}
           </button>
         }
-
+        
+  # Center group (clock)
   group/center:
     styles: |
       justify-self: center;
     template/clock:
       providers: ["date"]
       template: |
-        {{ date.toFormat(date.now, 'EEE d MMM t') }}
-
+        {{ date.toFormat(date.now, 'EEE	d MMM t') }}
+        
+  # Right group (system information)
   group/right:
     styles: |
       justify-self: end;
       display: flex;
 
+      .template {
+        margin-left: 20px;
+      }
     template/glazewm_other:
       providers: ["glazewm"]
       styles: |
@@ -417,15 +333,16 @@ window/bar:
             {{ bindingMode.displayName ?? bindingMode.name }}
           </span>
         }
+
         @if (glazewm.tilingDirection === 'horizontal') {
           <i class="tiling-direction nf nf-md-swap_horizontal"></i>
         } @else {
           <i class="tiling-direction nf nf-md-swap_vertical"></i>
         }
-
     template/network:
       providers: ["network"]
       template: |
+        <!-- Show icon based on signal strength. -->
         @if (network.defaultInterface?.type === 'ethernet') {
           <i class="nf nf-md-ethernet_cable"></i>
         } @else if (network.defaultInterface?.type === 'wifi') {
@@ -438,38 +355,49 @@ window/bar:
         } @else {
           <i class="nf nf-md-wifi_strength_off_outline"></i>
         }
-
     template/memory:
       providers: ["memory"]
       template: |
-        <i class="nf nf-fae-chip"></i> {{ Math.round(memory.usage) }}%
-
+        <i class="nf nf-fae-chip"></i>
+        {{ Math.round(memory.usage) }}%
     template/cpu:
       providers: ["cpu"]
       styles: |
-        .high-usage { color: #900029; }
+        .high-usage {
+          color: #900029;
+        }
       template: |
         <i class="nf nf-oct-cpu"></i>
+
+        <!-- Change the text color if the CPU usage is high. -->
         @if (cpu.usage > 85) {
           <span class="high-usage">{{ Math.round(cpu.usage) }}%</span>
         } @else {
           <span>{{ Math.round(cpu.usage) }}%</span>
         }
-
     template/battery:
       providers: ["battery"]
       styles: |
         position: relative;
-        .charging-icon { position: absolute; font-size: 11px; left: 7px; top: 2px; }
+
+        .charging-icon {
+          position: absolute;
+          font-size: 11px;
+          left: 7px;
+          top: 2px;
+        }
       template: |
+        <!-- Show icon for whether battery is charging. -->
         @if (battery.isCharging) {<i class="nf nf-md-power_plug charging-icon"></i>}
+
+        <!-- Show icon for how much of the battery is charged. -->
         @if (battery.chargePercent > 90) {<i class="nf nf-fa-battery_4"></i>}
         @else if (battery.chargePercent > 70) {<i class="nf nf-fa-battery_3"></i>}
         @else if (battery.chargePercent > 40) {<i class="nf nf-fa-battery_2"></i>}
         @else if (battery.chargePercent > 20) {<i class="nf nf-fa-battery_1"></i>}
         @else {<i class="nf nf-fa-battery_0"></i>}
-        {{ Math.round(battery.chargePercent) }}%
 
+        {{ Math.round(battery.chargePercent) }}%
     template/weather:
       providers: ["weather"]
       template: |

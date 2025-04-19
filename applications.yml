@@ -22,6 +22,8 @@ windows:
     id: wez.wezterm
   - name: Oh My Posh
     id: JanDeDobbeleer.OhMyPosh
+  - name: LSDeluxe
+    id: lsd-rs.lsd
   - name: NodeJS LTS
     id: OpenJS.NodeJS
   - name: GlazeWM

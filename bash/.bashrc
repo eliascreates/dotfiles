@@ -1,43 +1,67 @@
-# Dynamically detect Windows user profile in Bash
-# Works in Git Bash or WSL if PowerShell is available
-WIN_HOME=$(powershell.exe -NoProfile -Command "[Environment]::GetFolderPath('UserProfile')" \
-    | tr -d '\r' \
-    | sed 's|\\|/|g')
+#!/bin/bash
 
-# Oh‑My‑Posh setup
+# ─── ENVIRONMENT SETUP ────────────────────────────────────────────────────────
+
+# Windows path detection
+# Note: Using $HOME should work in most cases as a simpler alternative
+WIN_HOME="$HOME"
+# Uncomment below if $HOME doesn't work correctly in your environment
+# WIN_HOME=$(powershell.exe -NoProfile -Command "[Environment]::GetFolderPath('UserProfile')" 2>/dev/null | tr -d '\r' | sed 's|\\|/|g')
+
+# Base development directory
+DEV_ROOT="/c/dev"
+
+# ─── THEME CONFIGURATION ───────────────────────────────────────────────────────
+
+# Oh-My-Posh setup with fallback
 POSH_ROOT="$WIN_HOME/AppData/Local/Programs/oh-my-posh"
 POSH_THEMES="$POSH_ROOT/themes"
+PRIMARY_THEME="$POSH_THEMES/custom_star.omp.json"
+FALLBACK_THEME="$POSH_THEMES/robbyrussell.omp.json"
 
-eval "$(oh-my-posh init bash --config "$POSH_THEMES/atomic.omp.json")"
-eval "$(oh-my-posh init bash --config "$POSH_THEMES/custom_star.omp.json")"
-# To add more themes, just duplicate the line above with a new theme file.
+if [ -f "$PRIMARY_THEME" ]; then
+    eval "$(oh-my-posh init bash --config "$PRIMARY_THEME")"
+else
+    eval "$(oh-my-posh init bash --config "$FALLBACK_THEME")"
+fi
 
-# Core aliases
+# ─── ALIASES ───────────────────────────────────────────────────────────────────
+
 alias ls='lsd'
 alias rm='rm -i'
 alias activate-venv='source .venv/Scripts/activate'
 alias very_good="$HOME/AppData/Local/Pub/Cache/bin/very_good.bat"
 
-# Base development directory
-DEV_ROOT="/c/dev"
+# ─── DIRECTORY SHORTCUTS ───────────────────────────────────────────────────────
 
-# Shortcut directory paths
 export dn="$HOME/AppData/Local/nvim"
 export dw="$DEV_ROOT"
-
 export dromeo="$DEV_ROOT/work/internal/pod/romeo"
+
+# Personal project directories
 export dwf="$DEV_ROOT/personal/flutter"
 export dwg="$DEV_ROOT/personal/go"
-export dwc="$DEV_ROOT/personal/csharp"
+export dwc="$DEV_ROOT/personal/csharp" 
 export dwp="$DEV_ROOT/personal/python"
 export dwa="$DEV_ROOT/personal/angular"
 export dwj="$DEV_ROOT/personal/java"
 export dwo="$DEV_ROOT/personal/other"
 
-# Load Angular CLI autocompletion
-source <(ng completion script)
+# ─── TOOL INTEGRATIONS ─────────────────────────────────────────────────────────
 
-# Yazi helper: updates cwd based on Yazi’s output
+# Load Angular CLI autocompletion only if ng is available
+if command -v ng &>/dev/null; then
+    source <(ng completion script)
+fi
+
+# Zoxide integration if available
+if command -v zoxide &>/dev/null; then
+    eval "$(zoxide init bash)"
+fi
+
+# ─── UTILITIES ─────────────────────────────────────────────────────────────────
+
+# Yazi file manager helper: updates cwd based on Yazi's output
 y() {
     local tmp
     tmp=$(mktemp -t "yazi-cwd.XXXXXX")
@@ -47,6 +71,3 @@ y() {
     fi
     rm -f -- "$tmp"
 }
-
-# Zoxide integration
-eval "$(zoxide init bash)"

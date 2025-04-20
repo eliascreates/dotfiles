@@ -259,6 +259,7 @@ function Set-AppConfigurations {
         "komorebi",
         "wezterm",
         "vim",
+        "vscode",
         "bash",
         "git",
         "powershell",
@@ -315,29 +316,17 @@ function Set-AppConfigurations {
         }
     }
 
-    # GlazeWM configuration
-    if ($configsToApply -contains "glazewm" -and $platform -eq "Windows") {
-        Write-Log "Setting up GlazeWM configuration..." -Level "INFO"
-        $glazeConfigSrc = Join-Path $DotfilesRoot ".glzr\glazewm"
-        $glazeConfigDest = Join-Path $env:USERPROFILE ".glzr\glazewm"
-        if (Test-Path $glazeConfigSrc) {
-            Initialize-Directory (Split-Path $glazeConfigDest -Parent)
-            New-SymLink -Source $glazeConfigSrc -Target $glazeConfigDest -IsDirectory $true
+    # Vscode configuration
+    if ($configsToApply -contains "vscode") {
+        Write-Log "Setting up Vscode configuration..." -Level "INFO"
+        $vscodeSrc = Join-Path $DotfilesRoot "vscode"
+        $vscodeDest = Join-Path $env:APPDATA "Code"
+
+        if (Test-Path $vscodeSrc) {
+            Initialize-Directory (Split-Path $vscodeDest -Parent)
+            New-SymLink -Source $vscodeSrc -Target $vscodeDest -IsDirectory $true
         } else {
-            Write-Log "GlazeWM config source not found: $glazeConfigSrc" -Level "WARNING"
-        }
-    }
-    
-    # Komorebi configuration
-    if ($configsToApply -contains "komorebi" -and $platform -eq "Windows") {
-        Write-Log "Setting up Komorebi configuration..." -Level "INFO"
-        $komorebiSrc = Join-Path $DotfilesRoot ".config\komorebi.json"
-        $komorebiDest = Join-Path $env:USERPROFILE ".config\komorebi\komorebi.json"
-        if (Test-Path $komorebiSrc) {
-            Initialize-Directory (Split-Path $komorebiDest -Parent)
-            New-SymLink -Source $komorebiSrc -Target $komorebiDest
-        } else {
-            Write-Log "Komorebi config source not found: $komorebiSrc" -Level "WARNING"
+            Write-Log "Vscode config source not found: $vscodeSrc" -Level "WARNING"
         }
     }
 
@@ -424,6 +413,32 @@ function Set-AppConfigurations {
             New-SymLink -Source $winTermSrc -Target $winTermDest
         } else {
             Write-Log "Windows Terminal settings source not found: $winTermSrc" -Level "WARNING"
+        }
+    }
+
+    # GlazeWM configuration
+    if ($configsToApply -contains "glazewm" -and $platform -eq "Windows") {
+        Write-Log "Setting up GlazeWM configuration..." -Level "INFO"
+        $glazeConfigSrc = Join-Path $DotfilesRoot ".glzr\glazewm"
+        $glazeConfigDest = Join-Path $env:USERPROFILE ".glzr\glazewm"
+        if (Test-Path $glazeConfigSrc) {
+            Initialize-Directory (Split-Path $glazeConfigDest -Parent)
+            New-SymLink -Source $glazeConfigSrc -Target $glazeConfigDest -IsDirectory $true
+        } else {
+            Write-Log "GlazeWM config source not found: $glazeConfigSrc" -Level "WARNING"
+        }
+    }
+    
+    # Komorebi configuration
+    if ($configsToApply -contains "komorebi" -and $platform -eq "Windows") {
+        Write-Log "Setting up Komorebi configuration..." -Level "INFO"
+        $komorebiSrc = Join-Path $DotfilesRoot ".config\komorebi.json"
+        $komorebiDest = Join-Path $env:USERPROFILE ".config\komorebi\komorebi.json"
+        if (Test-Path $komorebiSrc) {
+            Initialize-Directory (Split-Path $komorebiDest -Parent)
+            New-SymLink -Source $komorebiSrc -Target $komorebiDest
+        } else {
+            Write-Log "Komorebi config source not found: $komorebiSrc" -Level "WARNING"
         }
     }
     

@@ -40,6 +40,8 @@ windows:
     id: ajeetdsouza.zoxide
   - name: LSDeluxe
     id: lsd-rs.lsd
+  - name: PowerToys
+    id: Microsoft.PowerToys
 
   # ─── TEXT EDITORS & IDEs ─────────────────────────────────────────────────────────
   - name: Visual Studio Code

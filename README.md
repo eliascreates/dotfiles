@@ -54,6 +54,17 @@ This approach downloads the script securely, removes the “downloaded from inte
 That reads `applications.yml` and installs everything via `winget`.  
 If something’s already installed, `winget` skips it.
 
+
+### 🎨 Install Nerd Fonts (Windows)
+
+To install Nerd Fonts via PowerShell, run:
+
+```powershell
+iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/amnweb/nf-installer/main/install.ps1'))
+```
+
+> This uses [amnweb/Nerd-Fonts-PowerShell-Installer](https://github.com/amnweb/Nerd-Fonts-PowerShell-Installer) script to let you pick and install the nerds you like.
+
 ## 🧠 Git Config Logic Example (For More than 1 Account)
 
 ```ini

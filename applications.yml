@@ -93,6 +93,14 @@ windows:
   - name: AIMP
     id: AIMP.AIMP
 
+# ─── POWERSHELL MODULES ────────────────────────────────────────────────
+powershell_modules:
+  - name: Terminal-Icons
+    source: PSGallery
+  - name: posh-git
+    source: PSGallery
+  # Add other PowerShell modules here
+
 # Linux applications (for future use)
 linux:
   # To be added if needed

@@ -187,6 +187,35 @@ function Copy-Wallpapers {
     return $wallpapersDest
 }
 
+function Install-PowerShellModules {
+    param(
+        [array]$Modules
+    )
+    
+    if ($null -eq $Modules -or $Modules.Count -eq 0) {
+        Write-Log "No PowerShell modules specified for installation" -Level "INFO"
+        return
+    }
+    
+    foreach ($module in $Modules) {
+        $moduleName = $module.name
+        $moduleSource = if ($module.source) { $module.source } else { "PSGallery" }
+        
+        Write-Log "Installing PowerShell module: $moduleName from $moduleSource..." -Level "INFO"
+        try {
+            # Check if module is already installed
+            if (-not (Get-Module -ListAvailable -Name $moduleName)) {
+                Install-Module -Name $moduleName -Repository $moduleSource -Scope CurrentUser -Force
+                Write-Log "Successfully installed $moduleName" -Level "SUCCESS"
+            } else {
+                Write-Log "$moduleName is already installed" -Level "INFO"
+            }
+        } catch {
+            Write-Log "Failed to install $moduleName : $_" -Level "WARNING"
+        }
+    }
+}
+
 # Install applications
 function Install-Applications {
     param(
@@ -203,16 +232,19 @@ function Install-Applications {
     try {
         # Install required module for YAML parsing if not already installed
         if (-not (Get-Module -ListAvailable -Name "powershell-yaml")) {
-            Write-Log "Installing PowerShell-YAML, Terminal-Icons and posh-git modules..." -Level "INFO"
-
+            Write-Log "Installing PowerShell-YAML module..." -Level "INFO"
             Install-Module -Name "powershell-yaml" -Scope CurrentUser -Force
-            Install-Module -Name "Terminal-Icons" -Scope CurrentUser -Force
-            Install-Module -Name "posh-git" -Scope CurrentUser -Force
         }
 
         Import-Module "powershell-yaml"
         $yamlContent = Get-Content -Raw $applicationsFile
         $apps = ConvertFrom-Yaml $yamlContent
+
+        # Install PowerShell modules first
+        if ($apps.powershell_modules) {
+            Write-Log "Installing PowerShell modules..." -Level "INFO"
+            Install-PowerShellModules -Modules $apps.powershell_modules
+        }
 
         if ($platform -eq "Windows") {
             # Check if winget is available

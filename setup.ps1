@@ -203,7 +203,9 @@ function Install-Applications {
     try {
         # Install required module for YAML parsing if not already installed
         if (-not (Get-Module -ListAvailable -Name "powershell-yaml")) {
-            Write-Log "Installing PowerShell-YAML module..." -Level "INFO"
+            Write-Log "Installing PowerShell-YAML and Terminal-Icons modules..." -Level "INFO"
+
+            Install-Module -Name "Terminal-Icons" -Scope CurrentUser -Force
             Install-Module -Name "powershell-yaml" -Scope CurrentUser -Force
         }
 

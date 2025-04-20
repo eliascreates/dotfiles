@@ -205,7 +205,7 @@ function Install-PowerShellModules {
         try {
             # Check if module is already installed
             if (-not (Get-Module -ListAvailable -Name $moduleName)) {
-                Install-Module -Name $moduleName -Repository $moduleSource -Scope CurrentUser -Force
+                Install-Module -Name $moduleName -Repository $moduleSource -Scope CurrentUser -Force -SkipPublisherCheck
                 Write-Log "Successfully installed $moduleName" -Level "SUCCESS"
             } else {
                 Write-Log "$moduleName is already installed" -Level "INFO"

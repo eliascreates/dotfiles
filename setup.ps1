@@ -30,7 +30,7 @@ function Write-Log {
     
     # Optionally log to file
     $logPath = Join-Path $env:TEMP "dotfiles_setup.log"
-    "[$timestamp] [$Level] $Message" | Out-File -FilePath $logPath -Append
+    "[$timestamp] [$Level] $Message" | Out-File -FilePath $logPath
 }
 
 # Check if running as administrator on Windows
@@ -279,7 +279,7 @@ function Set-AppConfigurations {
     # Neovim configuration
     if ($configsToApply -contains "neovim") {
         Write-Log "Setting up Neovim configuration..." -Level "INFO"
-        $nvimConfigSrc = Join-Path $DotfilesRoot "AppData\Local\nvim"
+        $nvimConfigSrc = Join-Path $DotfilesRoot "nvim"
         $nvimConfigDest = Join-Path $HOME "AppData\Local\nvim"
         
         if (-not ($platform -eq "Windows")) {
@@ -304,7 +304,7 @@ function Set-AppConfigurations {
             $poshConfigDest = $env:POSH_THEMES_PATH
         } else {
             Write-Log "POSH_THEMES_PATH not set. Using default path." -Level "INFO"
-            $poshConfigDest = Join-Path $env:LOCALAPPDATA ".oh-my-posh\themes"
+            $poshConfigDest = Join-Path $env:LOCALAPPDATA "oh-my-posh\themes"
         }
 
         if (Test-Path $poshConfigSrc) {
@@ -417,8 +417,8 @@ function Set-AppConfigurations {
     # Windows Terminal settings
     if ($configsToApply -contains "windows-terminal" -and $platform -eq "Windows") {
         Write-Log "Setting up Windows Terminal settings..." -Level "INFO"
-        $winTermSrc = Join-Path $DotfilesRoot "WindowsTerminal\settings.json"
-        $winTermDest = Join-Path $env:LOCALAPPDATA "Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
+        $winTermSrc = Join-Path $DotfilesRoot "WindowsTerminal"
+        $winTermDest = Join-Path $env:LOCALAPPDATA "Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState"
         if (Test-Path $winTermSrc) {
             Initialize-Directory (Split-Path $winTermDest -Parent)
             New-SymLink -Source $winTermSrc -Target $winTermDest

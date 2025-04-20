@@ -9,44 +9,7 @@
                 "action": "copy",
                 "singleLine": false
             },
-            "id": "User.copy.644BA8F2",
-            "keys": "ctrl+c"
-        },
-        {
-            "command": "unbound",
-            "keys": "ctrl+shift+t"
-        },
-        {
-            "command": "unbound",
-            "keys": "ctrl+w"
-        },
-        {
-            "command": "unbound",
-            "keys": "ctrl+v"
-        },
-        {
-            "command": "unbound",
-            "keys": "ctrl+minus"
-        },
-        {
-            "command": "unbound",
-            "keys": "ctrl+plus"
-        },
-        {
-            "command": "paste"
-        },
-        {
-            "command": "find",
-            "id": "User.find",
-            "keys": "ctrl+shift+f"
-        },
-        {
-            "command": 
-            {
-                "action": "newTab"
-            },
-            "id": "User.newTab.5DEADB41",
-            "keys": "ctrl+t"
+            "id": "User.copy.644BA8F2"
         },
         {
             "command": 
@@ -54,8 +17,18 @@
                 "action": "adjustFontSize",
                 "delta": -1
             },
-            "id": "User.adjustFontSize.E2698FAA",
-            "keys": "ctrl+shift+minus"
+            "id": "User.adjustFontSize.E2698FAA"
+        },
+        {
+            "command": 
+            {
+                "action": "newTab"
+            },
+            "id": "User.newTab.5DEADB41"
+        },
+        {
+            "command": "paste",
+            "id": "User.paste"
         },
         {
             "command": 
@@ -64,13 +37,11 @@
                 "split": "auto",
                 "splitMode": "duplicate"
             },
-            "id": "User.splitPane.A6751878",
-            "keys": "alt+shift+d"
+            "id": "User.splitPane.A6751878"
         },
         {
-            "command": "closePane",
-            "id": "User.closePane",
-            "keys": "ctrl+shift+w"
+            "command": "find",
+            "id": "User.find"
         },
         {
             "command": 
@@ -78,13 +49,67 @@
                 "action": "adjustFontSize",
                 "delta": 1
             },
-            "id": "User.adjustFontSize.E04D5229",
-            "keys": "ctrl+shift+plus"
+            "id": "User.adjustFontSize.E04D5229"
+        },
+        {
+            "command": "closePane",
+            "id": "User.closePane"
         }
     ],
     "copyFormatting": "none",
     "copyOnSelect": true,
-    "defaultProfile": "{eb2547ba-d01d-4c81-9355-1298956a7f51}",
+    "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+    "keybindings": 
+    [
+        {
+            "id": "User.copy.644BA8F2",
+            "keys": "ctrl+c"
+        },
+        {
+            "id": "User.newTab.5DEADB41",
+            "keys": "ctrl+t"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+t"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+w"
+        },
+        {
+            "id": "User.find",
+            "keys": "ctrl+shift+f"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+v"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+minus"
+        },
+        {
+            "id": "User.splitPane.A6751878",
+            "keys": "alt+shift+d"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+plus"
+        },
+        {
+            "id": "User.adjustFontSize.E2698FAA",
+            "keys": "ctrl+shift+minus"
+        },
+        {
+            "id": "User.closePane",
+            "keys": "ctrl+shift+w"
+        },
+        {
+            "id": "User.adjustFontSize.E04D5229",
+            "keys": "ctrl+shift+plus"
+        }
+    ],
     "newTabMenu": 
     [
         {
@@ -95,16 +120,31 @@
     {
         "defaults": 
         {
-            "colorScheme": "Tokyo Night",
+            "colorScheme": "xcad",
+            "cursorShape": "filledBox",
             "font": 
             {
-                "face": "JetBrainsMonoNL Nerd Font"
+                "face": "JetBrainsMonoNL Nerd Font",
+                "size": 14
             },
-            "scrollbarState": "hidden",
-            "suppressApplicationTitle": false
+            "historySize": 12000,
+            "icon": null,
+            "intenseTextStyle": "bright",
+            "opacity": 95,
+            "padding": "8",
+            "scrollbarState": "visible",
+            "useAcrylic": false
         },
         "list": 
         [
+            {
+                "colorScheme": "Tokyo Night",
+                "elevate": false,
+                "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+                "hidden": false,
+                "name": "PowerShell",
+                "source": "Windows.Terminal.PowershellCore"
+            },
             {
                 "commandline": "C:\\Program Files\\Git\\bin\\bash.exe",
                 "cursorShape": "filledBox",
@@ -125,12 +165,6 @@
                 "name": "Git Bash",
                 "startingDirectory": "C:\\dev",
                 "tabTitle": null
-            },
-            {
-                "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
-                "hidden": false,
-                "name": "PowerShell",
-                "source": "Windows.Terminal.PowershellCore"
             },
             {
                 "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
@@ -233,8 +267,33 @@
             "selectionBackground": "#28344A",
             "white": "#C0CAF5",
             "yellow": "#E0AF68"
+        },
+        {
+            "background": "#1A1A1A",
+            "black": "#121212",
+            "blue": "#2B4FFF",
+            "brightBlack": "#666666",
+            "brightBlue": "#5C78FF",
+            "brightCyan": "#5AC8FF",
+            "brightGreen": "#905AFF",
+            "brightPurple": "#5EA2FF",
+            "brightRed": "#BA5AFF",
+            "brightWhite": "#FFFFFF",
+            "brightYellow": "#685AFF",
+            "cursorColor": "#FFFFFF",
+            "cyan": "#28B9FF",
+            "foreground": "#F1F1F1",
+            "green": "#7129FF",
+            "name": "xcad",
+            "purple": "#2883FF",
+            "red": "#A52AFF",
+            "selectionBackground": "#FFFFFF",
+            "white": "#F1F1F1",
+            "yellow": "#3D2AFF"
         }
     ],
-    "tabWidthMode": "titleLength",
-    "themes": []
+    "showTabsInTitlebar": true,
+    "tabSwitcherMode": "inOrder",
+    "themes": [],
+    "useAcrylicInTabRow": true
 }

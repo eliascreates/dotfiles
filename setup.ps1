@@ -320,7 +320,7 @@ function Set-AppConfigurations {
     if ($configsToApply -contains "vscode") {
         Write-Log "Setting up Vscode configuration..." -Level "INFO"
         $vscodeSrc = Join-Path $DotfilesRoot "vscode"
-        $vscodeDest = Join-Path $env:APPDATA "Code"
+        $vscodeDest = Join-Path $env:APPDATA "Code\User"
 
         if (Test-Path $vscodeSrc) {
             Initialize-Directory (Split-Path $vscodeDest -Parent)

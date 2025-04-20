@@ -196,6 +196,10 @@ function Install-PowerShellModules {
         Write-Log "No PowerShell modules specified for installation" -Level "INFO"
         return
     }
+
+    # Make sure PSGallery is trusted to avoid prompts
+    Write-Log "Setting PSGallery as a trusted repository..." -Level "INFO"
+    Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
     
     foreach ($module in $Modules) {
         $moduleName = $module.name
@@ -340,7 +344,7 @@ function Set-AppConfigurations {
             $poshConfigDest = $env:POSH_THEMES_PATH
         } else {
             Write-Log "POSH_THEMES_PATH not set. Using default path." -Level "INFO"
-            $poshConfigDest = Join-Path $env:LOCALAPPDATA "oh-my-posh\themes"
+            $poshConfigDest = Join-Path $env:LOCALAPPDATA "Programs\oh-my-posh\themes"
         }
 
         if (Test-Path $poshConfigSrc) {

@@ -30,7 +30,7 @@ function Write-Log {
     
     # Optionally log to file
     $logPath = Join-Path $env:TEMP "dotfiles_setup.log"
-    "[$timestamp] [$Level] $Message" | Out-File -FilePath $logPath
+    "[$timestamp] [$Level] $Message" | Out-File -FilePath $logPath -Append
 }
 
 # Check if running as administrator on Windows

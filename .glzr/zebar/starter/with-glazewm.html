@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Base styles for better consistency across platforms (aka. CSS reset). -->
+    <link rel="stylesheet" type="text/css" href="../normalize.css" />
+
+    <!-- Custom styles. -->
+    <link rel="stylesheet" type="text/css" href="./styles.css" />
+
+    <!-- FontAwesome for improved icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Add empty favicon to suppress not found errors. -->
+    <link rel="icon" href="data:;" />
+
+    <!-- Allows React to be run buildless via "text/babel" script below. -->
+    <script
+      src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"
+      integrity="sha256-aS0B0wnsaDByLfE16h4MDCP1fQFccysd1YWOcV+gbBo="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel" data-type="module">
+      import React, {
+        useState,
+        useEffect,
+      } from 'https://esm.sh/react@18?dev';
+      import { createRoot } from 'https://esm.sh/react-dom@18/client?dev';
+      import * as zebar from 'https://esm.sh/zebar@2';
+
+      const providers = zebar.createProviderGroup({
+        network: { type: 'network' },
+        glazewm: { type: 'glazewm' },
+        cpu: { type: 'cpu' },
+        date: { type: 'date', formatting: 'EEE d MMM t' },
+        battery: { type: 'battery' },
+        memory: { type: 'memory' },
+        weather: { type: 'weather' },
+      });
+
+      createRoot(document.getElementById('root')).render(<App />);
+
+      function App() {
+        const [output, setOutput] = useState(providers.outputMap);
+
+        useEffect(() => {
+          providers.onOutput(() => setOutput(providers.outputMap));
+        }, []);
+
+        // Get icon to show for current network status.
+        function getNetworkIcon(networkOutput) {
+          switch (networkOutput.defaultInterface?.type) {
+            case 'ethernet':
+              return <i className="fa-solid fa-network-wired"></i>;
+            case 'wifi':
+              if (networkOutput.defaultGateway?.signalStrength >= 80) {
+                return <i className="fa-solid fa-wifi"></i>;
+              } else if (networkOutput.defaultGateway?.signalStrength >= 65) {
+                return <i className="fa-solid fa-wifi medium-signal"></i>;
+              } else if (networkOutput.defaultGateway?.signalStrength >= 40) {
+                return <i className="fa-solid fa-wifi low-signal"></i>;
+              } else if (networkOutput.defaultGateway?.signalStrength >= 25) {
+                return <i className="fa-solid fa-wifi very-low-signal"></i>;
+              } else {
+                return <i className="fa-solid fa-wifi-weak"></i>;
+              }
+            default:
+              return <i className="fa-solid fa-wifi-slash"></i>;
+          }
+        }
+
+        // Get icon to show for how much of the battery is charged.
+        function getBatteryIcon(batteryOutput) {
+          if (batteryOutput.chargePercent > 90)
+            return <i className="fa-solid fa-battery-full"></i>;
+          if (batteryOutput.chargePercent > 70)
+            return <i className="fa-solid fa-battery-three-quarters"></i>;
+          if (batteryOutput.chargePercent > 40)
+            return <i className="fa-solid fa-battery-half"></i>;
+          if (batteryOutput.chargePercent > 20)
+            return <i className="fa-solid fa-battery-quarter"></i>;
+          return <i className="fa-solid fa-battery-empty"></i>;
+        }
+
+        // Get icon to show for current weather status.
+        function getWeatherIcon(weatherOutput) {
+          switch (weatherOutput.status) {
+            case 'clear_day':
+              return <i className="fa-solid fa-sun"></i>;
+            case 'clear_night':
+              return <i className="fa-solid fa-moon"></i>;
+            case 'cloudy_day':
+              return <i className="fa-solid fa-cloud-sun"></i>;
+            case 'cloudy_night':
+              return <i className="fa-solid fa-cloud-moon"></i>;
+            case 'light_rain_day':
+              return <i className="fa-solid fa-cloud-sun-rain"></i>;
+            case 'light_rain_night':
+              return <i className="fa-solid fa-cloud-moon-rain"></i>;
+            case 'heavy_rain_day':
+            case 'heavy_rain_night':
+              return <i className="fa-solid fa-cloud-showers-heavy"></i>;
+            case 'snow_day':
+            case 'snow_night':
+              return <i className="fa-solid fa-snowflake"></i>;
+            case 'thunder_day':
+            case 'thunder_night':
+              return <i className="fa-solid fa-bolt-lightning"></i>;
+            default:
+              return <i className="fa-solid fa-cloud"></i>;
+          }
+        }
+
+        return (
+          <div className="app">
+            <div className="left">
+              <i className="logo fa-brands fa-windows"></i>
+              {output.glazewm && (
+                <div className="workspaces">
+                  {output.glazewm.currentWorkspaces.map(workspace => (
+                    <button
+                      className={`workspace ${workspace.hasFocus && 'focused'} ${workspace.isDisplayed && 'displayed'}`}
+                      onClick={() =>
+                        output.glazewm.runCommand(
+                          `focus --workspace ${workspace.name}`,
+                        )
+                      }
+                      key={workspace.name}
+                    >
+                      {workspace.displayName ?? workspace.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="center">
+              <div className="calendar">
+                <i className="fa-regular fa-calendar"></i>
+                <span>{output.date?.formatted}</span>
+              </div>
+            </div>
+
+            <div className="right">
+              {output.glazewm && (
+                <>
+                  {output.glazewm.bindingModes.map(bindingMode => (
+                    <button
+                      className="binding-mode"
+                      key={bindingMode.name}
+                    >
+                      {bindingMode.displayName ?? bindingMode.name}
+                    </button>
+                  ))}
+
+                  <button
+                    className={`tiling-direction ${output.glazewm.tilingDirection === 'horizontal' ? 'fa-solid fa-arrows-left-right' : 'fa-solid fa-arrows-up-down'}`}
+                    onClick={() =>
+                      output.glazewm.runCommand('toggle-tiling-direction')
+                    }
+                  ></button>
+                </>
+              )}
+
+              {output.network && (
+                <div className="network">
+                  {getNetworkIcon(output.network)}
+                  {output.network.defaultGateway?.ssid}
+                </div>
+              )}
+
+              {output.memory && (
+                <div className="memory">
+                  <i className="fa-solid fa-memory"></i>
+                  {Math.round(output.memory.usage)}%
+                </div>
+              )}
+
+              {output.cpu && (
+                <div className="cpu">
+                  <i className="fa-solid fa-microchip"></i>
+
+                  {/* Change the text color if the CPU usage is high. */}
+                  <span
+                    className={output.cpu.usage > 85 ? 'high-usage' : ''}
+                  >
+                    {Math.round(output.cpu.usage)}%
+                  </span>
+                </div>
+              )}
+
+              {output.battery && (
+                <div className="battery">
+                  {/* Show icon for whether battery is charging. */}
+                  {output.battery.isCharging && (
+                    <i className="fa-solid fa-plug-circle-bolt charging-icon"></i>
+                  )}
+                  {getBatteryIcon(output.battery)}
+                  {Math.round(output.battery.chargePercent)}%
+                </div>
+              )}
+
+              {output.weather && (
+                <div className="weather">
+                  {getWeatherIcon(output.weather)}
+                  {Math.round(output.weather.celsiusTemp)}°C
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      }
+    </script>
+  </body>
+</html>

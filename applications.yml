@@ -1,0 +1,112 @@
+# Applications to install using winget
+# Format:
+#   windows:
+#     - name: Application Name
+#       id: Publisher.ApplicationName
+
+windows:
+  # ─── PACKAGE MANAGERS ──────────────────────────────────────────────────────────
+  - name: Chocolatey
+    id: Chocolatey.Chocolatey
+  - name: Scoop
+    id: ScoopInstaller.Scoop
+
+  # ─── TERMINALS & SHELLS ─────────────────────────────────────────────────────────
+  - name: Windows Terminal
+    id: Microsoft.WindowsTerminal
+  - name: PowerShell 7
+    id: Microsoft.PowerShell
+  - name: WezTerm
+    id: wez.wezterm
+  - name: Git Bash
+    id: Git.Git
+  - name: Oh My Posh
+    id: JanDeDobbeleer.OhMyPosh
+
+  # ─── CLI TOOLS & UTILITIES ──────────────────────────────────────────────────────
+  - name: Git
+    id: Git.Git
+  - name: neofetch-win
+    id: nepnep.neofetch-win
+  - name: fzf
+    id: junegunn.fzf
+  - name: ripgrep
+    id: BurntSushi.ripgrep
+  - name: fd
+    id: sharkdp.fd
+  - name: bat
+    id: sharkdp.bat
+  - name: zoxide
+    id: ajeetdsouza.zoxide
+  - name: LSDeluxe
+    id: lsd-rs.lsd
+  - name: PowerToys
+    id: Microsoft.PowerToys
+
+  # ─── TEXT EDITORS & IDEs ─────────────────────────────────────────────────────────
+  - name: Visual Studio Code
+    id: Microsoft.VisualStudioCode
+  - name: Neovim
+    id: Neovim.Neovim
+  - name: Vim
+    id: vim.vim
+  - name: Notepad++
+    id: Notepad++.Notepad++
+
+  # ─── WINDOW MANAGERS & BARS ───────────────────────────────────────────────────────
+  - name: GlazeWM 
+    id: glzr-io.glazewm
+  - name: Zebar
+    id: glzr-io.zebar
+  - name: Komorebi
+    id: LazyDev.Komorebi
+  - name: YASB
+    id: YasbBar.Yasb
+
+  # ─── DEVELOPMENT & PROGRAMMING ────────────────────────────────────────────────────
+  - name: NodeJS LTS
+    id: OpenJS.NodeJS
+  - name: Python
+    id: Python.Python.3.12
+  - name: Postman
+    id: Postman.Postman
+  - name: Insomnia
+    id: Insomnia.Insomnia
+
+  # ─── WEB BROWSERS ───────────────────────────────────────────────────────────────
+  - name: Google Chrome
+    id: Google.Chrome
+  - name: Zen Browser
+    id: Zen-Team.Zen-Browser
+
+  # ─── ARCHIVE TOOLS ──────────────────────────────────────────────────────────────
+  - name: 7zip
+    id: 7zip.7zip
+  - name: WinRAR
+    id: RARLab.WinRAR
+
+  # ─── MULTIMEDIA & ENTERTAINMENT ────────────────────────────────────────────────
+  - name: OBS Studio
+    id: OBSProject.OBSStudio
+  - name: VLC
+    id: VideoLAN.VLC
+  - name: K-Lite Codec Pack Standard
+    id: CodecGuide.K-LiteCodecPack.Standard
+  - name: AIMP
+    id: AIMP.AIMP
+
+# ─── POWERSHELL MODULES ────────────────────────────────────────────────
+powershell_modules:
+  - name: Terminal-Icons
+    source: PSGallery
+  - name: posh-git
+    source: PSGallery
+  # Add other PowerShell modules here
+
+# Linux applications (for future use)
+linux:
+  # To be added if needed
+
+# MacOS applications (for future use)
+macos:
+  # To be added if needed

@@ -1,0 +1,15 @@
+vscode/globalStorage/
+vscode/History/
+vscode/sync/
+vscode/workspaceStorage/
+
+# OS/system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor/backup/temp files
+*.bak
+*.tmp
+*.swp
+*.swo

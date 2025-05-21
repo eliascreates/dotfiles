@@ -1,0 +1,12 @@
+[IncludeIf "gitdir:C:/dev/work/"]
+	path = ./.gitconfig-work 
+
+[IncludeIf "gitdir:C:/dev/personal/"]
+	path = ./.gitconfig-personal
+
+[http]
+	sslVerify = false
+	sslBackend = schannel
+[user]
+	name = 
+	email = 

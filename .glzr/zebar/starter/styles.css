@@ -1,0 +1,140 @@
+@import "https://www.nerdfonts.com/assets/css/webfont.css";
+body {
+  color: rgb(255 255 255 / 90%);
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+}
+html,
+body,
+#root {
+  height: 100%;
+}
+#root {
+  border-radius: 0 0 6px 6px;
+  margin: 0px 5px;
+  overflow: hidden;
+  background: rgba(68, 68, 68, 40%);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  height: 22px;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  height: 100%;
+  padding: 2px 1.5vw;
+}
+.left,
+.center,
+.right {
+  display: flex;
+  align-items: center;
+}
+
+.left {
+  justify-self: start;
+}
+
+.center {
+  justify-self: center;
+}
+
+.right {
+  justify-self: end;
+}
+
+.logo,
+.binding-mode,
+.tiling-direction,
+.network,
+.memory,
+.calendar,
+.cpu,
+.battery {
+  margin-right: 14px;
+}
+
+.workspaces {
+  display: flex;
+  align-items: center;
+}
+
+.workspace {
+  background: rgb(255 255 255 / 5%);
+  margin-right: 3px;
+  padding: 2px 4px;
+  color: rgb(255 255 255 / 90%);
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-size: 9px;
+  &.displayed {
+    background: rgb(255 255 255 / 15%);
+  }
+  &.focused,
+  &:hover {
+    background: rgb(255 255 255 / 50%);
+  }
+}
+
+.binding-mode,
+.tiling-direction {
+  margin-bottom: 2.5px;
+}
+
+.binding-mode,
+.tiling-direction {
+  background: rgb(255 255 255 / 15%);
+  padding: 2px 4px;
+  color: rgb(255 255 255 / 90%);
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-size: 9px;
+  &:hover {
+    background: rgb(255 255 255 / 25%);
+  }
+}
+.binding-mode {
+  margin-right: 3px;
+}
+.cpu .high-usage {
+  color: #ff5252;
+  font-weight: bold;
+}
+.battery {
+  position: relative;
+}
+.battery .charging-icon {
+  position: absolute;
+  font-size: 6px;
+  left: -7px;
+  top: 2px;
+}
+i {
+  color: rgb(255 255 255 / 90%);
+  margin-right: 5px;
+  font-size: 9px;
+}
+/* WiFi signal strength styles */
+.fa-wifi.medium-signal {
+  opacity: 0.9;
+}
+.fa-wifi.low-signal {
+  opacity: 0.7;
+}
+.fa-wifi.very-low-signal {
+  opacity: 0.5;
+}
+/* Add a pulsing effect for high CPU usage */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+.cpu .high-usage {
+  animation: pulse 1.5s infinite;
+}

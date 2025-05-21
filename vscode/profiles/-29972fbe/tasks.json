@@ -1,0 +1,243 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "build"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": "$msCompile",
+      "presentation": {
+        "echo": false,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true,
+        "close": false
+      },
+      "icon": {
+        "id": "gear",
+        "color": "terminal.ansiBlue"
+      },
+      "detail": "1.Build project",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "statusbar": {
+          "label": "",
+          "icon": { "id": "gear" },
+          "color": "#3794FF"
+        }
+      }
+    },
+    {
+      "label": "Run",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [ "run" ],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true,
+        "close": false,
+        "runInExternalTerminal": true
+      },
+      "icon": {
+        "id": "play",
+        "color": "terminal.ansiGreen"
+      },
+      "detail": "2.Run project",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "statusbar": {
+          "label": "",
+          "icon": { "id": "play" },
+          "color": "#3FBF3F"
+        }
+      }
+    },
+    {
+      "label": "Build & Run",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "run"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true,
+        "close": false
+      },
+      "dependsOn": ["🔨 Build"],
+      "dependsOrder": "sequence",
+      "icon": {
+        "id": "rocket",
+        "color": "terminal.ansiMagenta"
+      },
+      "detail": "3.Build and run project",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "statusbar": {
+          "label": "",
+          "icon": { "id": "rocket" },
+          "color": "#CF3FCF"
+        }
+      }
+    },
+    {
+      "label": "Run Tests",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "test"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true,
+        "close": false
+      },
+      "icon": {
+        "id": "beaker",
+        "color": "terminal.ansiYellow"
+      },
+      "detail": "4.Run unit tests",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "statusbar": {
+          "label": "",
+          "icon": { "id": "beaker" },
+          "color": "#FFCC00"
+        }
+      }
+    },
+    {
+      "label": "Watch",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "watch",
+        "run"
+      ],
+      "group": "none",
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true,
+        "close": false
+      },
+      "icon": {
+        "id": "refresh",
+        "color": "terminal.ansiCyan"
+      },
+      "detail": "5.Run with hot reload",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^.*$",
+          "file": 1,
+          "location": 2,
+          "message": 3
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^watch : Started$",
+          "endsPattern": "^watch : Exited$"
+        }
+      },
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "statusbar": {
+          "label": "",
+          "icon": { "id": "refresh" },
+          "color": "#56C8D8"
+        }
+      }
+    },
+    {
+      "label": "Clean",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "clean"
+      ],
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true,
+        "close": false
+      },
+      "icon": {
+        "id": "trash",
+        "color": "terminal.ansiRed"
+      },
+      "detail": "6.Clean build outputs",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "statusbar": {
+          "label": "",
+          "icon": { "id": "trash" },
+          "color": "#FF5252"
+        }
+      }
+    },
+    {
+      "label": "Restore",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "restore"
+      ],
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true,
+        "close": false
+      },
+      "icon": {
+        "id": "package",
+        "color": "terminal.ansiWhite"
+      },
+      "detail": "7.Restore NuGet packages",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "statusbar": {
+          "label": "",
+          "icon": { "id": "package" },
+          "color": "#CCCCCC"
+        }
+      }
+    }
+  ]
+}

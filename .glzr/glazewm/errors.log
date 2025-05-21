@@ -1,0 +1,31 @@
+[2m2024-10-20T16:03:43.512115Z[0m [31mERROR[0m [2mglazewm::common::commands::shell_exec[0m[2m:[0m [3merr_message[0m[2m=[0m"Failed to execute '%userprofile%/.glzr/zebar/start.bat'.\n\nError: Program path is not valid for command '%userprofile%/.glzr/zebar/start.bat'."
+[2m2024-10-21T16:03:31.341266Z[0m [31mERROR[0m [2mglazewm::common::commands::shell_exec[0m[2m:[0m [3merr_message[0m[2m=[0m"Failed to execute '%userprofile%/.glzr/zebar/start.bat'.\n\nError: Program path is not valid for command '%userprofile%/.glzr/zebar/start.bat'."
+[2m2024-10-21T18:46:25.291448Z[0m [31mERROR[0m [2mglazewm::common::commands::shell_exec[0m[2m:[0m [3merr_message[0m[2m=[0m"Failed to execute '%userprofile%/.glzr/zebar/start.bat'.\n\nError: Program path is not valid for command '%userprofile%/.glzr/zebar/start.bat'."
+[2m2024-10-22T08:08:03.391891Z[0m [31mERROR[0m [2mglazewm::common::commands::shell_exec[0m[2m:[0m [3merr_message[0m[2m=[0m"Failed to execute '%userprofile%/.glzr/zebar/start.bat'.\n\nError: Program path is not valid for command '%userprofile%/.glzr/zebar/start.bat'."
+[2m2024-10-22T10:05:38.909662Z[0m [31mERROR[0m [2mglazewm::common::commands::shell_exec[0m[2m:[0m [3merr_message[0m[2m=[0m"Failed to execute '%userprofile%/.glzr/zebar/start.bat'.\n\nError: Program path is not valid for command '%userprofile%/.glzr/zebar/start.bat'."
+[2m2024-10-22T15:29:44.646007Z[0m [31mERROR[0m [2mglazewm::common::commands::shell_exec[0m[2m:[0m [3merr_message[0m[2m=[0m"Failed to execute '%userprofile%/.glzr/zebar/start.bat'.\n\nError: Program path is not valid for command '%userprofile%/.glzr/zebar/start.bat'."
+[2m2024-10-22T15:31:02.154111Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m Another instance of the application is already running.
+[2m2024-10-22T15:38:45.907085Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m keybindings[23].commands: unrecognized subcommand
+ at line 198 column 15
+[2m2024-10-23T11:52:14.241414Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m could not find expected ':' at line 270 column 1, while scanning a simple key at line 268 column 1
+[2m2024-10-23T11:53:19.737027Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m could not find expected ':' at line 270 column 1, while scanning a simple key at line 268 column 1
+[2m2024-10-24T17:52:16.024037Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m keybindings[23]: missing field `bindings` at line 214 column 5
+[2m2024-10-24T19:50:44.072695Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m window_rules[2].match[0]: data did not match any variant of untagged enum MatchType at line 93 column 9
+[2m2024-10-24T19:51:16.381824Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m window_rules[2].match[0]: data did not match any variant of untagged enum MatchType at line 93 column 9
+[2m2024-10-24T19:51:55.426501Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m window_rules[2].match[0]: data did not match any variant of untagged enum MatchType at line 93 column 9
+[2m2024-10-24T19:54:42.786990Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m window_rules[2].match[0]: data did not match any variant of untagged enum MatchType at line 94 column 9
+[2m2024-10-24T19:54:49.383028Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m window_rules[2].match[0]: data did not match any variant of untagged enum MatchType at line 94 column 9
+[2m2024-10-24T20:26:43.716410Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m window_rules[2].match: invalid type: map, expected a sequence at line 94 column 9
+[2m2024-10-24T20:26:45.541581Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m window_rules[2].match: invalid type: map, expected a sequence at line 94 column 9
+[2m2024-10-24T20:27:18.961815Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m window_rules[2].match[0]: data did not match any variant of untagged enum MatchType at line 93 column 9
+[2m2024-10-24T20:28:18.660949Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m window_rules[2].match[0]: data did not match any variant of untagged enum MatchType at line 94 column 9
+[2m2024-10-24T21:19:20.005593Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m window_rules[2].match[0]: data did not match any variant of untagged enum MatchType at line 94 column 9
+[2m2024-10-24T21:19:28.185919Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m window_rules[2].match[0]: data did not match any variant of untagged enum MatchType at line 93 column 9
+[2m2024-10-24T21:22:28.119284Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m window_rules[2].match[1]: data did not match any variant of untagged enum MatchType at line 94 column 9
+[2m2024-10-24T21:23:00.676788Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m window_rules[1].match[1]: data did not match any variant of untagged enum MatchType at line 89 column 9
+[2m2024-10-25T09:01:01.379466Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m Another instance of the application is already running.
+[2m2025-04-20T23:30:52.353636Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m Program path is not valid for command '%ProgramFiles%/Microsoft VS Code/Code.exe'.
+[2m2025-05-11T11:19:01.678287Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m Program path is not valid for command '%ProgramFiles%/Microsoft VS Code/Code.exe'.
+[2m2025-05-18T05:35:38.545415Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m Program path is not valid for command '%ProgramFiles%/Microsoft VS Code/Code.exe'.
+[2m2025-05-19T04:49:26.356492Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m Invalid window handle. (0x80070578)
+[2m2025-05-19T04:50:53.957359Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m Invalid window handle. (0x80070578)

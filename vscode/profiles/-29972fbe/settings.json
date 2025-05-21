@@ -1,0 +1,264 @@
+{
+  // GENERAL
+  "files.autoSave": "afterDelay",
+  "workbench.iconTheme": "vscode-icons",
+  "editor.fontFamily": "'JetBrainsMonoNL Nerd Font', 'JetBrains Mono', Consolas, 'Courier New', monospace",
+  "breadcrumbs.showFiles": false,
+  "material-icon-theme.hidesExplorerArrows": true,
+  "workbench.statusBar.visible": true,
+  "zenMode.hideLineNumbers": false,
+  "editor.minimap.enabled": false,
+  "editor.suggest.insertMode": "replace",
+  "editor.linkedEditing": true,
+  "editor.formatOnSave": true,
+  "workbench.productIconTheme": "material-product-icons",
+  "debug.toolBarLocation": "commandCenter",
+  "explorer.compactFolders": false,
+  "vsicons.presets.hideExplorerArrows": true,
+  "debug.enableStatusBarColor": true,
+  "workbench.colorCustomizations": {
+    "statusBar.debuggingBackground": "#222011",
+    "statusBar.debuggingForeground": "#ffffff"
+  },
+
+  // INTEGRATED TERMINAL
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "terminal.integrated.sendKeybindingsToShell": true,
+  // "debug.console.closeOnEnd": true,
+  "csharp.debug.externalConsole": true,
+
+  "terminal.external.windowsExec": "C:\\Program Files\\Git\\git-bash.exe",
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "source": "PowerShell",
+      "color": "terminal.ansiBlue",
+      "icon": "terminal-powershell",
+      "overrideName": true
+    },
+    "Git Bash": {
+      "source": "Git Bash",
+      "icon": "terminal-bash",
+      "overrideName": true
+    },
+    "Command Prompt": {
+      "path": [
+        "${env:windir}\\Sysnative\\cmd.exe",
+        "${env:windir}\\System32\\cmd.exe"
+      ],
+      "args": [],
+      "icon": "terminal-cmd"
+    }
+  },
+
+  "security.workspace.trust.untrustedFiles": "open",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "launch": {},
+  // Project Manager
+  "projectManager.git.baseFolders": ["c:\\Dev"],
+  "projectManager.sortList": "Recent",
+  // MATERIAL FOLDER ICONS
+  "material-icon-theme.files.associations": {
+    "business_logic": "functions",
+    "presentation": "layout",
+    "features": "shader",
+    "feature": "shader",
+    "exceptions": "error",
+    "exception": "error",
+    "global_state": "global",
+    "ui": "layout",
+    "bloc": "controller",
+    "cubit": "controller",
+    "entities": "class",
+    "repository": "taskfile",
+    "repositories": "taskfile",
+    "domain": "middleware"
+  },
+  //FORMATTERS
+  "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[html]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[json]": { "editor.defaultFormatter": "vscode.json-language-features" },
+  "csharp.debug.console": "internalConsole",
+  "editor.formatOnSaveMode": "modificationsIfAvailable",
+  "[csharp]": {
+    "editor.defaultFormatter": "csharpier.csharpier-vscode"
+  },
+  // Macros
+  "macros.list": {
+    "renameAppend": [
+      "renameFile",
+      "editor.action.clipboardCopyAction",
+      "editor.action.clipboardPasteAction"
+    ]
+  },
+  // STATUS BAR
+  // "workbench.colorCustomizations": {
+  //   "statusBar.background": "#2d353b",
+  //   "statusBar.noFolderBackground": "#2d353b",
+  //   "statusBar.debuggingBackground": "#2d353b",
+  //   "statusBar.foreground": "#ffffff",
+  //   "statusBar.debuggingForeground": "#ffffff"
+  // },
+
+  // VIM
+  "vim.leader": "<Space>",
+  "vim.hlsearch": true,
+  "vim.useSystemClipboard": true,
+  "vim.surround": true,
+  "vim.matchpairs": "(:),{:},[:]",
+  "vim.highlightedyank.color": "rgba(208, 139, 0, 0.5)",
+  "vim.highlightedyank.enable": true,
+
+  // STATUS BAR COLORS FOR VIM MODES
+  "vim.statusBarColorControl": false,
+  "vim.statusBarColors.visual": ["#3b4261"],
+  "vim.statusBarColors.normal": ["#2d353b"],
+  "vim.statusBarColors.insert": ["#2d353b"],
+
+  // To improve performance,
+  "extensions.experimental.affinity": {
+    "vscodevim.vim": 1
+  },
+
+  // INSERT MODE KEYBINDINGS
+  "vim.insertModeKeyBindings": [
+    // {
+    //   "before": ["k", "j"],
+    //   "after": ["<Esc>"]
+    // }
+  ],
+  "vim.handleKeys": {
+    "<C-d>": true,
+    "<C-s>": false,
+    "<C-z>": false,
+    "<C-p>": true
+    // "<C-e>": false
+  },
+
+  // NORMAL MODE KEYBINDINGS
+  "vim.normalModeKeyBindingsNonRecursive": [
+    { "before": ["<Esc>"], "commands": [":nohlsearch"] },
+
+    // LEADER SHORTCUTS
+
+    // SPLITS
+    { "before": ["<leader>", "v"], "commands": [":vsplit"] },
+    { "before": ["<leader>", "h"], "commands": [":split"] },
+
+    // SEARCH
+    { "before": ["<leader>", "/"], "commands": ["actions.find"] },
+    { "before": ["<leader>", "j"], "command": ["code-runner.run"] },
+
+    // switch b/w buffers
+    { "before": ["<S-h>"], "commands": [":bprevious"] },
+    { "before": ["<S-l>"], "commands": [":bnext"] },
+
+    // panes
+    // NICE TO HAVE
+    { "before": ["<leader>", "w"], "commands": [":w!"] },
+    { "before": ["<leader>", "q"], "commands": [":q!"] },
+    { "before": ["<leader>", "x"], "commands": [":x!"] },
+    { "before": ["<leader>", "n"], "commands": [":tabnew"] },
+
+    {
+      "before": ["<leader>", "b"],
+      "commands": ["editor.debug.action.toggleBreakpoint"]
+    },
+
+    // AUTO TASKS WITH VIM
+    {
+      "before": ["<leader>", "1"],
+      "commands": [
+        { "command": "workbench.action.tasks.runTask", "args": "Build" }
+      ]
+    },
+    {
+      "before": ["<leader>", "2"],
+      "commands": [
+        { "command": "workbench.action.tasks.runTask", "args": "Run" }
+      ]
+    },
+    {
+      "before": ["<leader>", "3"],
+      "commands": [
+        { "command": "workbench.action.tasks.runTask", "args": "Build & Run" }
+      ]
+    },
+    {
+      "before": ["<leader>", "4"],
+      "commands": [
+        { "command": "workbench.action.tasks.runTask", "args": "Run Tests" }
+      ]
+    },
+    {
+      "before": ["<leader>", "5"],
+      "commands": [
+        { "command": "workbench.action.tasks.runTask", "args": "Watch" }
+      ]
+    },
+
+    // Project Leader Key
+    {
+      "before": ["<leader>", "<leader>"],
+      "commands": ["workbench.action.quickOpen"]
+    },
+    {
+      "before": ["<leader>", "o"],
+      "commands": ["workbench.action.openRecent"]
+    },
+    {
+      "before": ["<leader>", "s"],
+      "commands": ["workbench.action.findInFiles"]
+    },
+    {
+      "before": ["<leader>", "t"],
+      "commands": ["workbench.action.quickOpenNavigatePreviousInFilePicker"]
+    },
+
+    { "before": ["<leader>", "c"], "commands": ["editor.action.quickFix"] },
+    {
+      "before": ["<leader>", "f"],
+      "commands": ["editor.action.formatDocument"]
+    },
+    { "before": ["<leader>", "r"], "commands": ["editor.action.rename"] },
+
+    { "before": ["[", "d"], "commands": ["editor.action.marker.prev"] },
+    { "before": ["K"], "commands": ["editor.action.showHover"] },
+    { "before": ["g", "r"], "commands": ["editor.action.goToReferences"] },
+    { "before": ["]", "d"], "commands": ["editor.action.marker.next"] },
+    {
+      "before": ["g", "h"],
+      "commands": ["editor.action.showDefinitionPreviewHover"]
+    },
+
+    //Which Key
+    { "before": ["<leader>"], "commands": ["whichkey.show"] }
+  ],
+  // VISUAL MODE KEYBINDINGS
+  "vim.visualModeKeyBindings": [
+    // Stay in visual mode while indenting
+    {
+      "before": ["<leader>", "f"],
+      "commands": ["editor.action.formatSelection"]
+    },
+
+    { "before": ["<"], "commands": ["editor.action.outdentLines"] },
+    { "before": [">"], "commands": ["editor.action.indentLines"] },
+    // Move selected lines while staying in visual mode
+    { "before": ["J"], "commands": ["editor.action.moveLinesDownAction"] },
+    { "before": ["K"], "commands": ["editor.action.moveLinesUpAction"] },
+    // toggle comment selection
+    { "before": ["<leader>", "c"], "commands": ["editor.action.commentLine"] }
+  ],
+  "chat.commandCenter.enabled": false,
+  "vsicons.dontShowNewVersionMessage": true,
+  "breadcrumbs.enabled": false,
+  "mssql.connectionGroups": [
+    {
+      "name": "ROOT",
+      "id": "287AAB18-9C53-4160-BB4E-1112A243FB45"
+    }
+  ],
+  "mssql.connections": []
+}

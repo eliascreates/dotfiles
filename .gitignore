@@ -2,6 +2,7 @@ vscode/globalStorage/
 vscode/History/
 vscode/sync/
 vscode/workspaceStorage/
+vscode/profiles/*/globalStorage/
 
 # OS/system files
 .DS_Store
